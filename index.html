@@ -1,0 +1,3717 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07111f">
+<title>Football Life</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at top right,#123d55 0%,transparent 35%),
+        radial-gradient(circle at bottom left,#101b3c 0%,transparent 40%),
+        #050b14;
+    color:#fff;
+    min-height:100vh;
+}
+
+button,input,select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+#app{
+    min-height:100vh;
+}
+
+/* =========================
+   GENERAL
+========================= */
+
+.hidden{
+    display:none !important;
+}
+
+.screen{
+    min-height:100vh;
+}
+
+.container{
+    width:min(1200px,94%);
+    margin:auto;
+}
+
+.card{
+    background:rgba(14,25,40,.92);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.title{
+    font-size:30px;
+    font-weight:900;
+}
+
+.subtitle{
+    color:#94a9bc;
+    margin-top:7px;
+}
+
+.btn{
+    border:none;
+    border-radius:13px;
+    padding:13px 18px;
+    color:white;
+    background:linear-gradient(135deg,#00b894,#008f75);
+    font-weight:800;
+    transition:.2s;
+    margin:4px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn.blue{
+    background:linear-gradient(135deg,#287cff,#1452c7);
+}
+
+.btn.gold{
+    background:linear-gradient(135deg,#f5b942,#d98a00);
+}
+
+.btn.red{
+    background:linear-gradient(135deg,#ff5252,#b91c1c);
+}
+
+.btn.gray{
+    background:#263648;
+}
+
+.btn.purple{
+    background:linear-gradient(135deg,#9b59ff,#5b20a8);
+}
+
+input,select{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #26384c;
+    background:#0a1523;
+    color:white;
+    outline:none;
+    margin-top:7px;
+}
+
+label{
+    display:block;
+    margin-bottom:14px;
+    color:#c8d4df;
+    font-weight:bold;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.grid3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.stat{
+    background:#0a1523;
+    border-radius:15px;
+    padding:15px;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.stat small{
+    color:#8ea0b0;
+}
+
+.stat strong{
+    display:block;
+    font-size:25px;
+    margin-top:5px;
+}
+
+.progress{
+    height:9px;
+    background:#182636;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.progress span{
+    display:block;
+    height:100%;
+    background:linear-gradient(90deg,#00d2a0,#2c9cff);
+    border-radius:20px;
+}
+
+/* =========================
+   START
+========================= */
+
+.start{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px 0;
+}
+
+.start-box{
+    width:min(700px,95%);
+    background:rgba(10,20,34,.96);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:28px;
+    padding:28px;
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+
+.logo{
+    text-align:center;
+    font-size:48px;
+    font-weight:1000;
+    margin-bottom:5px;
+    background:linear-gradient(90deg,#00e0ad,#36a1ff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.logo-sub{
+    text-align:center;
+    color:#8ca1b4;
+    margin-bottom:30px;
+}
+
+.avatar-preview{
+    width:110px;
+    height:110px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    background:linear-gradient(135deg,#00b894,#1565c0);
+    border:5px solid #172a3d;
+}
+
+/* =========================
+   GAME HEADER
+========================= */
+
+.game-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(5,12,22,.96);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.header-inner{
+    width:min(1200px,94%);
+    margin:auto;
+    min-height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.player-mini{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.mini-avatar{
+    width:45px;
+    height:45px;
+    background:linear-gradient(135deg,#00b894,#1269c9);
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+}
+
+.player-mini b{
+    display:block;
+}
+
+.player-mini small{
+    color:#8da0b1;
+}
+
+.money{
+    color:#4dffbd;
+    font-weight:bold;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav{
+    position:sticky;
+    bottom:0;
+    z-index:60;
+    background:rgba(5,12,22,.98);
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.nav-inner{
+    width:min(1200px,100%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+}
+
+.nav button{
+    background:none;
+    color:#8093a6;
+    border:none;
+    padding:11px 3px;
+    font-size:11px;
+}
+
+.nav button.active{
+    color:#00d7a5;
+}
+
+.nav-icon{
+    display:block;
+    font-size:21px;
+    margin-bottom:3px;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:25px 0 100px;
+}
+
+.hero{
+    background:
+        linear-gradient(120deg,rgba(0,184,148,.22),rgba(29,93,160,.18)),
+        #0c1929;
+    border-radius:24px;
+    padding:25px;
+    margin-bottom:18px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.hero h1{
+    font-size:32px;
+}
+
+.hero p{
+    color:#91a5b7;
+    margin-top:7px;
+}
+
+.rating-big{
+    font-size:70px;
+    font-weight:1000;
+    line-height:1;
+    margin:15px 0;
+    color:#4dffbd;
+}
+
+.position-badge{
+    display:inline-block;
+    background:#152c42;
+    padding:7px 13px;
+    border-radius:20px;
+    color:#67b6ff;
+    font-weight:bold;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard-top{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:16px;
+}
+
+.match-box{
+    background:
+        radial-gradient(circle at center,#173a4e,transparent 65%),
+        #0b1827;
+    text-align:center;
+}
+
+.match-vs{
+    font-size:28px;
+    font-weight:900;
+    margin:15px 0;
+}
+
+.team{
+    font-weight:bold;
+}
+
+.big-score{
+    font-size:40px;
+    font-weight:1000;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:500px;
+}
+
+th,td{
+    padding:11px 8px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    text-align:center;
+}
+
+th{
+    color:#8ea1b2;
+    font-size:12px;
+}
+
+tr.me{
+    background:rgba(0,210,160,.09);
+}
+
+/* =========================
+   EVENTS
+========================= */
+
+.event{
+    padding:14px;
+    border-radius:14px;
+    background:#0a1523;
+    border-right:4px solid #00c896;
+    margin-bottom:10px;
+}
+
+.event.red{
+    border-right-color:#ff5252;
+}
+
+.event.gold{
+    border-right-color:#f4b63e;
+}
+
+.event.blue{
+    border-right-color:#4c9aff;
+}
+
+/* =========================
+   PLAYER CARD
+========================= */
+
+.player-card{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}
+
+.player-face{
+    width:110px;
+    height:110px;
+    flex-shrink:0;
+    border-radius:25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    background:linear-gradient(135deg,#183d55,#14205b);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(0,0,0,.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    width:min(600px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#0b1726;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:24px;
+    padding:22px;
+}
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+#toast{
+    position:fixed;
+    top:85px;
+    left:50%;
+    transform:translateX(-50%) translateY(-20px);
+    opacity:0;
+    z-index:200;
+    background:#122438;
+    border:1px solid rgba(255,255,255,.1);
+    padding:13px 20px;
+    border-radius:14px;
+    transition:.3s;
+    pointer-events:none;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+    .grid,
+    .grid3,
+    .dashboard-top{
+        grid-template-columns:1fr;
+    }
+
+    .title{
+        font-size:25px;
+    }
+
+    .logo{
+        font-size:39px;
+    }
+
+    .start-box{
+        padding:20px;
+    }
+
+    .header-inner{
+        min-height:64px;
+    }
+
+    .player-mini{
+        font-size:13px;
+    }
+
+    .money{
+        font-size:12px;
+    }
+
+    .player-card{
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   FOOTBALL LIFE
+   SINGLE FILE VERSION
+========================================================= */
+
+"use strict";
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const countries = [
+    "المغرب",
+    "الجزائر",
+    "تونس",
+    "مصر",
+    "فرنسا",
+    "إسبانيا",
+    "إنجلترا",
+    "إيطاليا",
+    "ألمانيا",
+    "البرتغال",
+    "البرازيل",
+    "الأرجنتين",
+    "هولندا",
+    "بلجيكا",
+    "تركيا",
+    "السنغال",
+    "نيجيريا",
+    "الكاميرون"
+];
+
+const leagues = {
+    "المغرب":{
+        name:"الدوري المغربي",
+        clubs:[
+            "الدار البيضاء FC",
+            "الرباط الرياضي",
+            "فاس يونايتد",
+            "طنجة أتلتيك",
+            "مراكش سبورت",
+            "أكادير FC",
+            "وجدة كلوب",
+            "القنيطرة الرياضي"
+        ]
+    },
+    "فرنسا":{
+        name:"الدوري الفرنسي",
+        clubs:[
+            "Paris Stars",
+            "Lyon City",
+            "Marseille Blue",
+            "Monaco Elite",
+            "Lille Athletic",
+            "Nice FC",
+            "Bordeaux United",
+            "Nantes FC"
+        ]
+    },
+    "إسبانيا":{
+        name:"الدوري الإسباني",
+        clubs:[
+            "Madrid Royal",
+            "Barcelona Athletic",
+            "Valencia CF",
+            "Sevilla Stars",
+            "Bilbao Club",
+            "Vigo FC",
+            "Malaga United",
+            "Madrid City"
+        ]
+    },
+    "إنجلترا":{
+        name:"الدوري الإنجليزي",
+        clubs:[
+            "London Reds",
+            "Manchester Blue",
+            "Liverpool Athletic",
+            "London Royal",
+            "Manchester United",
+            "Newcastle FC",
+            "Birmingham City",
+            "Leeds Athletic"
+        ]
+    },
+    "إيطاليا":{
+        name:"الدوري الإيطالي",
+        clubs:[
+            "Milano FC",
+            "Roma Stars",
+            "Torino Athletic",
+            "Napoli Blue",
+            "Inter City",
+            "Lazio Club",
+            "Florence FC",
+            "Bologna United"
+        ]
+    },
+    "ألمانيا":{
+        name:"الدوري الألماني",
+        clubs:[
+            "Munich FC",
+            "Dortmund Black",
+            "Berlin United",
+            "Leipzig Stars",
+            "Frankfurt FC",
+            "Stuttgart Club",
+            "Bremen Athletic",
+            "Cologne FC"
+        ]
+    },
+    "البرتغال":{
+        name:"الدوري البرتغالي",
+        clubs:[
+            "Lisbon Eagles",
+            "Porto Blue",
+            "Braga FC",
+            "Sporting Stars",
+            "Coimbra Club",
+            "Faro United",
+            "Madeira FC",
+            "Setubal Athletic"
+        ]
+    },
+    "هولندا":{
+        name:"الدوري الهولندي",
+        clubs:[
+            "Amsterdam FC",
+            "Rotterdam Stars",
+            "Eindhoven United",
+            "Utrecht Club",
+            "Arnhem FC",
+            "Groningen Athletic",
+            "Twente Stars",
+            "Den Haag FC"
+        ]
+    }
+};
+
+const sponsors = [
+    {name:"SportMax", value:15000},
+    {name:"Global Energy", value:25000},
+    {name:"ProBoot", value:35000},
+    {name:"Elite Mobile", value:50000},
+    {name:"World Sports", value:75000}
+];
+
+const cars = [
+    {name:"سيارة اقتصادية",price:15000,prestige:2},
+    {name:"سيارة رياضية",price:70000,prestige:5},
+    {name:"سيارة فاخرة",price:180000,prestige:8},
+    {name:"Supercar X",price:500000,prestige:15}
+];
+
+const houses = [
+    {name:"شقة صغيرة",price:30000,comfort:2},
+    {name:"شقة فاخرة",price:150000,comfort:6},
+    {name:"فيلا",price:500000,comfort:12},
+    {name:"قصر اللاعب",price:1500000,comfort:25}
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let state = null;
+
+function defaultState(){
+    return {
+        started:false,
+
+        player:{
+            name:"",
+            nationality:"المغرب",
+            age:17,
+            position:"ST",
+            preferredLeague:"المغرب",
+
+            rating:60,
+            potential:82,
+
+            pace:60,
+            shooting:60,
+            passing:55,
+            dribbling:58,
+            defending:30,
+            physical:55,
+
+            fitness:100,
+            morale:75,
+            reputation:10,
+
+            goals:0,
+            assists:0,
+            appearances:0,
+
+            yellow:0,
+            red:0,
+
+            injured:false,
+            injuryWeeks:0,
+            suspended:false,
+            suspensionWeeks:0,
+
+            club:"بدون نادٍ",
+            league:"المغرب",
+            contract:0,
+            salary:0,
+
+            nationalTeam:false,
+            nationalTeamCalls:0,
+
+            agent:true,
+            agentLevel:1,
+
+            money:5000,
+
+            house:"لا يوجد",
+            houseComfort:0,
+
+            car:"لا توجد",
+            carPrestige:0,
+
+            sponsor:"لا يوجد",
+            sponsorIncome:0,
+
+            relationship:"أعزب",
+            relationshipLevel:0,
+
+            trophies:[],
+            awards:[],
+
+            careerGoals:0,
+            careerAssists:0,
+            careerAppearances:0,
+
+            seasons:0
+        },
+
+        season:{
+            year:2026,
+            week:1,
+            leaguePosition:1,
+            matchesPlayed:0,
+            wins:0,
+            draws:0,
+            losses:0,
+            points:0,
+
+            teamGoals:0,
+            teamConceded:0,
+
+            competition:"الدوري",
+            seasonFinished:false
+        },
+
+        offers:[],
+        events:[],
+        standings:[],
+        transferHistory:[],
+        trophies:[],
+        socialFollowers:100,
+        mediaHeat:0,
+        lastMatch:null,
+        pendingChoice:null
+    };
+}
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function saveGame(){
+    try{
+        localStorage.setItem("football_life_save",JSON.stringify(state));
+        toast("تم حفظ اللعبة ✓");
+    }catch(e){
+        toast("تعذر الحفظ");
+    }
+}
+
+function loadGame(){
+    try{
+        const raw=localStorage.getItem("football_life_save");
+
+        if(!raw){
+            toast("لا توجد لعبة محفوظة");
+            return false;
+        }
+
+        const loaded=JSON.parse(raw);
+
+        if(!loaded || !loaded.player){
+            throw new Error("bad save");
+        }
+
+        state=loaded;
+        ensureState();
+        renderGame();
+        toast("تم تحميل اللعبة ✓");
+        return true;
+
+    }catch(e){
+        localStorage.removeItem("football_life_save");
+        toast("ملف الحفظ تالف وتم تجاهله");
+        return false;
+    }
+}
+
+function ensureState(){
+    const d=defaultState();
+
+    state.player={...d.player,...(state.player||{})};
+    state.season={...d.season,...(state.season||{})};
+
+    if(!Array.isArray(state.events))state.events=[];
+    if(!Array.isArray(state.offers))state.offers=[];
+    if(!Array.isArray(state.standings))state.standings=[];
+    if(!Array.isArray(state.transferHistory))state.transferHistory=[];
+    if(!Array.isArray(state.trophies))state.trophies=[];
+}
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function rand(min,max){
+    return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function clamp(n,min,max){
+    return Math.max(min,Math.min(max,n));
+}
+
+function money(n){
+    return Number(n||0).toLocaleString("en-US")+" €";
+}
+
+function toast(text){
+    const el=document.getElementById("toast");
+
+    if(!el)return;
+
+    el.textContent=text;
+    el.classList.add("show");
+
+    clearTimeout(window.__toastTimer);
+
+    window.__toastTimer=setTimeout(()=>{
+        el.classList.remove("show");
+    },2200);
+}
+
+function addEvent(text,type=""){
+    state.events.unshift({
+        text:text,
+        week:state.season.week,
+        year:state.season.year,
+        type:type
+    });
+
+    if(state.events.length>40){
+        state.events=state.events.slice(0,40);
+    }
+}
+
+function avgAbility(){
+    const p=state.player;
+
+    return Math.round(
+        (p.pace+p.shooting+p.passing+p.dribbling+p.defending+p.physical)/6
+    );
+}
+
+function updateRating(){
+    const p=state.player;
+
+    let base=avgAbility();
+
+    if(p.position==="GK"){
+        base=Math.round((p.defending+p.physical+p.passing+p.pace)/4);
+    }
+
+    p.rating=clamp(base,40,99);
+}
+
+function randomClub(league){
+    const arr=leagues[league].clubs;
+    return arr[rand(0,arr.length-1)];
+}
+
+function getClubStrength(){
+    const p=state.player;
+
+    return clamp(
+        p.rating +
+        p.morale/15 +
+        p.fitness/20 +
+        p.reputation/25 +
+        rand(-4,4),
+        35,
+        100
+    );
+}
+
+/* =========================================================
+   START SCREEN
+========================================================= */
+
+function renderStart(){
+    const app=document.getElementById("app");
+
+    app.innerHTML=`
+        <div class="screen start">
+            <div class="start-box">
+
+                <div class="logo">FOOTBALL LIFE</div>
+                <div class="logo-sub">
+                    Career • Life • Football • Legacy
+                </div>
+
+                <div class="avatar-preview">⚽</div>
+
+                <div class="card">
+
+                    <label>
+                        اسم اللاعب
+                        <input id="playerName" placeholder="مثال: Anas">
+                    </label>
+
+                    <label>
+                        الجنسية
+                        <select id="nationality">
+                            ${countries.map(c=>`<option>${c}</option>`).join("")}
+                        </select>
+                    </label>
+
+                    <label>
+                        المركز
+                        <select id="position">
+                            <option value="ST">مهاجم ST</option>
+                            <option value="CF">مهاجم CF</option>
+                            <option value="LW">جناح أيسر LW</option>
+                            <option value="RW">جناح أيمن RW</option>
+                            <option value="CAM">وسط هجومي CAM</option>
+                            <option value="CM">وسط CM</option>
+                            <option value="CDM">وسط دفاعي CDM</option>
+                            <option value="CB">قلب دفاع CB</option>
+                            <option value="LB">ظهير أيسر LB</option>
+                            <option value="RB">ظهير أيمن RB</option>
+                            <option value="GK">حارس GK</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        الدوري الذي تفضله
+                        <select id="preferredLeague">
+                            ${Object.keys(leagues).map(l=>
+                                `<option value="${l}">${leagues[l].name}</option>`
+                            ).join("")}
+                        </select>
+                    </label>
+
+                    <button class="btn" onclick="startCareer()">
+                        🚀 ابدأ مسيرتي
+                    </button>
+
+                    <button class="btn blue" onclick="loadGame()">
+                        💾 تحميل مسيرة محفوظة
+                    </button>
+
+                </div>
+
+                <div class="card">
+                    <b>نصيحة:</b>
+                    <p class="subtitle">
+                        اختر الجنسية والمركز والدوري المفضل. بعد ذلك ستخضع لاختبار
+                        لتحديد مستواك وستبدأ الأندية بإرسال عروضها.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+/* =========================================================
+   START CAREER
+========================================================= */
+
+function startCareer(){
+    const name=document.getElementById("playerName").value.trim();
+
+    if(!name){
+        toast("اكتب اسم اللاعب أولاً");
+        return;
+    }
+
+    state=defaultState();
+
+    state.started=true;
+    state.player.name=name;
+    state.player.nationality=document.getElementById("nationality").value;
+    state.player.position=document.getElementById("position").value;
+    state.player.preferredLeague=document.getElementById("preferredLeague").value;
+
+    generateInitialAbilities();
+
+    renderTrial();
+}
+
+function generateInitialAbilities(){
+    const p=state.player;
+
+    p.pace=rand(50,70);
+    p.shooting=rand(45,70);
+    p.passing=rand(45,65);
+    p.dribbling=rand(45,70);
+    p.defending=rand(25,60);
+    p.physical=rand(45,70);
+
+    if(p.position==="GK"){
+        p.defending=rand(55,72);
+        p.physical=rand(55,72);
+    }
+
+    if(["ST","CF","LW","RW"].includes(p.position)){
+        p.shooting+=5;
+        p.dribbling+=4;
+    }
+
+    updateRating();
+
+    p.potential=clamp(
+        p.rating+rand(15,28),
+        p.rating+5,
+        95
+    );
+}
+
+/* =========================================================
+   TRIAL
+========================================================= */
+
+function renderTrial(){
+    const app=document.getElementById("app");
+    const p=state.player;
+
+    app.innerHTML=`
+        <div class="screen start">
+            <div class="start-box">
+
+                <div class="logo">SCOUTING TEST</div>
+
+                <div class="card">
+                    <h2>اختبار اكتشاف الموهبة</h2>
+
+                    <p class="subtitle">
+                        سيقوم الكشافون بتقييم سرعتك، مهاراتك، اتخاذ القرار
+                        والأداء تحت الضغط.
+                    </p>
+
+                    <div class="grid" style="margin-top:20px">
+
+                        <div class="stat">
+                            <small>السرعة</small>
+                            <strong>${p.pace}</strong>
+                        </div>
+
+                        <div class="stat">
+                            <small>التسديد</small>
+                            <strong>${p.shooting}</strong>
+                        </div>
+
+                        <div class="stat">
+                            <small>التمرير</small>
+                            <strong>${p.passing}</strong>
+                        </div>
+
+                        <div class="stat">
+                            <small>المراوغة</small>
+                            <strong>${p.dribbling}</strong>
+                        </div>
+
+                        <div class="stat">
+                            <small>الدفاع</small>
+                            <strong>${p.defending}</strong>
+                        </div>
+
+                        <div class="stat">
+                            <small>القوة</small>
+                            <strong>${p.physical}</strong>
+                        </div>
+
+                    </div>
+
+                    <button class="btn gold" onclick="runTrial()">
+                        🧪 إجراء الاختبار
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+function runTrial(){
+
+    const p=state.player;
+
+    let performance=
+        avgAbility()+
+        rand(-5,10)+
+        Math.floor(p.morale/20);
+
+    if(performance>=75){
+        p.reputation+=15;
+        addEvent("الكشافون أعجبوا بأدائك بشكل كبير!","gold");
+    }else if(performance>=65){
+        p.reputation+=8;
+        addEvent("أداء جيد في الاختبار وحصلت على اهتمام عدة أندية.","blue");
+    }else{
+        p.reputation+=3;
+        addEvent("أداء متوسط. ستحتاج إلى إثبات نفسك في المباريات.","");
+    }
+
+    updateRating();
+
+    generateOffers();
+
+    renderOffers();
+}
+
+/* =========================================================
+   OFFERS
+========================================================= */
+
+function generateOffers(){
+
+    const p=state.player;
+
+    p.reputation=clamp(p.reputation,0,100);
+
+    let count=rand(3,6);
+
+    const list=[];
+
+    for(let i=0;i<count;i++){
+
+        let league=p.preferredLeague;
+
+        if(Math.random()<.35){
+            const keys=Object.keys(leagues);
+            league=keys[rand(0,keys.length-1)];
+        }
+
+        let strength=rand(
+            clamp(p.rating-10,45,85),
+            clamp(p.rating+15,55,95)
+        );
+
+        const club=randomClub(league);
+
+        const salary=Math.round(
+            (p.rating*120+strength*70+rand(0,3000))/100
+        )*100;
+
+        const contract=rand(2,5);
+
+        list.push({
+            club,
+            league,
+            strength,
+            salary,
+            contract,
+            bonus:rand(1000,15000)
+        });
+    }
+
+    state.offers=list;
+}
+
+function renderOffers(){
+
+    const app=document.getElementById("app");
+
+    app.innerHTML=`
+        <div class="screen">
+            <div class="content">
+                <div class="container">
+
+                    <div class="hero">
+                        <h1>📨 عروض الأندية</h1>
+                        <p>
+                            بعد الاختبار، هذه الأندية تريد التعاقد معك.
+                        </p>
+                    </div>
+
+                    ${state.offers.map((o,i)=>`
+
+                        <div class="card">
+
+                            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+                                <div>
+                                    <h2>${o.club}</h2>
+                                    <p class="subtitle">${leagues[o.league].name}</p>
+                                </div>
+
+                                <div class="position-badge">
+                                    قوة ${o.strength}
+                                </div>
+                            </div>
+
+                            <div class="grid" style="margin-top:15px">
+
+                                <div class="stat">
+                                    <small>الراتب</small>
+                                    <strong>${money(o.salary)}</strong>
+                                </div>
+
+                                <div class="stat">
+                                    <small>مدة العقد</small>
+                                    <strong>${o.contract} سنوات</strong>
+                                </div>
+
+                                <div class="stat">
+                                    <small>مكافأة التوقيع</small>
+                                    <strong>${money(o.bonus)}</strong>
+                                </div>
+
+                                <div class="stat">
+                                    <small>المنافسة</small>
+                                    <strong>${o.strength>80?"🔥 قوية":"⚡ متوسطة"}</strong>
+                                </div>
+
+                            </div>
+
+                            <button class="btn" onclick="acceptOffer(${i})">
+                                ✍️ توقيع العقد
+                            </button>
+
+                            <button class="btn gray" onclick="rejectOffer(${i})">
+                                رفض
+                            </button>
+
+                        </div>
+
+                    `).join("")}
+
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function acceptOffer(index){
+
+    const o=state.offers[index];
+
+    state.player.club=o.club;
+    state.player.league=o.league;
+    state.player.salary=o.salary;
+    state.player.contract=o.contract;
+
+    state.player.money+=o.bonus;
+
+    state.transferHistory.push({
+        year:state.season.year,
+        from:"بدون نادٍ",
+        to:o.club,
+        fee:0
+    });
+
+    addEvent(
+        `وقعت عقدًا مع ${o.club} مقابل راتب ${money(o.salary)}.`,
+        "gold"
+    );
+
+    initializeStandings();
+
+    state.offers=[];
+
+    saveSilent();
+
+    renderGame();
+}
+
+function rejectOffer(index){
+    state.offers.splice(index,1);
+
+    if(state.offers.length===0){
+        generateOffers();
+    }
+
+    renderOffers();
+}
+
+/* =========================================================
+   GAME UI
+========================================================= */
+
+let currentPage="home";
+
+function renderGame(){
+
+    ensureState();
+
+    const app=document.getElementById("app");
+
+    app.innerHTML=`
+
+        <div class="game-header">
+
+            <div class="header-inner">
+
+                <div class="player-mini">
+
+                    <div class="mini-avatar">⚽</div>
+
+                    <div>
+                        <b>${state.player.name}</b>
+                        <small>
+                            ${state.player.club} • ${state.player.position}
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="money">
+                    ${money(state.player.money)}
+                </div>
+
+            </div>
+
+        </div>
+
+        <main class="content">
+            <div class="container" id="page"></div>
+        </main>
+
+        <nav class="nav">
+            <div class="nav-inner">
+
+                <button onclick="go('home')" id="nav-home">
+                    <span class="nav-icon">🏠</span>
+                    الرئيسية
+                </button>
+
+                <button onclick="go('career')" id="nav-career">
+                    <span class="nav-icon">⚽</span>
+                    المسيرة
+                </button>
+
+                <button onclick="go('league')" id="nav-league">
+                    <span class="nav-icon">🏆</span>
+                    الدوري
+                </button>
+
+                <button onclick="go('life')" id="nav-life">
+                    <span class="nav-icon">🚗</span>
+                    الحياة
+                </button>
+
+                <button onclick="go('social')" id="nav-social">
+                    <span class="nav-icon">📱</span>
+                    الإعلام
+                </button>
+
+                <button onclick="go('more')" id="nav-more">
+                    <span class="nav-icon">☰</span>
+                    المزيد
+                </button>
+
+            </div>
+        </nav>
+    `;
+
+    go(currentPage);
+}
+
+function go(page){
+
+    currentPage=page;
+
+    document.querySelectorAll(".nav button").forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    const active=document.getElementById("nav-"+page);
+
+    if(active)active.classList.add("active");
+
+    if(page==="home")renderHome();
+    if(page==="career")renderCareer();
+    if(page==="league")renderLeague();
+    if(page==="life")renderLife();
+    if(page==="social")renderSocial();
+    if(page==="more")renderMore();
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+    const p=state.player;
+    const s=state.season;
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+
+            <div class="position-badge">
+                ${p.position}
+            </div>
+
+            <h1 style="margin-top:10px">
+                مرحبًا ${p.name} 👋
+            </h1>
+
+            <p>
+                الأسبوع ${s.week} • موسم ${s.year}/${s.year+1}
+            </p>
+
+            <div class="rating-big">
+                ${p.rating}
+            </div>
+
+            <p>
+                التقييم العام
+            </p>
+
+        </div>
+
+        <div class="dashboard-top">
+
+            <div class="card">
+
+                <h2>📊 حالة اللاعب</h2>
+
+                <div class="grid">
+
+                    ${statBar("اللياقة",p.fitness)}
+                    ${statBar("المعنويات",p.morale)}
+                    ${statBar("السمعة",p.reputation)}
+                    ${statBar("التطور",Math.round((p.rating/p.potential)*100))}
+
+                </div>
+
+            </div>
+
+            <div class="card match-box">
+
+                <h2>المباراة القادمة</h2>
+
+                <p class="subtitle">
+                    ${nextOpponent()}
+                </p>
+
+                <div class="match-vs">
+                    ${p.club}
+                    <br>
+                    <span class="big-score">VS</span>
+                    <br>
+                    ${nextOpponent()}
+                </div>
+
+                <button class="btn" onclick="playMatch()">
+                    ▶️ لعب المباراة
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="grid3">
+
+            <div class="stat">
+                <small>الأهداف</small>
+                <strong>${p.goals}</strong>
+            </div>
+
+            <div class="stat">
+                <small>التمريرات الحاسمة</small>
+                <strong>${p.assists}</strong>
+            </div>
+
+            <div class="stat">
+                <small>المباريات</small>
+                <strong>${p.appearances}</strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📰 آخر الأخبار</h2>
+
+            ${state.events.length ?
+                state.events.slice(0,6).map(e=>`
+                    <div class="event ${e.type}">
+                        ${e.text}
+                    </div>
+                `).join("")
+                :
+                `<p class="subtitle">لا توجد أخبار بعد.</p>`
+            }
+
+        </div>
+
+    `;
+}
+
+function statBar(name,value){
+
+    value=clamp(Math.round(value),0,100);
+
+    return `
+        <div class="stat">
+            <small>${name}</small>
+            <strong>${value}</strong>
+            <div class="progress">
+                <span style="width:${value}%"></span>
+            </div>
+        </div>
+    `;
+}
+
+function nextOpponent(){
+
+    if(!state.player.club || state.player.club==="بدون نادٍ"){
+        return "لا يوجد";
+    }
+
+    const arr=leagues[state.player.league].clubs;
+
+    let opponent=arr[rand(0,arr.length-1)];
+
+    while(opponent===state.player.club && arr.length>1){
+        opponent=arr[rand(0,arr.length-1)];
+    }
+
+    return opponent;
+}
+
+/* =========================================================
+   CAREER
+========================================================= */
+
+function renderCareer(){
+
+    const p=state.player;
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+            <h1>⚽ مسيرتي</h1>
+            <p>
+                ${p.club} • ${leagues[p.league]?.name || p.league}
+            </p>
+        </div>
+
+        <div class="card">
+
+            <div class="player-card">
+
+                <div class="player-face">🧑‍🎤</div>
+
+                <div>
+                    <h2>${p.name}</h2>
+                    <p class="subtitle">
+                        ${p.nationality} • ${p.position} • عمر ${p.age}
+                    </p>
+
+                    <div class="position-badge">
+                        التقييم ${p.rating}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid3">
+
+            <div class="stat">
+                <small>السرعة</small>
+                <strong>${p.pace}</strong>
+            </div>
+
+            <div class="stat">
+                <small>التسديد</small>
+                <strong>${p.shooting}</strong>
+            </div>
+
+            <div class="stat">
+                <small>التمرير</small>
+                <strong>${p.passing}</strong>
+            </div>
+
+            <div class="stat">
+                <small>المراوغة</small>
+                <strong>${p.dribbling}</strong>
+            </div>
+
+            <div class="stat">
+                <small>الدفاع</small>
+                <strong>${p.defending}</strong>
+            </div>
+
+            <div class="stat">
+                <small>القوة</small>
+                <strong>${p.physical}</strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📈 التطور</h2>
+
+            <p class="subtitle">
+                الإمكانات المستقبلية: ${p.potential}
+            </p>
+
+            <div class="progress">
+                <span style="width:${clamp((p.rating/p.potential)*100,0,100)}%"></span>
+            </div>
+
+            <button class="btn" onclick="trainPlayer()">
+                🏋️ تدريب
+            </button>
+
+            <button class="btn blue" onclick="restPlayer()">
+                😴 راحة
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🤝 الوكيل</h2>
+
+            <p class="subtitle">
+                مستوى الوكيل: ${p.agentLevel}
+            </p>
+
+            <button class="btn purple" onclick="agentAction()">
+                تحدث مع الوكيل
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🌍 المنتخب الوطني</h2>
+
+            ${
+                p.nationalTeam
+                ?
+                `<p>🇲🇦 أنت لاعب دولي حاليًا.</p>`
+                :
+                `<p class="subtitle">
+                    عدد الاستدعاءات: ${p.nationalTeamCalls}
+                </p>
+                <button class="btn gold" onclick="nationalTeamCheck()">
+                    📩 فحص الاستدعاء
+                </button>`
+            }
+
+        </div>
+
+    `;
+}
+
+/* =========================================================
+   TRAINING
+========================================================= */
+
+function trainPlayer(){
+
+    const p=state.player;
+
+    if(p.fitness<25){
+        toast("لياقتك منخفضة جدًا");
+        return;
+    }
+
+    const attribute=[
+        "pace",
+        "shooting",
+        "passing",
+        "dribbling",
+        "defending",
+        "physical"
+    ][rand(0,5)];
+
+    p[attribute]=clamp(
+        p[attribute]+rand(1,3),
+        1,
+        99
+    );
+
+    p.fitness-=rand(8,15);
+    p.morale+=rand(-2,4);
+
+    updateRating();
+
+    addEvent(
+        `تدربت بشكل جيد وتطور ${attribute}.`,
+        "blue"
+    );
+
+    saveSilent();
+    renderCareer();
+}
+
+function restPlayer(){
+
+    state.player.fitness=clamp(
+        state.player.fitness+rand(15,25),
+        0,
+        100
+    );
+
+    state.player.morale=clamp(
+        state.player.morale+rand(3,8),
+        0,
+        100
+    );
+
+    addEvent("أخذت يوم راحة واستعدت لياقتك.","");
+
+    saveSilent();
+    renderCareer();
+}
+
+/* =========================================================
+   MATCH
+========================================================= */
+
+function playMatch(){
+
+    const p=state.player;
+
+    if(p.club==="بدون نادٍ"){
+        toast("يجب أن توقع مع نادٍ أولًا");
+        return;
+    }
+
+    if(p.injured){
+        toast("أنت مصاب ولا تستطيع اللعب");
+        return;
+    }
+
+    if(p.suspended){
+        toast("أنت موقوف");
+        return;
+    }
+
+    if(p.fitness<20){
+        toast("لياقتك منخفضة");
+        return;
+    }
+
+    const opponent=nextOpponent();
+
+    const playerStrength=getClubStrength();
+    const opponentStrength=rand(55,92);
+
+    let teamGoals=rand(0,3);
+    let oppGoals=rand(0,3);
+
+    if(playerStrength>opponentStrength+10){
+        teamGoals=rand(1,4);
+    }
+
+    if(playerStrength<opponentStrength-10){
+        oppGoals=rand(1,4);
+    }
+
+    if(teamGoals===oppGoals){
+        // keep draw
+    }
+
+    let performance=rand(5,10);
+
+    if(playerStrength>opponentStrength){
+        performance+=rand(0,5);
+    }
+
+    if(p.morale>80)performance+=2;
+    if(p.fitness>85)performance+=2;
+
+    let goals=0;
+    let assists=0;
+
+    if(["ST","CF","LW","RW"].includes(p.position)){
+        goals=clamp(
+            Math.floor((performance-6)/3)+rand(0,1),
+            0,
+            3
+        );
+
+        assists=rand(0,Math.random()<.3?2:1);
+    }else{
+        assists=rand(0,2);
+
+        if(Math.random()<.18){
+            goals=1;
+        }
+    }
+
+    goals=Math.min(goals,teamGoals);
+
+    if(p.position==="GK"){
+        goals=0;
+        assists=Math.random()<.08?1:0;
+    }
+
+    let matchRating=clamp(
+        5.5+
+        performance/4+
+        goals*1.2+
+        assists*.6+
+        (teamGoals>oppGoals?0.8:-0.3),
+        4,
+        10
+    );
+
+    p.appearances++;
+    p.goals+=goals;
+    p.assists+=assists;
+
+    p.careerAppearances++;
+    p.careerGoals+=goals;
+    p.careerAssists+=assists;
+
+    p.fitness-=rand(10,22);
+
+    if(teamGoals>oppGoals){
+        state.season.wins++;
+        state.season.points+=3;
+        p.morale+=rand(3,7);
+        p.reputation+=1;
+    }else if(teamGoals===oppGoals){
+        state.season.draws++;
+        state.season.points+=1;
+        p.morale+=1;
+    }else{
+        state.season.losses++;
+        p.morale-=rand(2,5);
+    }
+
+    state.season.matchesPlayed++;
+
+    state.season.teamGoals+=teamGoals;
+    state.season.teamConceded+=oppGoals;
+
+    /* CARDS */
+
+    let card="لا توجد بطاقات";
+
+    if(Math.random()<.22){
+        p.yellow++;
+        card="🟨 بطاقة صفراء";
+
+        if(p.yellow%5===0){
+            p.suspended=true;
+            p.suspensionWeeks=1;
+
+            addEvent(
+                "تم إيقافك بسبب تراكم البطاقات الصفراء.",
+                "red"
+            );
+        }
+    }
+
+    if(Math.random()<.025){
+        p.red++;
+        p.suspended=true;
+        p.suspensionWeeks=2;
+        card="🟥 بطاقة حمراء";
+
+        addEvent(
+            "طُردت بالبطاقة الحمراء وتم إيقافك.",
+            "red"
+        );
+    }
+
+    /* INJURY */
+
+    let injury="لا توجد إصابة";
+
+    if(Math.random()<.07){
+
+        p.injured=true;
+        p.injuryWeeks=rand(1,6);
+
+        injury="🚑 إصابة";
+
+        addEvent(
+            `تعرضت لإصابة وستغيب ${p.injuryWeeks} أسابيع.`,
+            "red"
+        );
+    }
+
+    const result=
+        teamGoals>oppGoals?"فوز 🟢":
+        teamGoals===oppGoals?"تعادل 🟡":
+        "خسارة 🔴";
+
+    state.lastMatch={
+        opponent,
+        teamGoals,
+        oppGoals,
+        goals,
+        assists,
+        rating:matchRating.toFixed(1),
+        result,
+        card,
+        injury
+    };
+
+    addEvent(
+        `${result} ضد ${opponent}: ${teamGoals}-${oppGoals}. تقييمك ${matchRating.toFixed(1)}`,
+        teamGoals>=oppGoals?"blue":"red"
+    );
+
+    randomLifeEvent();
+
+    advanceWeek();
+
+    saveSilent();
+
+    showMatchResult();
+}
+
+function showMatchResult(){
+
+    const m=state.lastMatch;
+
+    showModal(`
+        <h2>🏟️ نهاية المباراة</h2>
+
+        <div class="card match-box">
+
+            <p>${state.player.club}</p>
+
+            <div class="big-score">
+                ${m.teamGoals} - ${m.oppGoals}
+            </div>
+
+            <p>${m.opponent}</p>
+
+            <br>
+
+            <div class="grid">
+
+                <div class="stat">
+                    <small>تقييمك</small>
+                    <strong>${m.rating}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>الأهداف</small>
+                    <strong>${m.goals}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>التمريرات</small>
+                    <strong>${m.assists}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>البطاقات</small>
+                    <strong>${m.card}</strong>
+                </div>
+
+            </div>
+
+            <p style="margin-top:15px">
+                ${m.injury}
+            </p>
+
+        </div>
+
+        <button class="btn" onclick="closeModal();renderGame()">
+            متابعة
+        </button>
+    `);
+}
+
+/* =========================================================
+   WEEK ADVANCE
+========================================================= */
+
+function advanceWeek(){
+
+    const p=state.player;
+    const s=state.season;
+
+    s.week++;
+
+    /* salary */
+
+    if(s.week%4===0 && p.club!=="بدون نادٍ"){
+        p.money+=p.salary;
+        addEvent(`استلمت راتبك الشهري: ${money(p.salary)}.`,"gold");
+    }
+
+    /* injury countdown */
+
+    if(p.injured){
+
+        p.injuryWeeks--;
+
+        if(p.injuryWeeks<=0){
+            p.injured=false;
+            p.injuryWeeks=0;
+            p.fitness=70;
+
+            addEvent(
+                "تعافيت من الإصابة وعدت للتدريبات.",
+                "blue"
+            );
+        }
+    }
+
+    /* suspension */
+
+    if(p.suspended){
+
+        p.suspensionWeeks--;
+
+        if(p.suspensionWeeks<=0){
+            p.suspended=false;
+            p.suspensionWeeks=0;
+
+            addEvent(
+                "انتهى الإيقاف وأصبحت متاحًا للعب.",
+                "blue"
+            );
+        }
+    }
+
+    /* natural fitness */
+
+    p.fitness=clamp(p.fitness+rand(2,7),0,100);
+
+    /* random development */
+
+    if(Math.random()<.25 && p.age<30){
+
+        const attrs=[
+            "pace",
+            "shooting",
+            "passing",
+            "dribbling",
+            "defending",
+            "physical"
+        ];
+
+        const a=attrs[rand(0,attrs.length-1)];
+
+        p[a]=clamp(p[a]+1,1,99);
+
+        updateRating();
+    }
+
+    /* random events */
+
+    if(Math.random()<.15){
+        mediaEvent();
+    }
+
+    /* national team */
+
+    if(p.age>=18 && !p.nationalTeam && Math.random()<.06){
+        nationalTeamCheck();
+    }
+
+    /* sponsor */
+
+    if(p.sponsor!=="لا يوجد" && s.week%4===0){
+        p.money+=p.sponsorIncome;
+    }
+
+    /* season */
+
+    if(s.week>38){
+        finishSeason();
+    }
+}
+
+/* =========================================================
+   RANDOM EVENTS
+========================================================= */
+
+function randomLifeEvent(){
+
+    const r=Math.random();
+
+    if(r<.03){
+
+        addEvent(
+            "أحد أفراد عائلتك يحتاج إلى دعمك. قررت أخذ بعض الوقت معه.",
+            "gold"
+        );
+
+        state.player.morale+=5;
+        state.player.fitness-=5;
+
+    }else if(r<.055){
+
+        addEvent(
+            "حدثت مناسبة عائلية مهمة، وستغيب عن بعض التدريبات.",
+            "gold"
+        );
+
+        state.player.fitness-=10;
+
+    }else if(r<.075){
+
+        addEvent(
+            "حدثت مشكلة بسيطة في وسائل التواصل الاجتماعي وأثارت اهتمام الإعلام.",
+            "red"
+        );
+
+        state.mediaHeat+=10;
+        state.player.morale-=4;
+    }
+}
+
+/* =========================================================
+   NATIONAL TEAM
+========================================================= */
+
+function nationalTeamCheck(){
+
+    const p=state.player;
+
+    if(p.age<18){
+        toast("الاستدعاءات تبدأ عادة من سن 18 في هذه المحاكاة");
+        return;
+    }
+
+    const chance=
+        p.rating+
+        p.reputation+
+        p.goals*2;
+
+    if(Math.random()*180<chance){
+
+        p.nationalTeam=true;
+        p.nationalTeamCalls++;
+
+        addEvent(
+            `🇲🇦 تم استدعاؤك لتمثيل ${p.nationality} دوليًا!`,
+            "gold"
+        );
+
+        showModal(`
+            <h2>🌍 استدعاء دولي!</h2>
+
+            <p class="subtitle">
+                تلقيت رسالة رسمية من المنتخب الوطني.
+            </p>
+
+            <div class="card">
+                <h2>${p.nationality}</h2>
+                <p>
+                    المدرب يريدك في القائمة القادمة.
+                </p>
+            </div>
+
+            <button class="btn gold" onclick="closeModal();renderCareer()">
+                قبول الاستدعاء
+            </button>
+        `);
+
+    }else{
+
+        p.nationalTeamCalls++;
+
+        addEvent(
+            "راقبك الجهاز الفني للمنتخب، لكن لم يتم استدعاؤك هذه المرة.",
+            ""
+        );
+
+        toast("لم تحصل على الاستدعاء هذه المرة");
+    }
+
+    saveSilent();
+}
+
+/* =========================================================
+   AGENT
+========================================================= */
+
+function agentAction(){
+
+    const p=state.player;
+
+    const choice=rand(1,4);
+
+    if(choice===1){
+
+        if(p.rating>=65){
+
+            const raise=Math.round(p.salary*.15);
+
+            p.salary+=raise;
+
+            addEvent(
+                `الوكيل تفاوض على زيادة راتبك بقيمة ${money(raise)}.`,
+                "gold"
+            );
+
+            toast("الوكيل نجح في التفاوض");
+
+        }else{
+            toast("الوكيل يقول إن الوقت غير مناسب للتفاوض");
+        }
+
+    }else if(choice===2){
+
+        if(p.rating>=70){
+
+            p.reputation+=4;
+
+            addEvent(
+                "الوكيل تواصل مع أندية أخرى لمراقبة فرص انتقالك.",
+                "blue"
+            );
+
+            toast("الوكيل بدأ البحث عن عروض");
+
+        }else{
+            toast("تحتاج إلى رفع مستواك لجذب الأندية الكبيرة");
+        }
+
+    }else if(choice===3){
+
+        p.agentLevel=clamp(p.agentLevel+1,1,5);
+
+        addEvent(
+            "ارتفع مستوى خدمات وكيلك.",
+            "gold"
+        );
+
+        toast("تطور الوكيل");
+
+    }else{
+
+        p.morale+=5;
+
+        addEvent(
+            "الوكيل دعمك نفسيًا بعد فترة صعبة.",
+            "blue"
+        );
+    }
+
+    saveSilent();
+    renderCareer();
+}
+
+/* =========================================================
+   LEAGUE
+========================================================= */
+
+function initializeStandings(){
+
+    const league=state.player.league;
+
+    state.standings=leagues[league].clubs.map(club=>({
+        club,
+        p:0,
+        w:0,
+        d:0,
+        l:0,
+        gf:0,
+        ga:0,
+        pts:0
+    }));
+
+    syncPlayerStanding();
+}
+
+function syncPlayerStanding(){
+
+    if(!state.standings.length)return;
+
+    const mine=state.standings.find(
+        x=>x.club===state.player.club
+    );
+
+    if(!mine)return;
+
+    mine.p=state.season.matchesPlayed;
+    mine.w=state.season.wins;
+    mine.d=state.season.draws;
+    mine.l=state.season.losses;
+    mine.gf=state.season.teamGoals;
+    mine.ga=state.season.teamConceded;
+    mine.pts=state.season.points;
+
+    state.standings.forEach(x=>{
+
+        if(x.club===state.player.club)return;
+
+        const played=state.season.matchesPlayed;
+
+        x.p=played;
+
+        for(let i=0;i<played;i++){
+
+            const result=rand(0,2);
+
+            if(result===0){
+                x.w++;
+                x.pts+=3;
+            }else if(result===1){
+                x.d++;
+                x.pts++;
+            }else{
+                x.l++;
+            }
+
+            x.gf+=rand(0,3);
+            x.ga+=rand(0,3);
+        }
+    });
+
+    state.standings.sort((a,b)=>{
+        if(b.pts!==a.pts)return b.pts-a.pts;
+        return (b.gf-b.ga)-(a.gf-a.ga);
+    });
+
+    state.season.leaguePosition=
+        state.standings.findIndex(
+            x=>x.club===state.player.club
+        )+1;
+}
+
+function renderLeague(){
+
+    syncPlayerStanding();
+
+    const league=leagues[state.player.league];
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+
+            <h1>🏆 ${league.name}</h1>
+
+            <p>
+                المركز الحالي:
+                <strong>
+                    ${state.season.leaguePosition}
+                </strong>
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الفريق</th>
+                            <th>لعب</th>
+                            <th>ف</th>
+                            <th>ت</th>
+                            <th>خ</th>
+                            <th>ن</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    ${state.standings.map((x,i)=>`
+
+                        <tr class="${x.club===state.player.club?'me':''}">
+
+                            <td>${i+1}</td>
+
+                            <td>
+                                ${x.club}
+                                ${x.club===state.player.club?" ⭐":""}
+                            </td>
+
+                            <td>${x.p}</td>
+                            <td>${x.w}</td>
+                            <td>${x.d}</td>
+                            <td>${x.l}</td>
+                            <td><b>${x.pts}</b></td>
+
+                        </tr>
+
+                    `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="grid3">
+
+            <div class="stat">
+                <small>المباريات</small>
+                <strong>${state.season.matchesPlayed}</strong>
+            </div>
+
+            <div class="stat">
+                <small>النقاط</small>
+                <strong>${state.season.points}</strong>
+            </div>
+
+            <div class="stat">
+                <small>المركز</small>
+                <strong>${state.season.leaguePosition}</strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🌎 البطولات القارية</h2>
+
+            <p class="subtitle">
+                مع تقدمك في المسيرة ستظهر بطولات قارية ومحلية
+                مثل دوري الأبطال والدوري الأوروبي وبطولات الكؤوس.
+            </p>
+
+            <button class="btn gold" onclick="continentalEvent()">
+                🌍 فحص البطولات القارية
+            </button>
+
+        </div>
+    `;
+}
+
+/* =========================================================
+   CONTINENTAL
+========================================================= */
+
+function continentalEvent(){
+
+    const p=state.player;
+
+    if(p.rating<70){
+
+        addEvent(
+            "فريقك لم يتأهل حاليًا إلى بطولة قارية.",
+            ""
+        );
+
+        toast("تحتاج إلى رفع مستواك أو إنهاء الموسم في مركز أفضل");
+        return;
+    }
+
+    const competitions=[
+        "دوري الأبطال",
+        "الدوري الأوروبي",
+        "دوري المؤتمر",
+        "كأس القارات للأندية"
+    ];
+
+    const comp=competitions[rand(0,competitions.length-1)];
+
+    addEvent(
+        `🌍 تم تسجيل ناديك للمشاركة في ${comp}.`,
+        "gold"
+    );
+
+    state.player.reputation+=3;
+
+    saveSilent();
+
+    toast(`تمت إضافة ${comp}`);
+    go("home");
+}
+
+/* =========================================================
+   LIFE
+========================================================= */
+
+function renderLife(){
+
+    const p=state.player;
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+            <h1>🌆 حياة اللاعب</h1>
+            <p>
+                كرة القدم ليست كل شيء. ابنِ حياتك خارج الملعب.
+            </p>
+        </div>
+
+        <div class="card">
+
+            <h2>🏠 المنزل</h2>
+
+            <p>
+                المنزل الحالي:
+                <b>${p.house}</b>
+            </p>
+
+            <p class="subtitle">
+                الراحة: ${p.houseComfort}
+            </p>
+
+            <div class="grid">
+
+                ${houses.map((h,i)=>`
+
+                    <div class="stat">
+
+                        <small>${h.name}</small>
+
+                        <strong>
+                            ${money(h.price)}
+                        </strong>
+
+                        <p class="subtitle">
+                            راحة +${h.comfort}
+                        </p>
+
+                        <button class="btn ${p.house===h.name?"gray":"blue"}"
+                            onclick="buyHouse(${i})">
+                            ${p.house===h.name?"مملوك":"شراء"}
+                        </button>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🚗 السيارات</h2>
+
+            <p>
+                السيارة الحالية:
+                <b>${p.car}</b>
+            </p>
+
+            <div class="grid">
+
+                ${cars.map((c,i)=>`
+
+                    <div class="stat">
+
+                        <small>${c.name}</small>
+
+                        <strong>
+                            ${money(c.price)}
+                        </strong>
+
+                        <p class="subtitle">
+                            هيبة +${c.prestige}
+                        </p>
+
+                        <button class="btn blue"
+                            onclick="buyCar(${i})">
+                            ${p.car===c.name?"مملوكة":"شراء"}
+                        </button>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>❤️ العلاقات</h2>
+
+            <p>
+                الحالة:
+                <b>${p.relationship}</b>
+            </p>
+
+            <p class="subtitle">
+                مستوى العلاقة: ${p.relationshipLevel}/100
+            </p>
+
+            <button class="btn purple" onclick="relationshipAction()">
+                ❤️ تفاعل
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💰 المال</h2>
+
+            <div class="stat">
+                <small>رصيدك</small>
+                <strong>${money(p.money)}</strong>
+            </div>
+
+        </div>
+
+    `;
+}
+
+function buyHouse(i){
+
+    const h=houses[i];
+    const p=state.player;
+
+    if(p.house===h.name){
+        toast("هذا المنزل مملوك بالفعل");
+        return;
+    }
+
+    if(p.money<h.price){
+        toast("لا تملك مالًا كافيًا");
+        return;
+    }
+
+    p.money-=h.price;
+    p.house=h.name;
+    p.houseComfort=h.comfort;
+
+    p.morale+=Math.min(h.comfort,10);
+
+    addEvent(
+        `🏠 اشتريت ${h.name} مقابل ${money(h.price)}.`,
+        "gold"
+    );
+
+    saveSilent();
+    renderLife();
+}
+
+function buyCar(i){
+
+    const c=cars[i];
+    const p=state.player;
+
+    if(p.car===c.name){
+        toast("السيارة مملوكة بالفعل");
+        return;
+    }
+
+    if(p.money<c.price){
+        toast("لا تملك مالًا كافيًا");
+        return;
+    }
+
+    p.money-=c.price;
+    p.car=c.name;
+    p.carPrestige=c.prestige;
+
+    p.reputation+=Math.floor(c.prestige/3);
+
+    addEvent(
+        `🚗 اشتريت ${c.name} مقابل ${money(c.price)}.`,
+        "gold"
+    );
+
+    saveSilent();
+    renderLife();
+}
+
+/* =========================================================
+   RELATIONSHIPS
+========================================================= */
+
+function relationshipAction(){
+
+    const p=state.player;
+
+    const options=[
+        "قضيت وقتًا ممتعًا مع شريكتك.",
+        "حدث نقاش بسيط وانتهى بسرعة.",
+        "قدمت هدية وارتفع مستوى العلاقة.",
+        "شريكتك دعمتك قبل المباراة.",
+        "احتفلتما بفوز الفريق."
+    ];
+
+    if(p.relationship==="أعزب"){
+
+        if(p.reputation>=25 && Math.random()<.55){
+
+            p.relationship="في علاقة";
+            p.relationshipLevel=20;
+
+            addEvent(
+                "❤️ بدأت علاقة جديدة خارج الملعب.",
+                "gold"
+            );
+
+            toast("بدأت علاقة جديدة");
+
+        }else{
+
+            addEvent(
+                "حاولت التعرف على شخص جديد، لكن الأمر لم يتطور.",
+                ""
+            );
+
+            toast("لم تبدأ علاقة هذه المرة");
+        }
+
+    }else{
+
+        const text=options[rand(0,options.length-1)];
+
+        p.relationshipLevel+=rand(3,10);
+        p.morale+=rand(2,5);
+
+        addEvent(
+            "❤️ "+text,
+            "gold"
+        );
+
+        if(p.relationshipLevel>85 && Math.random()<.15){
+
+            p.relationship="متزوج";
+            addEvent(
+                "💍 تطورت علاقتك إلى الزواج.",
+                "gold"
+            );
+        }
+
+        if(p.relationship==="متزوج" && Math.random()<.04){
+
+            addEvent(
+                "👶 حدثت مناسبة عائلية جديدة، وستحتاج إلى تنظيم وقتك بين الأسرة وكرة القدم.",
+                "gold"
+            );
+
+            p.morale+=5;
+        }
+    }
+
+    saveSilent();
+    renderLife();
+}
+
+/* =========================================================
+   SOCIAL / MEDIA
+========================================================= */
+
+function renderSocial(){
+
+    const p=state.player;
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+
+            <h1>📱 الإعلام ووسائل التواصل</h1>
+
+            <p>
+                تابع صورتك العامة وتفاعل مع الجماهير والإعلام.
+            </p>
+
+        </div>
+
+        <div class="grid">
+
+            <div class="stat">
+                <small>المتابعون</small>
+                <strong>
+                    ${state.socialFollowers.toLocaleString()}
+                </strong>
+            </div>
+
+            <div class="stat">
+                <small>الضجة الإعلامية</small>
+                <strong>
+                    ${state.mediaHeat}
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🎤 تصريحات قبل المباراة</h2>
+
+            <button class="btn" onclick="pressStatement('confident')">
+                😎 نحن الأفضل
+            </button>
+
+            <button class="btn blue" onclick="pressStatement('respect')">
+                🤝 نحترم الخصم
+            </button>
+
+            <button class="btn red" onclick="pressStatement('provocation')">
+                🔥 سأحطم دفاعهم
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📲 منشور جديد</h2>
+
+            <button class="btn" onclick="socialPost('training')">
+                🏋️ نشر صورة التدريب
+            </button>
+
+            <button class="btn blue" onclick="socialPost('victory')">
+                🏆 نشر احتفال
+            </button>
+
+            <button class="btn purple" onclick="socialPost('life')">
+                🌴 نشر لحظة من الحياة
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💼 الرعاة</h2>
+
+            <p>
+                الراعي الحالي:
+                <b>${p.sponsor}</b>
+            </p>
+
+            <div class="grid">
+
+                ${sponsors.map((s,i)=>`
+
+                    <div class="stat">
+
+                        <small>${s.name}</small>
+
+                        <strong>${money(s.value)}</strong>
+
+                        <p class="subtitle">
+                            دخل شهري
+                        </p>
+
+                        <button class="btn gold"
+                            onclick="signSponsor(${i})">
+                            ${p.sponsor===s.name?"متعاقد":"توقيع"}
+                        </button>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+function pressStatement(type){
+
+    const p=state.player;
+
+    if(type==="confident"){
+
+        p.morale+=3;
+        state.mediaHeat+=8;
+
+        addEvent(
+            "🎤 صرحت بثقة أن فريقك هو الأفضل.",
+            "gold"
+        );
+
+    }else if(type==="respect"){
+
+        p.reputation+=1;
+        state.mediaHeat+=2;
+
+        addEvent(
+            "🎤 أدليت بتصريح محترم عن الخصم.",
+            "blue"
+        );
+
+    }else{
+
+        state.mediaHeat+=15;
+        p.morale+=1;
+
+        addEvent(
+            "🔥 استفززت الخصم بتصريح قوي قبل المباراة.",
+            "red"
+        );
+    }
+
+    state.socialFollowers+=rand(10,100);
+
+    saveSilent();
+    renderSocial();
+}
+
+function socialPost(type){
+
+    let followers=rand(20,150);
+
+    if(type==="victory"){
+        followers*=2;
+    }
+
+    if(type==="life"){
+        followers=Math.floor(followers*1.3);
+    }
+
+    state.socialFollowers+=followers;
+
+    addEvent(
+        `📱 نشرت منشورًا وحصلت على +${followers} متابع.`,
+        "blue"
+    );
+
+    saveSilent();
+    renderSocial();
+}
+
+function signSponsor(i){
+
+    const s=sponsors[i];
+    const p=state.player;
+
+    if(p.rating<55+i*5){
+        toast("الراعي يطلب مستوى أعلى");
+        return;
+    }
+
+    p.sponsor=s.name;
+    p.sponsorIncome=s.value;
+
+    addEvent(
+        `💼 وقعت عقد رعاية مع ${s.name}.`,
+        "gold"
+    );
+
+    p.reputation+=2;
+
+    saveSilent();
+    renderSocial();
+}
+
+/* =========================================================
+   MEDIA RANDOM
+========================================================= */
+
+function mediaEvent(){
+
+    const p=state.player;
+
+    const events=[
+        "ظهرت صورتك في الصحافة الرياضية.",
+        "محللون يتحدثون عن تطور مستواك.",
+        "جماهير ناديك بدأت تطالب بمنحك دقائق أكثر.",
+        "وكيلك تلقى استفسارات من أندية أخرى.",
+        "منشور لك انتشر بشكل كبير.",
+        "صحفي أشاد بأدائك الأخير."
+    ];
+
+    const text=events[rand(0,events.length-1)];
+
+    state.socialFollowers+=rand(50,400);
+    p.reputation+=rand(1,3);
+
+    addEvent(
+        "📰 "+text,
+        "blue"
+    );
+}
+
+/* =========================================================
+   MORE
+========================================================= */
+
+function renderMore(){
+
+    const p=state.player;
+
+    document.getElementById("page").innerHTML=`
+
+        <div class="hero">
+            <h1>☰ المزيد</h1>
+            <p>إدارة المسيرة والقرارات الكبرى.</p>
+        </div>
+
+        <div class="card">
+
+            <h2>💾 الحفظ</h2>
+
+            <button class="btn" onclick="saveGame()">
+                حفظ اللعبة
+            </button>
+
+            <button class="btn blue" onclick="loadGame()">
+                تحميل اللعبة
+            </button>
+
+            <button class="btn red" onclick="newGameConfirm()">
+                بدء مسيرة جديدة
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📜 تاريخ المسيرة</h2>
+
+            <div class="grid">
+
+                <div class="stat">
+                    <small>المباريات</small>
+                    <strong>${p.careerAppearances}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>الأهداف</small>
+                    <strong>${p.careerGoals}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>التمريرات</small>
+                    <strong>${p.careerAssists}</strong>
+                </div>
+
+                <div class="stat">
+                    <small>الألقاب</small>
+                    <strong>${state.trophies.length}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🏅 الجوائز</h2>
+
+            ${
+                p.awards.length
+                ?
+                p.awards.map(a=>`
+                    <div class="event gold">
+                        🏆 ${a}
+                    </div>
+                `).join("")
+                :
+                `<p class="subtitle">لم تحصل على جوائز بعد.</p>`
+            }
+
+        </div>
+
+        <div class="card">
+
+            <h2>🔄 الانتقالات</h2>
+
+            ${
+                state.transferHistory.length
+                ?
+                state.transferHistory.map(t=>`
+                    <div class="event blue">
+                        ${t.year} — ${t.from} → ${t.to}
+                    </div>
+                `).join("")
+                :
+                `<p class="subtitle">لا توجد انتقالات.</p>`
+            }
+
+            <button class="btn purple" onclick="transferRequest()">
+                📩 طلب انتقال
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>👑 نهاية المسيرة</h2>
+
+            <p class="subtitle">
+                يمكنك الاستمرار حتى سن التقاعد، ثم اختيار مستقبل جديد.
+            </p>
+
+            <button class="btn gold" onclick="retirementCheck()">
+                🏁 فحص خيارات الاعتزال
+            </button>
+
+        </div>
+
+    `;
+}
+
+/* =========================================================
+   TRANSFERS
+========================================================= */
+
+function transferRequest(){
+
+    const p=state.player;
+
+    if(p.contract<=0){
+        toast("لا يوجد عقد");
+        return;
+    }
+
+    if(p.rating<65){
+        toast("تحتاج إلى مستوى أعلى لجذب الأندية");
+        return;
+    }
+
+    const offers=[];
+
+    for(let i=0;i<4;i++){
+
+        let league=Object.keys(leagues)[
+            rand(0,Object.keys(leagues).length-1)
+        ];
+
+        let club=randomClub(league);
+
+        if(club===p.club){
+            club=randomClub(league);
+        }
+
+        offers.push({
+            club,
+            league,
+            salary:Math.round(
+                p.salary*(1+rand(10,70)/100)
+            ),
+            fee:Math.round(
+                p.rating*rand(3000,10000)
+            )
+        });
+    }
+
+    showModal(`
+        <h2>🔄 عروض الانتقال</h2>
+
+        ${offers.map((o,i)=>`
+
+            <div class="card">
+
+                <h2>${o.club}</h2>
+
+                <p class="subtitle">
+                    ${leagues[o.league].name}
+                </p>
+
+                <p>
+                    الراتب:
+                    <b>${money(o.salary)}</b>
+                </p>
+
+                <p>
+                    قيمة الصفقة:
+                    <b>${money(o.fee)}</b>
+                </p>
+
+                <button class="btn"
+                    onclick='acceptTransfer(${JSON.stringify(o).replace(/'/g,"&#39;")})'>
+                    قبول الانتقال
+                </button>
+
+            </div>
+
+        `).join("")}
+
+        <button class="btn gray" onclick="closeModal()">
+            إغلاق
+        </button>
+    `);
+}
+
+function acceptTransfer(o){
+
+    const p=state.player;
+
+    const oldClub=p.club;
+
+    p.club=o.club;
+    p.league=o.league;
+    p.salary=o.salary;
+    p.contract=rand(3,5);
+
+    state.transferHistory.push({
+        year:state.season.year,
+        from:oldClub,
+        to:o.club,
+        fee:o.fee
+    });
+
+    addEvent(
+        `🔄 انتقلت من ${oldClub} إلى ${o.club}.`,
+        "gold"
+    );
+
+    initializeStandings();
+
+    closeModal();
+    saveSilent();
+    renderGame();
+}
+
+/* =========================================================
+   SEASON
+========================================================= */
+
+function finishSeason(){
+
+    const p=state.player;
+    const s=state.season;
+
+    if(s.seasonFinished)return;
+
+    s.seasonFinished=true;
+
+    syncPlayerStanding();
+
+    const position=s.leaguePosition;
+
+    let trophyText="";
+
+    if(position===1){
+
+        trophyText="🏆 بطل الدوري";
+
+        state.trophies.push(
+            `${s.year} - ${trophyText}`
+        );
+
+        p.trophies.push(trophyText);
+
+        addEvent(
+            `🏆 ${p.club} توج بطلًا للدوري!`,
+            "gold"
+        );
+
+    }else if(position<=3){
+
+        addEvent(
+            `🥉 أنهى فريقك الموسم في المركز ${position}.`,
+            "gold"
+        );
+
+    }
+
+    /* awards */
+
+    if(p.goals>=15){
+
+        const award="الحذاء الذهبي";
+
+        p.awards.push(
+            `${s.year} - ${award}`
+        );
+
+        addEvent(
+            `👟 حصلت على ${award}!`,
+            "gold"
+        );
+    }
+
+    if(p.age<=23 && p.goals+p.assists>=15){
+
+        const award="أفضل لاعب شاب";
+
+        p.awards.push(
+            `${s.year} - ${award}`
+        );
+
+        addEvent(
+            `🌟 حصلت على جائزة ${award}.`,
+            "gold"
+        );
+    }
+
+    if(p.rating>=85){
+
+        const award="لاعب الموسم";
+
+        p.awards.push(
+            `${s.year} - ${award}`
+        );
+
+        addEvent(
+            `👑 حصلت على جائزة ${award}!`,
+            "gold"
+        );
+    }
+
+    /* age */
+
+    p.age++;
+
+    s.year++;
+    s.week=1;
+
+    s.matchesPlayed=0;
+    s.wins=0;
+    s.draws=0;
+    s.losses=0;
+    s.points=0;
+    s.teamGoals=0;
+    s.teamConceded=0;
+    s.seasonFinished=false;
+
+    p.goals=0;
+    p.assists=0;
+
+    p.fitness=100;
+
+    p.contract=Math.max(0,p.contract-1);
+
+    p.reputation+=rand(1,5);
+
+    p.potential=clamp(
+        p.potential,
+        p.rating,
+        95
+    );
+
+    p.rating=clamp(
+        p.rating+(p.age<25?rand(1,3):rand(-1,2)),
+        40,
+        99
+    );
+
+    initializeStandings();
+
+    addEvent(
+        `🎉 بدأ موسم جديد. أصبحت في عمر ${p.age}.`,
+        "blue"
+    );
+
+    checkCareerStage();
+
+    saveSilent();
+
+    showModal(`
+        <h2>🎉 نهاية الموسم</h2>
+
+        <p class="subtitle">
+            انتهى موسم ${s.year-1}/${s.year}.
+        </p>
+
+        <div class="grid">
+
+            <div class="stat">
+                <small>المركز</small>
+                <strong>${position}</strong>
+            </div>
+
+            <div class="stat">
+                <small>الأهداف</small>
+                <strong>${p.goals}</strong>
+            </div>
+
+            <div class="stat">
+                <small>التقييم</small>
+                <strong>${p.rating}</strong>
+            </div>
+
+            <div class="stat">
+                <small>العمر</small>
+                <strong>${p.age}</strong>
+            </div>
+
+        </div>
+
+        <button class="btn" onclick="closeModal();renderGame()">
+            بداية الموسم الجديد
+        </button>
+    `);
+}
+
+/* =========================================================
+   CAREER STAGES
+========================================================= */
+
+function checkCareerStage(){
+
+    const p=state.player;
+
+    if(p.age>=32 && Math.random()<.15){
+
+        addEvent(
+            "بدأت تشعر أن السنوات الأخيرة من مسيرتك تقترب.",
+            "gold"
+        );
+    }
+
+    if(p.age>=35){
+
+        addEvent(
+            "أصبحت في مرحلة متقدمة من مسيرتك. فكر في مستقبلك بعد الاعتزال.",
+            "gold"
+        );
+    }
+
+    if(p.age>=40){
+
+        retirementCheck();
+    }
+}
+
+function retirementCheck(){
+
+    const p=state.player;
+
+    if(p.age<35){
+
+        toast("ما زال بإمكانك اللعب لسنوات طويلة");
+
+        return;
+    }
+
+    showModal(`
+        <h2>🏁 مستقبل المسيرة</h2>
+
+        <p class="subtitle">
+            أنت في عمر ${p.age}. اختر ما تريد فعله.
+        </p>
+
+        <button class="btn gold"
+            onclick="retireAsCoach()">
+            🧠 الاعتزال والعمل كمدرب
+        </button>
+
+        <button class="btn blue"
+            onclick="retireAsAgent()">
+            🤝 العمل في إدارة اللاعبين
+        </button>
+
+        <button class="btn gray"
+            onclick="closeModal()">
+            الاستمرار كلاعب
+        </button>
+    `);
+}
+
+function retireAsCoach(){
+
+    closeModal();
+
+    showModal(`
+        <h2>🧠 مسيرة المدرب</h2>
+
+        <p>
+            انتهت مسيرتك كلاعب وبدأت مرحلة جديدة كمدرب.
+        </p>
+
+        <div class="card">
+            <h2>${state.player.name}</h2>
+            <p class="subtitle">
+                مدرب جديد • خبرة لاعب سابق
+            </p>
+        </div>
+
+        <button class="btn gold" onclick="closeModal()">
+            مواصلة
+        </button>
+    `);
+
+    addEvent(
+        "🧠 اعتزلت اللعب وبدأت مسيرتك كمدرب.",
+        "gold"
+    );
+}
+
+function retireAsAgent(){
+
+    closeModal();
+
+    addEvent(
+        "🤝 اعتزلت اللعب وبدأت العمل في إدارة اللاعبين.",
+        "gold"
+    );
+
+    showModal(`
+        <h2>🤝 وكيل لاعبين</h2>
+
+        <p>
+            استخدمت خبرتك في الملاعب لمساعدة لاعبين جدد.
+        </p>
+
+        <button class="btn gold" onclick="closeModal()">
+            مواصلة
+        </button>
+    `);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function showModal(content){
+
+    let existing=document.getElementById("modal");
+
+    if(existing)existing.remove();
+
+    const div=document.createElement("div");
+
+    div.id="modal";
+    div.className="modal";
+
+    div.innerHTML=`
+        <div class="modal-box">
+            ${content}
+        </div>
+    `;
+
+    document.body.appendChild(div);
+}
+
+function closeModal(){
+
+    const m=document.getElementById("modal");
+
+    if(m)m.remove();
+}
+
+/* =========================================================
+   NEW GAME
+========================================================= */
+
+function newGameConfirm(){
+
+    showModal(`
+        <h2>⚠️ بدء مسيرة جديدة</h2>
+
+        <p class="subtitle">
+            سيتم حذف المسيرة الحالية من الجهاز.
+        </p>
+
+        <button class="btn red" onclick="confirmNewGame()">
+            نعم، ابدأ من جديد
+        </button>
+
+        <button class="btn gray" onclick="closeModal()">
+            إلغاء
+        </button>
+    `);
+}
+
+function confirmNewGame(){
+
+    localStorage.removeItem("football_life_save");
+
+    state=null;
+
+    closeModal();
+
+    renderStart();
+}
+
+/* =========================================================
+   SILENT SAVE
+========================================================= */
+
+function saveSilent(){
+
+    try{
+        localStorage.setItem(
+            "football_life_save",
+            JSON.stringify(state)
+        );
+    }catch(e){}
+}
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+function boot(){
+
+    try{
+
+        const raw=localStorage.getItem("football_life_save");
+
+        if(raw){
+
+            const loaded=JSON.parse(raw);
+
+            if(
+                loaded &&
+                loaded.started &&
+                loaded.player
+            ){
+
+                state=loaded;
+
+                ensureState();
+
+                if(
+                    state.player.club!=="بدون نادٍ" &&
+                    (!state.standings || !state.standings.length)
+                ){
+                    initializeStandings();
+                }
+
+                renderGame();
+
+                return;
+            }
+        }
+
+    }catch(e){
+
+        localStorage.removeItem("football_life_save");
+
+    }
+
+    state=defaultState();
+
+    renderStart();
+}
+
+/* =========================================================
+   KEYBOARD / SAFETY
+========================================================= */
+
+window.addEventListener("error",function(e){
+
+    console.error(e.error || e.message);
+
+});
+
+/* =========================================================
+   START
+========================================================= */
+
+boot();
+
+</script>
+
+</body>
+  </html>
