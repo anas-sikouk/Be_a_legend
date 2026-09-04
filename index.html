@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -250,7 +250,7 @@
             background: #334155;
         }
 
-        /* Generic UI Controls */
+        /* Controls */
         .btn {
             background: var(--accent);
             color: #fff;
@@ -290,7 +290,6 @@
             font-weight: bold;
         }
 
-        /* Form Controls */
         input, select {
             background: #0f172a;
             border: 1px solid #334155;
@@ -306,62 +305,64 @@
 
     <div id="sidebar">
         <div class="brand">PRO SIM 2026</div>
-        <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-        <button class="nav-btn" onclick="switchTab('match')">Match Engine</button>
-        <button class="nav-btn" onclick="switchTab('social')">Social Network</button>
-        <button class="nav-btn" onclick="switchTab('lifestyle')">Lifestyle & Assets</button>
+        <button class="nav-btn active" onclick="switchTab('dashboard')">Tableau de bord</button>
+        <button class="nav-btn" onclick="switchTab('match')">Moteur de Match</button>
+        <button class="nav-btn" onclick="switchTab('social')">Réseau Social</button>
+        <button class="nav-btn" onclick="switchTab('lifestyle')">Mode de Vie & Biens</button>
         <button class="nav-btn" onclick="switchTab('finance')">Finances</button>
     </div>
 
     <div id="main-content">
 
+        <!-- DASHBOARD -->
         <div id="tab-dashboard" class="screen active">
             <div class="glass-card profile-header">
                 <div class="avatar">★</div>
                 <div>
                     <h2 id="dash-name">Anas Jr</h2>
-                    <p style="color: var(--text-muted);" id="dash-details">CAM | Real Madrid (Fictional) | Age 19</p>
+                    <p style="color: var(--text-muted);" id="dash-details">MOC | Real Madrid (Fictif) | 19 ans</p>
                     <div style="margin-top: 8px;">
-                        <span class="stat-badge" id="dash-rating">OVR: 78</span>
-                        <span class="stat-badge" id="dash-value">Value: €24.5M</span>
-                        <span class="stat-badge" id="dash-wage">Wage: €15k/wk</span>
+                        <span class="stat-badge" id="dash-rating">GEN: 78</span>
+                        <span class="stat-badge" id="dash-value">Valeur: 24,5M €</span>
+                        <span class="stat-badge" id="dash-wage">Salaire: 15k €/semaine</span>
                     </div>
                 </div>
             </div>
 
             <div class="grid-dashboard">
                 <div class="glass-card">
-                    <h3>Season Performance</h3>
+                    <h3>Performances de la Saison</h3>
                     <br>
-                    <p>Matches Played: <strong id="stat-apps">12</strong></p>
-                    <p>Goals Scored: <strong id="stat-goals">5</strong></p>
-                    <p>Assists: <strong id="stat-assists">3</strong></p>
-                    <p>Average Rating: <strong id="stat-avgrat">7.35</strong></p>
+                    <p>Matchs joués: <strong id="stat-apps">12</strong></p>
+                    <p>Buts marqués: <strong id="stat-goals">5</strong></p>
+                    <p>Passes décisives: <strong id="stat-assists">3</strong></p>
+                    <p>Note moyenne: <strong id="stat-avgrat">7.35</strong></p>
                 </div>
                 <div class="glass-card">
-                    <h3>Manager Trust & Form</h3>
+                    <h3>Confiance de l'Entraîneur</h3>
                     <br>
-                    <p>Status: <strong style="color: var(--accent);" id="mgr-status">Starting XI</strong></p>
-                    <p>Manager Confidence: <strong id="mgr-trust">84%</strong></p>
-                    <p>Match Fitness: <strong id="mgr-fitness">95%</strong></p>
-                    <p>Morale: <strong id="mgr-morale">High</strong></p>
+                    <p>Statut: <strong style="color: var(--accent);" id="mgr-status">Titulaire</strong></p>
+                    <p>Confiance: <strong id="mgr-trust">84%</strong></p>
+                    <p>Forme physique: <strong id="mgr-fitness">95%</strong></p>
+                    <p>Moral: <strong id="mgr-morale">Élevé</strong></p>
                 </div>
                 <div class="glass-card">
-                    <h3>Next Fixture</h3>
+                    <h3>Prochain Match</h3>
                     <br>
-                    <p style="font-size: 1.1rem; font-weight: bold;" id="next-fixture">vs FC Barcelona (H)</p>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">League Matchday 14</p>
-                    <button class="btn" onclick="switchTab('match')">Enter Match Day</button>
+                    <p style="font-size: 1.1rem; font-weight: bold;" id="next-fixture">vs FC Barcelona (D)</p>
+                    <p style="color: var(--text-muted); margin-bottom: 15px;">Journée 14 de Ligue</p>
+                    <button class="btn" onclick="switchTab('match')">Lancer le Match</button>
                 </div>
             </div>
         </div>
 
+        <!-- MATCH (CANVAS 2D) -->
         <div id="tab-match" class="screen">
             <div class="match-header">
                 <div>
-                    <span id="home-team-name">HOME</span>
+                    <span id="home-team-name">DOMICILE</span>
                     <span class="score-display" id="match-score">0 - 0</span>
-                    <span id="away-team-name">AWAY</span>
+                    <span id="away-team-name">EXTÉRIEUR</span>
                 </div>
                 <div id="match-clock" style="font-size: 1.2rem; font-family: monospace;">00:00</div>
             </div>
@@ -381,105 +382,108 @@
 
                     <div class="glass-card" style="padding: 10px;">
                         <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 0.85rem;">
-                            <span>Rating: <span id="live-rating" style="color: var(--accent);">6.0</span></span>
-                            <span>Stamina: <span id="live-stamina" style="color: var(--warning);">100%</span></span>
+                            <span>Note: <span id="live-rating" style="color: var(--accent);">6.0</span></span>
+                            <span>Endurance: <span id="live-stamina" style="color: var(--warning);">100%</span></span>
                         </div>
                     </div>
 
                     <div class="glass-card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                        <h4 style="margin-bottom: 8px;">Match Events</h4>
+                        <h4 style="margin-bottom: 8px;">Événements du Match</h4>
                         <div class="events-log" id="events-log">
-                            <div class="event-item">00:00 - Kick off!</div>
+                            <div class="event-item">00:00 - Coup d'envoi !</div>
                         </div>
                     </div>
 
                     <div class="glass-card">
-                        <h4 style="margin-bottom: 8px;">Tactical Instructions</h4>
+                        <h4 style="margin-bottom: 8px;">Consignes Tactiques</h4>
                         <div class="action-grid">
-                            <button class="action-btn" onclick="setUserIntent('CALL_BALL')">CALL BALL</button>
-                            <button class="action-btn" onclick="setUserIntent('ATTACK')">ATTACK</button>
-                            <button class="action-btn" onclick="setUserIntent('DEFEND')">DEFEND</button>
-                            <button class="action-btn" onclick="setUserIntent('PRESS')">PRESS</button>
-                            <button class="action-btn" onclick="setUserIntent('HOLD')">HOLD POS</button>
-                            <button class="action-btn" onclick="setUserIntent('RISK')">TAKE RISK</button>
+                            <button class="action-btn" onclick="setUserIntent('CALL_BALL')">DEMANDER BALLE</button>
+                            <button class="action-btn" onclick="setUserIntent('ATTACK')">ATTAQUER</button>
+                            <button class="action-btn" onclick="setUserIntent('DEFEND')">DÉFENDRE</button>
+                            <button class="action-btn" onclick="setUserIntent('PRESS')">PRESSER</button>
+                            <button class="action-btn" onclick="setUserIntent('HOLD')">GARDER POS</button>
+                            <button class="action-btn" onclick="setUserIntent('RISK')">PRENDRE RISQUE</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- SOCIAL NETWORK -->
         <div id="tab-social" class="screen">
             <div class="glass-card">
-                <h3>Footgram - Social Media 2.0</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Followers: <strong id="social-followers" style="color: var(--accent);">142,500</strong></p>
+                <h3>Footgram - Réseau Social</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Abonnés: <strong id="social-followers" style="color: var(--accent);">142 500</strong></p>
                 <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <input type="text" id="post-input" placeholder="What's on your mind? Write a post..." style="margin-bottom: 0;">
-                    <button class="btn" onclick="submitPost()">Post</button>
+                    <input type="text" id="post-input" placeholder="Partagez un message..." style="margin-bottom: 0;">
+                    <button class="btn" onclick="submitPost()">Publier</button>
                 </div>
             </div>
 
             <div class="glass-card" style="flex: 1; overflow-y: auto;" id="social-feed">
-                </div>
+            </div>
         </div>
 
+        <!-- LIFESTYLE -->
         <div id="tab-lifestyle" class="screen">
             <div class="glass-card">
-                <h3>Real Estate & Assets</h3>
+                <h3>Propriétés & Véhicules</h3>
                 <br>
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
                     <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
-                        <h4>Current Residence</h4>
-                        <p style="color: var(--text-muted);" id="home-name">Modern City Apartment</p>
-                        <p>Comfort Level: 75%</p>
+                        <h4>Résidence Actuelle</h4>
+                        <p style="color: var(--text-muted);" id="home-name">Appartement Moderne en Ville</p>
+                        <p>Niveau de confort: 75%</p>
                         <br>
-                        <button class="btn" onclick="upgradeHome()">Upgrade Property (€250,000)</button>
+                        <button class="btn" onclick="upgradeHome()">Améliorer (250 000 €)</button>
                     </div>
                     <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
                         <h4>Garage</h4>
-                        <p style="color: var(--text-muted);" id="car-name">Sports Coupe</p>
-                        <p>Prestige: High</p>
+                        <p style="color: var(--text-muted);" id="car-name">Coupé Sport</p>
+                        <p>Prestige: Élevé</p>
                         <br>
-                        <button class="btn" onclick="buyCar()">Buy Supercar (€180,000)</button>
+                        <button class="btn" onclick="buyCar()">Acheter Supercar (180 000 €)</button>
                     </div>
                 </div>
             </div>
 
             <div class="glass-card">
-                <h3>Personal Relationships</h3>
+                <h3>Relations Personnelles</h3>
                 <br>
                 <div id="relationship-list">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px;">
                         <div>
                             <strong>Elena Rostova</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Architect | Age 24</p>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Architecte | 24 ans</p>
                         </div>
                         <div>
-                            <span class="stat-badge">Status: Dating</span>
-                            <button class="btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="interactNPC('Elena')">Text</button>
+                            <span class="stat-badge">Statut: En couple</span>
+                            <button class="btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="interactNPC('Elena')">Envoyer un message</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- FINANCES -->
         <div id="tab-finance" class="screen">
             <div class="glass-card">
-                <h3>Financial Overview</h3>
+                <h3>Aperçu Financier</h3>
                 <br>
-                <h2>Bank Balance: <span id="bank-balance" style="color: var(--accent);">€840,200</span></h2>
+                <h2>Solde Bancaire: <span id="bank-balance" style="color: var(--accent);">840 200 €</span></h2>
                 <br>
                 <div style="display: flex; gap: 20px;">
                     <div>
-                        <p style="color: var(--text-muted);">Weekly Salary</p>
-                        <h4>€15,000</h4>
+                        <p style="color: var(--text-muted);">Salaire hebdomadaire</p>
+                        <h4>15 000 €</h4>
                     </div>
                     <div>
-                        <p style="color: var(--text-muted);">Sponsorships</p>
-                        <h4>€4,200 / wk</h4>
+                        <p style="color: var(--text-muted);">Sponsors</p>
+                        <h4>4 200 € / sem</h4>
                     </div>
                     <div>
-                        <p style="color: var(--text-muted);">Living Expenses</p>
-                        <h4 style="color: var(--danger);">-€2,100 / wk</h4>
+                        <p style="color: var(--text-muted);">Dépenses</p>
+                        <h4 style="color: var(--danger);">-2 100 € / sem</h4>
                     </div>
                 </div>
             </div>
@@ -488,13 +492,10 @@
     </div>
 
     <script>
-        /* ==========================================================================
-           GLOBAL GAME STATE & DATA ARCHITECTURE
-           ========================================================================== */
         const gameState = {
             player: {
                 name: "Anas Jr",
-                position: "CAM",
+                position: "MOC",
                 number: 10,
                 overall: 78,
                 stamina: 100,
@@ -504,31 +505,28 @@
                 apps: 12,
                 balance: 840200,
                 followers: 142500,
-                currentHome: "Modern City Apartment",
-                currentCar: "Sports Coupe",
+                currentHome: "Appartement Moderne en Ville",
+                currentCar: "Coupé Sport",
                 userIntent: "BALANCED"
             },
             match: {
                 active: false,
-                simSpeed: 1, // 0 = Paused, 1 = 1x, 2 = 2x, 4 = 4x
-                time: 0, // seconds (90 mins = 5400 frames/ticks)
+                simSpeed: 1,
+                time: 0,
                 homeScore: 0,
                 awayScore: 0,
-                homeTeam: "Real Madrid (Fictional)",
-                awayTeam: "FC Barcelona (Fictional)",
+                homeTeam: "Real Madrid (Fictif)",
+                awayTeam: "FC Barcelona (Fictif)",
                 ball: { x: 400, y: 260, vx: 0, vy: 0, targetX: 400, targetY: 260 },
                 players: []
             }
         };
 
         const socialFeed = [
-            { author: "MadridFan99", text: "Anas Jr has been incredible in midfield lately! 🔥", likes: 1240 },
-            { author: "FootyAnalytica", text: "Stats show Anas Jr completes 88% of passes in key attacking zones.", likes: 3410 }
+            { author: "MadridFan99", text: "Anas Jr est incroyable au milieu de terrain ! 🔥", likes: 1240 },
+            { author: "FootyAnalytica", text: "Les stats montrent qu'Anas Jr réussit 88% de ses passes clés.", likes: 3410 }
         ];
 
-        /* ==========================================================================
-           TAB NAVIGATION SYSTEM
-           ========================================================================== */
         function switchTab(tabId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -541,17 +539,14 @@
             }
         }
 
-        /* ==========================================================================
-           2D CANVAS MATCH ENGINE SYSTEM
-           ========================================================================== */
         const canvas = document.getElementById('pitch');
         const ctx = canvas.getContext('2d');
         let matchInterval = null;
 
         class PitchPlayer {
-            constructor(name, team, x, y, isUser = false, role = 'CM') {
+            constructor(name, team, x, y, isUser = false, role = 'MC') {
                 this.name = name;
-                this.team = team; // 'home' or 'away'
+                this.team = team;
                 this.x = x;
                 this.y = y;
                 this.baseX = x;
@@ -568,11 +563,9 @@
                 let targetX = this.baseX;
                 let targetY = this.baseY;
 
-                // Simple AI positioning towards ball depending on team and role
                 const distToBall = Math.hypot(ball.x - this.x, ball.y - this.y);
 
                 if (this.isUser) {
-                    // Reactive user player intent controls
                     if (intent === 'ATTACK') targetX = ball.x + 40;
                     else if (intent === 'DEFEND') targetX = ball.x - 60;
                     else if (intent === 'CALL_BALL' || distToBall < 120) {
@@ -580,37 +573,30 @@
                         targetY = ball.y;
                     }
                 } else {
-                    // Standard AI behavior
                     if (distToBall < 100) {
                         targetX = ball.x;
                         targetY = ball.y;
                     } else {
-                        // Shift relative to ball
                         targetX = this.baseX + (ball.x - 400) * 0.3;
                         targetY = this.baseY + (ball.y - 260) * 0.3;
                     }
                 }
 
-                // Smooth linear movement interpolation
                 const angle = Math.atan2(targetY - this.y, targetX - this.x);
                 if (distToBall > 5 || !this.isUser) {
                     this.x += Math.cos(angle) * this.speed;
                     this.y += Math.sin(angle) * this.speed;
                 }
 
-                // Interaction with Ball (Pass / Kick)
                 if (distToBall < 12) {
                     if (Math.random() < 0.05) {
-                        // Action choice: Shoot or Pass
                         if ((this.team === 'home' && this.x > 650) || (this.team === 'away' && this.x < 150)) {
-                            // Shoot Towards Goal
                             const targetGoalY = 260 + (Math.random() * 60 - 30);
                             const targetGoalX = this.team === 'home' ? 780 : 20;
                             ball.vx = (targetGoalX - this.x) * 0.1;
                             ball.vy = (targetGoalY - this.y) * 0.1;
-                            logEvent(`${this.name} takes a shot on goal!`);
+                            logEvent(`${this.name} tente une frappe !`);
                         } else {
-                            // Pass to open space/teammate
                             ball.vx = (Math.random() - 0.5) * 8;
                             ball.vy = (Math.random() - 0.5) * 8;
                         }
@@ -624,7 +610,6 @@
             }
 
             draw() {
-                // Draw User Marker
                 if (this.isUser) {
                     ctx.fillStyle = '#f59e0b';
                     ctx.font = '16px sans-serif';
@@ -632,7 +617,6 @@
                     ctx.fillText('★', this.x, this.y - 18);
                 }
 
-                // Draw Player Circle
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = this.team === 'home' ? '#ef4444' : '#3b82f6';
@@ -641,7 +625,6 @@
                 ctx.strokeStyle = '#ffffff';
                 ctx.stroke();
 
-                // Draw Name Text
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '10px sans-serif';
                 ctx.textAlign = 'center';
@@ -656,20 +639,18 @@
             gameState.match.awayScore = 0;
             gameState.match.players = [];
 
-            // Spawn Home Team (Red) 4-3-3 simplified positions
             const homePositions = [
-                { name: "GK", x: 40, y: 260 },
-                { name: "CB", x: 180, y: 160 }, { name: "CB", x: 180, y: 360 },
-                { name: "CM", x: 350, y: 180 }, { name: gameState.player.name, x: 420, y: 260, isUser: true }, { name: "CM", x: 350, y: 340 },
-                { name: "ST", x: 550, y: 260 }
+                { name: "G", x: 40, y: 260 },
+                { name: "DC", x: 180, y: 160 }, { name: "DC", x: 180, y: 360 },
+                { name: "MC", x: 350, y: 180 }, { name: gameState.player.name, x: 420, y: 260, isUser: true }, { name: "MC", x: 350, y: 340 },
+                { name: "BU", x: 550, y: 260 }
             ];
 
-            // Spawn Away Team (Blue)
             const awayPositions = [
-                { name: "GK Away", x: 760, y: 260 },
-                { name: "CB Away", x: 620, y: 160 }, { name: "CB Away", x: 620, y: 360 },
-                { name: "CM Away", x: 450, y: 180 }, { name: "CM Away", x: 450, y: 340 },
-                { name: "ST Away", x: 250, y: 260 }
+                { name: "G Ext", x: 760, y: 260 },
+                { name: "DC Ext", x: 620, y: 160 }, { name: "DC Ext", x: 620, y: 360 },
+                { name: "MC Ext", x: 450, y: 180 }, { name: "MC Ext", x: 450, y: 340 },
+                { name: "BU Ext", x: 250, y: 260 }
             ];
 
             homePositions.forEach(p => {
@@ -681,13 +662,12 @@
             });
 
             if (matchInterval) clearInterval(matchInterval);
-            matchInterval = setInterval(gameLoop, 1000 / 30); // 30 FPS tick
+            matchInterval = setInterval(gameLoop, 1000 / 30);
         }
 
         function gameLoop() {
-            if (gameState.match.simSpeed === 0) return; // Paused
+            if (gameState.match.simSpeed === 0) return;
 
-            // Run iterations based on simulation speed
             for (let speedStep = 0; speedStep < gameState.match.simSpeed; speedStep++) {
                 updateMatchPhysics();
             }
@@ -699,7 +679,6 @@
             const m = gameState.match;
             m.time += 1;
 
-            // Format Match Time Display
             const minutes = Math.floor(m.time / 60);
             const seconds = Math.floor(m.time % 60);
             document.getElementById('match-clock').innerText = 
@@ -707,52 +686,44 @@
 
             if (minutes >= 90) {
                 setSpeed(0);
-                logEvent("FULL TIME! Match Ended.");
+                logEvent("FIN DU MATCH !");
                 return;
             }
 
-            // Ball Physics
             m.ball.x += m.ball.vx;
             m.ball.y += m.ball.vy;
-            m.ball.vx *= 0.93; // Friction
+            m.ball.vx *= 0.93;
             m.ball.vy *= 0.93;
 
-            // Pitch Constraints & Goal Check
             if (m.ball.x < 15 || m.ball.x > 785) {
                 if (m.ball.y > 200 && m.ball.y < 320) {
                     if (m.ball.x > 785) {
                         m.homeScore++;
-                        logEvent(`GOAL! ${m.homeTeam} Scores!`);
+                        logEvent(`BUT ! ${m.homeTeam} marque !`);
                     } else {
                         m.awayScore++;
-                        logEvent(`GOAL! ${m.awayTeam} Scores!`);
+                        logEvent(`BUT ! ${m.awayTeam} marque !`);
                     }
                     document.getElementById('match-score').innerText = `${m.homeScore} - ${m.awayScore}`;
-                    // Reset Ball to Center
                     m.ball.x = 400; m.ball.y = 260; m.ball.vx = 0; m.ball.vy = 0;
                 } else {
-                    m.ball.vx *= -1; // Bounce off touchlines
+                    m.ball.vx *= -1;
                 }
             }
             if (m.ball.y < 15 || m.ball.y > 505) m.ball.vy *= -1;
 
-            // Update Player Positions
             m.players.forEach(p => p.update(m.ball, gameState.player.userIntent));
         }
 
         function renderPitch() {
-            // Draw Grass Surface
             ctx.fillStyle = '#2e7d32';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Lines
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
             ctx.lineWidth = 2;
 
-            // Outer Boundary
             ctx.strokeRect(15, 15, 770, 490);
 
-            // Halfway Line & Center Circle
             ctx.beginPath();
             ctx.moveTo(400, 15);
             ctx.lineTo(400, 505);
@@ -762,11 +733,9 @@
             ctx.arc(400, 260, 60, 0, Math.PI * 2);
             ctx.stroke();
 
-            // Goal Areas
             ctx.strokeRect(15, 170, 100, 180);
             ctx.strokeRect(685, 170, 100, 180);
 
-            // Draw Ball
             ctx.beginPath();
             ctx.arc(gameState.match.ball.x, gameState.match.ball.y, 5, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
@@ -774,13 +743,9 @@
             ctx.strokeStyle = '#000000';
             ctx.stroke();
 
-            // Draw Players
             gameState.match.players.forEach(p => p.draw());
         }
 
-        /* ==========================================================================
-           MATCH CONTROLS & EVENT LOGGING
-           ========================================================================== */
         function setSpeed(speed) {
             gameState.match.simSpeed = speed;
             document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
@@ -789,7 +754,7 @@
 
         function setUserIntent(intent) {
             gameState.player.userIntent = intent;
-            logEvent(`Tactical focus changed: ${intent}`);
+            logEvent(`Consigne changée : ${intent}`);
         }
 
         function logEvent(msg) {
@@ -801,9 +766,6 @@
             container.prepend(div);
         }
 
-        /* ==========================================================================
-           SOCIAL MEDIA & LIFESTYLE LOGIC
-           ========================================================================== */
         function renderSocialFeed() {
             const container = document.getElementById('social-feed');
             container.innerHTML = '';
@@ -813,7 +775,7 @@
                 item.innerHTML = `
                     <div class="feed-author">@${post.author}</div>
                     <div>${post.text}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">❤️ ${post.likes} Likes</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">❤️ ${post.likes} J'aime</div>
                 `;
                 container.appendChild(item);
             });
@@ -835,34 +797,34 @@
         function upgradeHome() {
             if (gameState.player.balance >= 250000) {
                 gameState.player.balance -= 250000;
-                gameState.player.currentHome = "Luxury Penthouse Suite";
+                gameState.player.currentHome = "Penthouse de Luxe";
                 document.getElementById('home-name').innerText = gameState.player.currentHome;
-                document.getElementById('bank-balance').innerText = `€${gameState.player.balance.toLocaleString()}`;
-                alert('Property Upgraded to Luxury Penthouse Suite!');
+                document.getElementById('bank-balance').innerText = `${gameState.player.balance.toLocaleString()} €`;
+                alert('Propriété améliorée en Penthouse de Luxe !');
             } else {
-                alert('Insufficient funds!');
+                alert('Fonds insuffisants !');
             }
         }
 
         function buyCar() {
             if (gameState.player.balance >= 180000) {
                 gameState.player.balance -= 180000;
-                gameState.player.currentCar = "V12 Supercar";
+                gameState.player.currentCar = "Supercar V12";
                 document.getElementById('car-name').innerText = gameState.player.currentCar;
-                document.getElementById('bank-balance').innerText = `€${gameState.player.balance.toLocaleString()}`;
-                alert('Purchased new V12 Supercar!');
+                document.getElementById('bank-balance').innerText = `${gameState.player.balance.toLocaleString()} €`;
+                alert('Achat de la Supercar V12 effectué !');
             } else {
-                alert('Insufficient funds!');
+                alert('Fonds insuffisants !');
             }
         }
 
         function interactNPC(name) {
-            alert(`Sent text message to ${name}: "Hope you have a great day!"`);
+            alert(`Message envoyé à ${name} : "Passe une excellente journée !"`);
         }
 
-        // Initialize Feed on load
         renderSocialFeed();
     </script>
 </body>
 </html>
+
 
