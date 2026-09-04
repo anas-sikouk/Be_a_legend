@@ -1,3180 +1,868 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0,user-scalable=no">
-
-<title>Football Life</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-:root{
-    --bg:#06080d;
-    --bg2:#0a0f18;
-    --panel:#0d131e;
-    --panel2:#111927;
-    --line:rgba(255,255,255,.08);
-    --text:#f4f7fb;
-    --muted:#8490a3;
-    --green:#39f2a2;
-    --cyan:#27c8ff;
-    --blue:#5d8cff;
-    --red:#ff5571;
-    --yellow:#ffd45a;
-    --shadow:0 25px 70px rgba(0,0,0,.45);
-}
-
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    min-height:100%;
-    background:var(--bg);
-    color:var(--text);
-    font-family:Inter,Arial,sans-serif;
-}
-
-body{
-    overflow-x:hidden;
-}
-
-/* =========================
-   BACKGROUND
-========================= */
-
-body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    background:
-        radial-gradient(circle at 85% 10%,rgba(39,200,255,.10),transparent 25%),
-        radial-gradient(circle at 10% 50%,rgba(57,242,162,.07),transparent 30%);
-    z-index:-2;
-}
-
-body:after{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:.035;
-    background-image:
-        linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);
-    background-size:40px 40px;
-    z-index:-1;
-}
-
-/* =========================
-   APP
-========================= */
-
-.app{
-    width:100%;
-    min-height:100vh;
-    padding-bottom:100px;
-}
-
-.page{
-    display:none;
-    min-height:calc(100vh - 100px);
-    animation:pageIn .35s ease;
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-    height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 22px;
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:rgba(6,8,13,.82);
-    backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--line);
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:-.5px;
-}
-
-.brandMark{
-    width:36px;
-    height:36px;
-    border-radius:12px;
-    display:grid;
-    place-items:center;
-    background:linear-gradient(135deg,var(--green),var(--cyan));
-    color:#041017;
-    font-size:19px;
-    box-shadow:0 10px 30px rgba(39,200,255,.18);
-}
-
-.topRight{
-    display:flex;
-    align-items:center;
-    gap:9px;
-}
-
-.iconBtn{
-    width:39px;
-    height:39px;
-    border-radius:13px;
-    border:1px solid var(--line);
-    background:#0d131d;
-    color:#fff;
-    display:grid;
-    place-items:center;
-    font-size:17px;
-    cursor:pointer;
-}
-
-.money{
-    font-size:13px;
-    font-weight:800;
-    color:var(--green);
-    margin-right:4px;
-}
-
-/* =========================
-   HOME HERO
-========================= */
-
-.homeWrap{
-    padding:18px 18px 0;
-}
-
-.hero{
-    position:relative;
-    min-height:390px;
-    overflow:hidden;
-    border-radius:30px;
-    border:1px solid rgba(255,255,255,.09);
-    background:
-        radial-gradient(circle at 78% 38%,rgba(39,200,255,.25),transparent 25%),
-        radial-gradient(circle at 25% 80%,rgba(57,242,162,.12),transparent 30%),
-        linear-gradient(135deg,#101926,#081018 60%,#071017);
-    box-shadow:var(--shadow);
-}
-
-.heroGlow{
-    position:absolute;
-    width:330px;
-    height:330px;
-    right:-100px;
-    top:-120px;
-    border-radius:50%;
-    background:rgba(39,200,255,.13);
-    filter:blur(35px);
-}
-
-.heroContent{
-    position:relative;
-    z-index:2;
-    padding:28px 24px;
-}
-
-.season{
-    color:var(--muted);
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-weight:800;
-}
-
-.playerName{
-    font-size:38px;
-    line-height:1;
-    margin:12px 0 8px;
-    font-weight:900;
-    letter-spacing:-2px;
-}
-
-.playerMeta{
-    color:#a9b4c5;
-    font-size:13px;
-}
-
-.ovrBox{
-    margin-top:30px;
-    display:flex;
-    align-items:end;
-    gap:18px;
-}
-
-.ovr{
-    font-size:75px;
-    line-height:.8;
-    font-weight:900;
-    letter-spacing:-5px;
-    background:linear-gradient(135deg,#fff,#76e9ff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.ovrInfo{
-    padding-bottom:4px;
-}
-
-.position{
-    font-size:12px;
-    font-weight:900;
-    color:var(--cyan);
-    letter-spacing:2px;
-}
-
-.club{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:5px;
-}
-
-.playerArt{
-    position:absolute;
-    right:-5px;
-    bottom:-5px;
-    width:260px;
-    height:300px;
-    display:flex;
-    align-items:end;
-    justify-content:center;
-}
-
-.playerSilhouette{
-    width:180px;
-    height:260px;
-    position:relative;
-    filter:drop-shadow(0 30px 30px rgba(0,0,0,.55));
-}
-
-.head{
-    position:absolute;
-    width:72px;
-    height:72px;
-    border-radius:50%;
-    background:linear-gradient(145deg,#c58b63,#7f4e37);
-    top:3px;
-    left:54px;
-}
-
-.hair{
-    position:absolute;
-    width:73px;
-    height:32px;
-    border-radius:50px 50px 15px 15px;
-    background:#15110f;
-    top:0;
-    left:53px;
-    z-index:2;
-}
-
-.body{
-    position:absolute;
-    top:67px;
-    left:25px;
-    width:130px;
-    height:145px;
-    border-radius:38px 38px 18px 18px;
-    background:linear-gradient(145deg,#1c68a8,#073b70);
-}
-
-.body:after{
-    content:"10";
-    position:absolute;
-    color:rgba(255,255,255,.9);
-    font-size:50px;
-    font-weight:900;
-    left:38px;
-    top:40px;
-    opacity:.9;
-}
-
-.arm{
-    position:absolute;
-    width:35px;
-    height:130px;
-    background:#9b6549;
-    border-radius:30px;
-    top:77px;
-}
-
-.arm.left{
-    left:0;
-    transform:rotate(13deg);
-}
-
-.arm.right{
-    right:0;
-    transform:rotate(-13deg);
-}
-
-.leg{
-    position:absolute;
-    width:46px;
-    height:105px;
-    background:#11151c;
-    top:190px;
-    border-radius:10px 10px 30px 30px;
-}
-
-.leg.left{left:42px;transform:rotate(3deg)}
-.leg.right{right:42px;transform:rotate(-3deg)}
-
-.heroBottom{
-    position:absolute;
-    z-index:4;
-    bottom:22px;
-    left:22px;
-    right:22px;
-    display:flex;
-    gap:10px;
-}
-
-.miniStat{
-    flex:1;
-    padding:13px 14px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(5,9,14,.65);
-    backdrop-filter:blur(12px);
-    border-radius:17px;
-}
-
-.miniLabel{
-    font-size:9px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.miniValue{
-    margin-top:4px;
-    font-size:15px;
-    font-weight:900;
-}
-
-/* =========================
-   MATCH CARD
-========================= */
-
-.section{
-    margin-top:18px;
-}
-
-.sectionHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:11px;
-}
-
-.sectionTitle{
-    font-size:15px;
-    font-weight:900;
-}
-
-.sectionMore{
-    color:var(--muted);
-    font-size:11px;
-    cursor:pointer;
-}
-
-.matchCard{
-    border:1px solid var(--line);
-    border-radius:26px;
-    background:
-        linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
-    padding:20px;
-    position:relative;
-    overflow:hidden;
-}
-
-.matchCard:before{
-    content:"MATCHDAY";
-    position:absolute;
-    right:-30px;
-    top:25px;
-    transform:rotate(90deg);
-    color:rgba(255,255,255,.035);
-    font-size:40px;
-    font-weight:900;
-}
-
-.matchTop{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.matchLabel{
-    color:var(--green);
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1.5px;
-}
-
-.matchDate{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.teams{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:24px;
-    margin:23px 0;
-}
-
-.team{
-    text-align:center;
-    width:105px;
-}
-
-.teamLogo{
-    width:62px;
-    height:62px;
-    border-radius:20px;
-    margin:auto;
-    display:grid;
-    place-items:center;
-    font-size:27px;
-    border:1px solid var(--line);
-    background:linear-gradient(145deg,#14243b,#0c131e);
-}
-
-.teamName{
-    font-size:10px;
-    font-weight:800;
-    margin-top:9px;
-}
-
-.vs{
-    color:var(--muted);
-    font-size:10px;
-    font-weight:900;
-}
-
-.playBtn{
-    width:100%;
-    height:52px;
-    border:0;
-    border-radius:17px;
-    background:linear-gradient(135deg,var(--green),var(--cyan));
-    color:#031017;
-    font-size:13px;
-    font-weight:900;
-    cursor:pointer;
-    box-shadow:0 12px 35px rgba(39,200,255,.16);
-}
-
-/* =========================
-   NEWS
-========================= */
-
-.newsList{
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    padding-bottom:4px;
-    scrollbar-width:none;
-}
-
-.newsList::-webkit-scrollbar{
-    display:none;
-}
-
-.news{
-    min-width:235px;
-    border:1px solid var(--line);
-    background:#0d131d;
-    border-radius:20px;
-    padding:16px;
-}
-
-.newsTag{
-    font-size:9px;
-    color:var(--green);
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-.newsText{
-    margin-top:10px;
-    font-size:12px;
-    line-height:1.5;
-    font-weight:700;
-}
-
-.newsTime{
-    margin-top:12px;
-    color:var(--muted);
-    font-size:9px;
-}
-
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.bottomNav{
-    position:fixed;
-    z-index:50;
-    bottom:12px;
-    left:12px;
-    right:12px;
-    height:72px;
-    border-radius:24px;
-    border:1px solid rgba(255,255,255,.09);
-    background:rgba(9,13,20,.91);
-    backdrop-filter:blur(25px);
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
-    box-shadow:0 20px 60px rgba(0,0,0,.55);
-}
-
-.navItem{
-    width:20%;
-    height:100%;
-    border:0;
-    background:none;
-    color:#687589;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
-    font-size:18px;
-    cursor:pointer;
-}
-
-.navText{
-    font-size:8px;
-    font-weight:800;
-}
-
-.navItem.active{
-    color:var(--green);
-}
-
-.navItem.active .navIcon{
-    transform:translateY(-2px);
-}
-
-/* =========================
-   CAREER
-========================= */
-
-.pageWrap{
-    padding:20px 18px;
-}
-
-.pageIntro{
-    margin:5px 0 25px;
-}
-
-.pageEyebrow{
-    font-size:10px;
-    color:var(--green);
-    letter-spacing:2px;
-    font-weight:900;
-}
-
-.pageTitle{
-    font-size:32px;
-    letter-spacing:-1.5px;
-    font-weight:900;
-    margin:8px 0 0;
-}
-
-.careerProfile{
-    display:flex;
-    gap:15px;
-    align-items:center;
-    padding:17px;
-    background:linear-gradient(135deg,#111c2b,#0c121c);
-    border:1px solid var(--line);
-    border-radius:24px;
-}
-
-.avatar{
-    width:65px;
-    height:65px;
-    border-radius:20px;
-    display:grid;
-    place-items:center;
-    font-size:30px;
-    background:linear-gradient(135deg,#163c63,#0b1828);
-}
-
-.profileName{
-    font-weight:900;
-    font-size:15px;
-}
-
-.profileMeta{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:5px;
-}
-
-.profileOVR{
-    margin-left:auto;
-    text-align:right;
-}
-
-.profileOVR strong{
-    display:block;
-    font-size:28px;
-}
-
-.profileOVR span{
-    font-size:8px;
-    color:var(--muted);
-}
-
-.menuGrid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:18px;
-}
-
-.menuCard{
-    min-height:120px;
-    padding:17px;
-    border-radius:22px;
-    border:1px solid var(--line);
-    background:#0d131d;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.menuCard:active{
-    transform:scale(.97);
-}
-
-.menuIcon{
-    font-size:23px;
-}
-
-.menuCardTitle{
-    margin-top:17px;
-    font-size:12px;
-    font-weight:900;
-}
-
-.menuCardSub{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:9px;
-}
-
-/* =========================
-   ATTRIBUTES
-========================= */
-
-.attributes{
-    margin-top:18px;
-}
-
-.attribute{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:13px 0;
-    border-bottom:1px solid var(--line);
-}
-
-.attrName{
-    width:85px;
-    font-size:10px;
-    color:#9aa5b7;
-}
-
-.attrBar{
-    flex:1;
-    height:5px;
-    border-radius:10px;
-    background:#192231;
-    overflow:hidden;
-}
-
-.attrFill{
-    height:100%;
-    border-radius:10px;
-    background:linear-gradient(90deg,var(--green),var(--cyan));
-}
-
-.attrValue{
-    width:25px;
-    text-align:right;
-    font-size:11px;
-    font-weight:900;
-}
-
-/* =========================
-   TRANSFERS
-========================= */
-
-.offer{
-    padding:17px;
-    border:1px solid var(--line);
-    border-radius:22px;
-    background:#0d131d;
-    margin-bottom:10px;
-}
-
-.offerTop{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.offerLogo{
-    width:48px;
-    height:48px;
-    border-radius:15px;
-    display:grid;
-    place-items:center;
-    background:#142235;
-    font-size:22px;
-}
-
-.offerName{
-    font-size:13px;
-    font-weight:900;
-}
-
-.offerLeague{
-    color:var(--muted);
-    font-size:9px;
-    margin-top:4px;
-}
-
-.offerSalary{
-    margin-left:auto;
-    text-align:right;
-}
-
-.offerSalary strong{
-    color:var(--green);
-    font-size:13px;
-}
-
-.offerSalary small{
-    display:block;
-    color:var(--muted);
-    font-size:8px;
-}
-
-.offerActions{
-    display:flex;
-    gap:8px;
-    margin-top:14px;
-}
-
-.smallBtn{
-    flex:1;
-    height:40px;
-    border-radius:13px;
-    border:1px solid var(--line);
-    background:#121b29;
-    color:#fff;
-    font-size:10px;
-    font-weight:800;
-}
-
-.smallBtn.accept{
-    border:0;
-    background:linear-gradient(135deg,var(--green),var(--cyan));
-    color:#041017;
-}
-
-/* =========================
-   LIFE
-========================= */
-
-.lifeHero{
-    padding:22px;
-    border-radius:25px;
-    border:1px solid var(--line);
-    background:
-        radial-gradient(circle at 80% 20%,rgba(57,242,162,.12),transparent 30%),
-        #0d141f;
-}
-
-.lifeMoney{
-    font-size:35px;
-    font-weight:900;
-    letter-spacing:-2px;
-}
-
-.lifeLabel{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:5px;
-}
-
-.lifeGrid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:12px;
-}
-
-.lifeCard{
-    border:1px solid var(--line);
-    background:#0d131d;
-    border-radius:22px;
-    padding:18px;
-    min-height:135px;
-    cursor:pointer;
-}
-
-.lifeCardIcon{
-    font-size:26px;
-}
-
-.lifeCardTitle{
-    margin-top:18px;
-    font-weight:900;
-    font-size:12px;
-}
-
-.lifeCardValue{
-    color:var(--muted);
-    margin-top:5px;
-    font-size:9px;
-}
-
-/* =========================
-   SOCIAL
-========================= */
-
-.socialHeader{
-    padding:20px;
-    border-radius:24px;
-    border:1px solid var(--line);
-    background:linear-gradient(135deg,#111c2b,#0c111a);
-}
-
-.followers{
-    font-size:34px;
-    font-weight:900;
-}
-
-.followLabel{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.post{
-    margin-top:10px;
-    border:1px solid var(--line);
-    border-radius:22px;
-    background:#0d131d;
-    padding:16px;
-}
-
-.postHead{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.postAvatar{
-    width:38px;
-    height:38px;
-    border-radius:12px;
-    display:grid;
-    place-items:center;
-    background:#17243a;
-}
-
-.postUser{
-    font-size:11px;
-    font-weight:900;
-}
-
-.postTime{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-.postBody{
-    font-size:12px;
-    line-height:1.5;
-    margin:14px 0;
-}
-
-.postActions{
-    display:flex;
-    gap:20px;
-    color:var(--muted);
-    font-size:10px;
-}
-
-/* =========================
-   WORLD
-========================= */
-
-.competition{
-    padding:18px;
-    border-radius:22px;
-    background:#0d131d;
-    border:1px solid var(--line);
-    margin-bottom:10px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
-.compIcon{
-    width:50px;
-    height:50px;
-    display:grid;
-    place-items:center;
-    border-radius:17px;
-    background:#152235;
-    font-size:23px;
-}
-
-.compTitle{
-    font-weight:900;
-    font-size:12px;
-}
-
-.compSub{
-    color:var(--muted);
-    font-size:9px;
-    margin-top:5px;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-    z-index:100;
-    display:none;
-    align-items:end;
-    background:rgba(0,0,0,.7);
-    backdrop-filter:blur(8px);
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modalBox{
-    width:100%;
-    max-height:88vh;
-    overflow:auto;
-    background:#0b111a;
-    border-top:1px solid var(--line);
-    border-radius:30px 30px 0 0;
-    padding:22px;
-    animation:modalIn .3s ease;
-}
-
-@keyframes modalIn{
-    from{transform:translateY(100%)}
-    to{transform:translateY(0)}
-}
-
-.modalHandle{
-    width:40px;
-    height:4px;
-    background:#344052;
-    border-radius:20px;
-    margin:0 auto 20px;
-}
-
-.modalTitle{
-    font-size:22px;
-    font-weight:900;
-    margin-bottom:15px;
-}
-
-.closeBtn{
-    width:100%;
-    height:48px;
-    margin-top:18px;
-    border:1px solid var(--line);
-    background:#121b27;
-    color:#fff;
-    border-radius:15px;
-    font-weight:800;
-}
-
-/* =========================
-   MATCH ENGINE
-========================= */
-
-.matchEngine{
-    text-align:center;
-}
-
-.stadium{
-    height:250px;
-    border-radius:25px;
-    position:relative;
-    overflow:hidden;
-    border:1px solid var(--line);
-    background:
-        linear-gradient(rgba(5,10,15,.1),rgba(5,10,15,.65)),
-        repeating-linear-gradient(
-            90deg,
-            #0c3529 0,
-            #0c3529 35px,
-            #0e3d2e 35px,
-            #0e3d2e 70px
-        );
-}
-
-.stadium:before{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    border:2px solid rgba(255,255,255,.45);
-    border-radius:50%;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-}
-
-.stadium:after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:2px;
-    background:rgba(255,255,255,.4);
-    top:50%;
-    left:0;
-}
-
-.score{
-    position:absolute;
-    top:15px;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:3;
-    padding:9px 15px;
-    border-radius:14px;
-    background:rgba(0,0,0,.55);
-    backdrop-filter:blur(10px);
-    font-weight:900;
-    font-size:12px;
-}
-
-.commentary{
-    text-align:left;
-    margin-top:12px;
-    max-height:180px;
-    overflow:auto;
-}
-
-.event{
-    padding:12px;
-    border-bottom:1px solid var(--line);
-    font-size:10px;
-    line-height:1.5;
-}
-
-.event strong{
-    color:var(--green);
-    margin-right:7px;
-}
-
-.matchChoices{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-top:12px;
-}
-
-.choice{
-    height:45px;
-    border-radius:14px;
-    border:1px solid var(--line);
-    background:#111a28;
-    color:#fff;
-    font-size:10px;
-    font-weight:800;
-}
-
-.choice:active{
-    transform:scale(.97);
-}
-
-/* =========================
-   NOTIFICATION
-========================= */
-
-.toast{
-    position:fixed;
-    z-index:200;
-    top:88px;
-    left:18px;
-    right:18px;
-    padding:14px 16px;
-    border-radius:17px;
-    background:#111b29;
-    border:1px solid rgba(57,242,162,.25);
-    box-shadow:var(--shadow);
-    transform:translateY(-140%);
-    transition:.4s;
-    font-size:11px;
-    font-weight:800;
-}
-
-.toast.show{
-    transform:translateY(0);
-}
-
-/* =========================
-   DESKTOP
-========================= */
-
-@media(min-width:700px){
-
-    .app{
-        max-width:1000px;
-        margin:auto;
-    }
-
-    .bottomNav{
-        max-width:600px;
-        left:50%;
-        right:auto;
-        transform:translateX(-50%);
-        width:600px;
-    }
-
-    .hero{
-        min-height:470px;
-    }
-
-    .playerArt{
-        width:420px;
-        height:390px;
-    }
-
-    .playerSilhouette{
-        transform:scale(1.3);
-    }
-
-    .homeWrap,
-    .pageWrap{
-        padding-left:30px;
-        padding-right:30px;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footballer Life Engine 2026</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.85);
+            --accent: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        #sidebar {
+            width: 240px;
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 10px;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        /* Main Workspace */
+        #main-content {
+            flex: 1;
+            position: relative;
+            overflow-y: auto;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen {
+            display: none;
+            padding: 24px;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Dashboard Overview */
+        .grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 2px solid var(--accent);
+        }
+
+        /* Match Screen Layout */
+        #match-screen {
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .match-container {
+            display: flex;
+            flex: 1;
+            gap: 15px;
+            height: calc(100vh - 120px);
+        }
+
+        .pitch-container {
+            flex: 2;
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas#pitch {
+            background: #2e7d32;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .match-sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 5px;
+            background: var(--panel-bg);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .ctrl-btn {
+            flex: 1;
+            background: #334155;
+            border: none;
+            color: #fff;
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .ctrl-btn.active, .ctrl-btn:hover {
+            background: var(--accent);
+        }
+
+        .events-log {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 5px;
+        }
+
+        .event-item {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .action-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 10px 4px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            background: #334155;
+        }
+
+        /* Generic UI Controls */
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .feed-item {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .feed-author {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .stat-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Form Controls */
+        input, select {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="app">
-
-<!-- =====================
-     HOME
-===================== -->
-
-<section id="home" class="page active">
-
-    <div class="topbar">
-
-        <div class="brand">
-            <div class="brandMark">⚽</div>
-            <span>FOOTBALL LIFE</span>
-        </div>
-
-        <div class="topRight">
-            <span class="money" id="topMoney">€13.1K</span>
-            <button class="iconBtn" onclick="showNotifications()">♢</button>
-            <button class="iconBtn" onclick="showSettings()">⚙</button>
-        </div>
-
+    <div id="sidebar">
+        <div class="brand">PRO SIM 2026</div>
+        <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+        <button class="nav-btn" onclick="switchTab('match')">Match Engine</button>
+        <button class="nav-btn" onclick="switchTab('social')">Social Network</button>
+        <button class="nav-btn" onclick="switchTab('lifestyle')">Lifestyle & Assets</button>
+        <button class="nav-btn" onclick="switchTab('finance')">Finances</button>
     </div>
 
-    <div class="homeWrap">
-
-        <div class="hero">
-
-            <div class="heroGlow"></div>
-
-            <div class="heroContent">
-
-                <div class="season">
-                    SEASON 2026 / 27 • WEEK 2
-                </div>
-
-                <div class="playerName">
-                    ANAS JR
-                </div>
-
-                <div class="playerMeta">
-                    Marseille Blue • CAM • Morocco
-                </div>
-
-                <div class="ovrBox">
-
-                    <div class="ovr" id="heroOVR">
-                        60
-                    </div>
-
-                    <div class="ovrInfo">
-                        <div class="position">CAM</div>
-                        <div class="club">MARSEILLE BLUE</div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="playerArt">
-
-                <div class="playerSilhouette">
-
-                    <div class="hair"></div>
-                    <div class="head"></div>
-
-                    <div class="arm left"></div>
-                    <div class="arm right"></div>
-
-                    <div class="body"></div>
-
-                    <div class="leg left"></div>
-                    <div class="leg right"></div>
-
-                </div>
-
-            </div>
-
-            <div class="heroBottom">
-
-                <div class="miniStat">
-                    <div class="miniLabel">FORM</div>
-                    <div class="miniValue" id="formValue">84</div>
-                </div>
-
-                <div class="miniStat">
-                    <div class="miniLabel">FITNESS</div>
-                    <div class="miniValue" id="fitnessValue">88</div>
-                </div>
-
-                <div class="miniStat">
-                    <div class="miniLabel">VALUE</div>
-                    <div class="miniValue">€13.1K</div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- MATCH -->
-
-        <div class="section">
-
-            <div class="sectionHeader">
-                <div class="sectionTitle">NEXT MATCH</div>
-                <div class="sectionMore">MATCHDAY 3</div>
-            </div>
-
-            <div class="matchCard">
-
-                <div class="matchTop">
-                    <div class="matchLabel">LEAGUE • HOME</div>
-                    <div class="matchDate">TOMORROW • 21:00</div>
-                </div>
-
-                <div class="teams">
-
-                    <div class="team">
-                        <div class="teamLogo">🔵</div>
-                        <div class="teamName">MARSEILLE BLUE</div>
-                    </div>
-
-                    <div class="vs">VS</div>
-
-                    <div class="team">
-                        <div class="teamLogo">🔴</div>
-                        <div class="teamName">LYON CITY</div>
-                    </div>
-
-                </div>
-
-                <button class="playBtn" onclick="openMatch()">
-                    ENTER MATCH
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- NEWS -->
-
-        <div class="section">
-
-            <div class="sectionHeader">
-                <div class="sectionTitle">AROUND YOU</div>
-                <div class="sectionMore">ALL NEWS</div>
-            </div>
-
-            <div class="newsList">
-
-                <div class="news">
-                    <div class="newsTag">COACH</div>
-                    <div class="newsText">
-                        Your coach is impressed by your recent training.
-                    </div>
-                    <div class="newsTime">12 MIN AGO</div>
-                </div>
-
-                <div class="news">
-                    <div class="newsTag">TRANSFER</div>
-                    <div class="newsText">
-                        Two clubs have started monitoring your performances.
-                    </div>
-                    <div class="newsTime">1 HOUR AGO</div>
-                </div>
-
-                <div class="news">
-                    <div class="newsTag">SOCIAL</div>
-                    <div class="newsText">
-                        Your latest post is getting attention from fans.
-                    </div>
-                    <div class="newsTime">3 HOURS AGO</div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================
-     CAREER
-===================== -->
-
-<section id="career" class="page">
-
-    <div class="topbar">
-
-        <div class="brand">
-            <div class="brandMark">01</div>
-            <span>CAREER</span>
-        </div>
-
-        <div class="topRight">
-            <button class="iconBtn" onclick="showNotifications()">♢</button>
-        </div>
-
-    </div>
-
-    <div class="pageWrap">
-
-        <div class="pageIntro">
-            <div class="pageEyebrow">YOUR JOURNEY</div>
-            <div class="pageTitle">My Career</div>
-        </div>
-
-        <div class="careerProfile">
-
-            <div class="avatar">⚽</div>
-
-            <div>
-                <div class="profileName">Anas Jr</div>
-                <div class="profileMeta">
-                    CAM • Marseille Blue • Age 18
-                </div>
-            </div>
-
-            <div class="profileOVR">
-                <strong>60</strong>
-                <span>OVR</span>
-            </div>
-
-        </div>
-
-        <div class="menuGrid">
-
-            <div class="menuCard" onclick="openAttributes()">
-                <div class="menuIcon">◈</div>
-                <div class="menuCardTitle">ATTRIBUTES</div>
-                <div class="menuCardSub">
-                    Technical • Mental • Physical
-                </div>
-            </div>
-
-            <div class="menuCard" onclick="showTraining()">
-                <div class="menuIcon">⚡</div>
-                <div class="menuCardTitle">TRAINING</div>
-                <div class="menuCardSub">
-                    Improve your player
-                </div>
-            </div>
-
-            <div class="menuCard" onclick="openTransfers()">
-                <div class="menuIcon">↗</div>
-                <div class="menuCardTitle">TRANSFERS</div>
-                <div class="menuCardSub">
-                    Offers & negotiations
-                </div>
-            </div>
-
-            <div class="menuCard" onclick="showContract()">
-                <div class="menuIcon">▤</div>
-                <div class="menuCardTitle">CONTRACT</div>
-                <div class="menuCardSub">
-                    Salary • Agent • Club
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================
-     WORLD
-===================== -->
-
-<section id="world" class="page">
-
-    <div class="topbar">
-
-        <div class="brand">
-            <div class="brandMark">02</div>
-            <span>FOOTBALL WORLD</span>
-        </div>
-
-    </div>
-
-    <div class="pageWrap">
-
-        <div class="pageIntro">
-            <div class="pageEyebrow">THE WORLD OF FOOTBALL</div>
-            <div class="pageTitle">World</div>
-        </div>
-
-        <div class="competition"
-             onclick="showCompetition('League')">
-
-            <div class="compIcon">🏆</div>
-
-            <div>
-                <div class="compTitle">
-                    NATIONAL LEAGUES
-                </div>
-                <div class="compSub">
-                    Division 1 • Division 2 • Promotion
-                </div>
-            </div>
-
-        </div>
-
-        <div class="competition"
-             onclick="showCompetition('Champions League')">
-
-            <div class="compIcon">🌟</div>
-
-            <div>
-                <div class="compTitle">
-                    CHAMPIONS LEAGUE
-                </div>
-                <div class="compSub">
-                    Europe's elite competition
-                </div>
-            </div>
-
-        </div>
-
-        <div class="competition"
-             onclick="showCompetition('Europa League')">
-
-            <div class="compIcon">🟠</div>
-
-            <div>
-                <div class="compTitle">
-                    EUROPA LEAGUE
-                </div>
-                <div class="compSub">
-                    Continental competition
-                </div>
-            </div>
-
-        </div>
-
-        <div class="competition"
-             onclick="showCompetition('Conference League')">
-
-            <div class="compIcon">🟣</div>
-
-            <div>
-                <div class="compTitle">
-                    CONFERENCE LEAGUE
-                </div>
-                <div class="compSub">
-                    The next European stage
-                </div>
-            </div>
-
-        </div>
-
-        <div class="competition"
-             onclick="showCompetition('International')">
-
-            <div class="compIcon">🌍</div>
-
-            <div>
-                <div class="compTitle">
-                    NATIONAL TEAMS
-                </div>
-                <div class="compSub">
-                    International football
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================
-     LIFE
-===================== -->
-
-<section id="life" class="page">
-
-    <div class="topbar">
-
-        <div class="brand">
-            <div class="brandMark">03</div>
-            <span>MY LIFE</span>
-        </div>
-
-    </div>
-
-    <div class="pageWrap">
-
-        <div class="pageIntro">
-            <div class="pageEyebrow">BEYOND FOOTBALL</div>
-            <div class="pageTitle">Your Life</div>
-        </div>
-
-        <div class="lifeHero">
-
-            <div class="lifeMoney" id="lifeMoney">
-                €13,144
-            </div>
-
-            <div class="lifeLabel">
-                AVAILABLE BALANCE
-            </div>
-
-        </div>
-
-        <div class="lifeGrid">
-
-            <div class="lifeCard" onclick="showLife('home')">
-                <div class="lifeCardIcon">🏠</div>
-                <div class="lifeCardTitle">HOME</div>
-                <div class="lifeCardValue">
-                    Apartment • Level 1
-                </div>
-            </div>
-
-            <div class="lifeCard" onclick="showLife('car')">
-                <div class="lifeCardIcon">🚘</div>
-                <div class="lifeCardTitle">GARAGE</div>
-                <div class="lifeCardValue">
-                    0 cars owned
-                </div>
-            </div>
-
-            <div class="lifeCard" onclick="showLife('relationship')">
-                <div class="lifeCardIcon">♥</div>
-                <div class="lifeCardTitle">RELATIONSHIP</div>
-                <div class="lifeCardValue">
-                    Build your personal life
-                </div>
-            </div>
-
-            <div class="lifeCard" onclick="showSocial()">
-                <div class="lifeCardIcon">◎</div>
-                <div class="lifeCardTitle">SOCIAL MEDIA</div>
-                <div class="lifeCardValue">
-                    24.8K followers
-                </div>
-            </div>
-
-            <div class="lifeCard" onclick="showSponsors()">
-                <div class="lifeCardIcon">◆</div>
-                <div class="lifeCardTitle">SPONSORS</div>
-                <div class="lifeCardValue">
-                    1 active deal
-                </div>
-            </div>
-
-            <div class="lifeCard" onclick="showAgent()">
-                <div class="lifeCardIcon">♙</div>
-                <div class="lifeCardTitle">AGENT</div>
-                <div class="lifeCardValue">
-                    Professional agent
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================
-     SOCIAL
-===================== -->
-
-<section id="social" class="page">
-
-    <div class="topbar">
-
-        <div class="brand">
-            <div class="brandMark">04</div>
-            <span>SOCIAL</span>
-        </div>
-
-    </div>
-
-    <div class="pageWrap">
-
-        <div class="pageIntro">
-            <div class="pageEyebrow">YOUR PUBLIC IMAGE</div>
-            <div class="pageTitle">Social</div>
-        </div>
-
-        <div class="socialHeader">
-            <div class="followers">24,800</div>
-            <div class="followLabel">FOLLOWERS</div>
-        </div>
-
-        <div class="post">
-
-            <div class="postHead">
-
-                <div class="postAvatar">⚽</div>
-
+    <div id="main-content">
+
+        <div id="tab-dashboard" class="screen active">
+            <div class="glass-card profile-header">
+                <div class="avatar">★</div>
                 <div>
-                    <div class="postUser">Anas Jr ✓</div>
-                    <div class="postTime">2 hours ago</div>
+                    <h2 id="dash-name">Anas Jr</h2>
+                    <p style="color: var(--text-muted);" id="dash-details">CAM | Real Madrid (Fictional) | Age 19</p>
+                    <div style="margin-top: 8px;">
+                        <span class="stat-badge" id="dash-rating">OVR: 78</span>
+                        <span class="stat-badge" id="dash-value">Value: €24.5M</span>
+                        <span class="stat-badge" id="dash-wage">Wage: €15k/wk</span>
+                    </div>
                 </div>
-
             </div>
 
-            <div class="postBody">
-                Ready for the next match. Let's go! 💙
+            <div class="grid-dashboard">
+                <div class="glass-card">
+                    <h3>Season Performance</h3>
+                    <br>
+                    <p>Matches Played: <strong id="stat-apps">12</strong></p>
+                    <p>Goals Scored: <strong id="stat-goals">5</strong></p>
+                    <p>Assists: <strong id="stat-assists">3</strong></p>
+                    <p>Average Rating: <strong id="stat-avgrat">7.35</strong></p>
+                </div>
+                <div class="glass-card">
+                    <h3>Manager Trust & Form</h3>
+                    <br>
+                    <p>Status: <strong style="color: var(--accent);" id="mgr-status">Starting XI</strong></p>
+                    <p>Manager Confidence: <strong id="mgr-trust">84%</strong></p>
+                    <p>Match Fitness: <strong id="mgr-fitness">95%</strong></p>
+                    <p>Morale: <strong id="mgr-morale">High</strong></p>
+                </div>
+                <div class="glass-card">
+                    <h3>Next Fixture</h3>
+                    <br>
+                    <p style="font-size: 1.1rem; font-weight: bold;" id="next-fixture">vs FC Barcelona (H)</p>
+                    <p style="color: var(--text-muted); margin-bottom: 15px;">League Matchday 14</p>
+                    <button class="btn" onclick="switchTab('match')">Enter Match Day</button>
+                </div>
             </div>
-
-            <div class="postActions">
-                <span>♡ 4.2K</span>
-                <span>↗ 418</span>
-                <span>💬 203</span>
-            </div>
-
         </div>
 
-        <div class="post">
-
-            <div class="postHead">
-
-                <div class="postAvatar">🔥</div>
-
+        <div id="tab-match" class="screen">
+            <div class="match-header">
                 <div>
-                    <div class="postUser">Football World</div>
-                    <div class="postTime">5 hours ago</div>
+                    <span id="home-team-name">HOME</span>
+                    <span class="score-display" id="match-score">0 - 0</span>
+                    <span id="away-team-name">AWAY</span>
+                </div>
+                <div id="match-clock" style="font-size: 1.2rem; font-family: monospace;">00:00</div>
+            </div>
+
+            <div class="match-container">
+                <div class="pitch-container">
+                    <canvas id="pitch" width="800" height="520"></canvas>
                 </div>
 
+                <div class="match-sidebar">
+                    <div class="glass-card controls-bar">
+                        <button class="ctrl-btn" onclick="setSpeed(0)">Ⅱ</button>
+                        <button class="ctrl-btn active" onclick="setSpeed(1)">1x</button>
+                        <button class="ctrl-btn" onclick="setSpeed(2)">2x</button>
+                        <button class="ctrl-btn" onclick="setSpeed(4)">4x</button>
+                    </div>
+
+                    <div class="glass-card" style="padding: 10px;">
+                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 0.85rem;">
+                            <span>Rating: <span id="live-rating" style="color: var(--accent);">6.0</span></span>
+                            <span>Stamina: <span id="live-stamina" style="color: var(--warning);">100%</span></span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                        <h4 style="margin-bottom: 8px;">Match Events</h4>
+                        <div class="events-log" id="events-log">
+                            <div class="event-item">00:00 - Kick off!</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h4 style="margin-bottom: 8px;">Tactical Instructions</h4>
+                        <div class="action-grid">
+                            <button class="action-btn" onclick="setUserIntent('CALL_BALL')">CALL BALL</button>
+                            <button class="action-btn" onclick="setUserIntent('ATTACK')">ATTACK</button>
+                            <button class="action-btn" onclick="setUserIntent('DEFEND')">DEFEND</button>
+                            <button class="action-btn" onclick="setUserIntent('PRESS')">PRESS</button>
+                            <button class="action-btn" onclick="setUserIntent('HOLD')">HOLD POS</button>
+                            <button class="action-btn" onclick="setUserIntent('RISK')">TAKE RISK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-social" class="screen">
+            <div class="glass-card">
+                <h3>Footgram - Social Media 2.0</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Followers: <strong id="social-followers" style="color: var(--accent);">142,500</strong></p>
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <input type="text" id="post-input" placeholder="What's on your mind? Write a post..." style="margin-bottom: 0;">
+                    <button class="btn" onclick="submitPost()">Post</button>
+                </div>
             </div>
 
-            <div class="postBody">
-                Young CAM Anas Jr is attracting attention after
-                impressive training performances.
+            <div class="glass-card" style="flex: 1; overflow-y: auto;" id="social-feed">
+                </div>
+        </div>
+
+        <div id="tab-lifestyle" class="screen">
+            <div class="glass-card">
+                <h3>Real Estate & Assets</h3>
+                <br>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
+                        <h4>Current Residence</h4>
+                        <p style="color: var(--text-muted);" id="home-name">Modern City Apartment</p>
+                        <p>Comfort Level: 75%</p>
+                        <br>
+                        <button class="btn" onclick="upgradeHome()">Upgrade Property (€250,000)</button>
+                    </div>
+                    <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
+                        <h4>Garage</h4>
+                        <p style="color: var(--text-muted);" id="car-name">Sports Coupe</p>
+                        <p>Prestige: High</p>
+                        <br>
+                        <button class="btn" onclick="buyCar()">Buy Supercar (€180,000)</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="postActions">
-                <span>♡ 8.7K</span>
-                <span>↗ 1.2K</span>
-                <span>💬 641</span>
+            <div class="glass-card">
+                <h3>Personal Relationships</h3>
+                <br>
+                <div id="relationship-list">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+                        <div>
+                            <strong>Elena Rostova</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Architect | Age 24</p>
+                        </div>
+                        <div>
+                            <span class="stat-badge">Status: Dating</span>
+                            <button class="btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="interactNPC('Elena')">Text</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
 
+        <div id="tab-finance" class="screen">
+            <div class="glass-card">
+                <h3>Financial Overview</h3>
+                <br>
+                <h2>Bank Balance: <span id="bank-balance" style="color: var(--accent);">€840,200</span></h2>
+                <br>
+                <div style="display: flex; gap: 20px;">
+                    <div>
+                        <p style="color: var(--text-muted);">Weekly Salary</p>
+                        <h4>€15,000</h4>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted);">Sponsorships</p>
+                        <h4>€4,200 / wk</h4>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted);">Living Expenses</p>
+                        <h4 style="color: var(--danger);">-€2,100 / wk</h4>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
-</section>
-
-
-<!-- =====================
-     MODAL
-===================== -->
-
-<div id="modal" class="modal" onclick="closeModalOutside(event)">
-
-    <div class="modalBox" id="modalContent">
-
-    </div>
-
-</div>
-
-
-<!-- =====================
-     TOAST
-===================== -->
-
-<div id="toast" class="toast"></div>
-
-
-<!-- =====================
-     NAVIGATION
-===================== -->
-
-<nav class="bottomNav">
-
-    <button class="navItem active"
-            onclick="go('home',this)">
-        <div class="navIcon">⌂</div>
-        <div class="navText">HOME</div>
-    </button>
-
-    <button class="navItem"
-            onclick="go('career',this)">
-        <div class="navIcon">◈</div>
-        <div class="navText">CAREER</div>
-    </button>
-
-    <button class="navItem"
-            onclick="go('world',this)">
-        <div class="navIcon">◎</div>
-        <div class="navText">WORLD</div>
-    </button>
-
-    <button class="navItem"
-            onclick="go('life',this)">
-        <div class="navIcon">♙</div>
-        <div class="navText">LIFE</div>
-    </button>
-
-    <button class="navItem"
-            onclick="go('social',this)">
-        <div class="navIcon">●</div>
-        <div class="navText">SOCIAL</div>
-    </button>
-
-</nav>
-
-</div>
-
-
-<script>
-
-/* =========================================
-   GAME DATA
-========================================= */
-
-const GAME = {
-
-    player:{
-        name:"Anas Jr",
-        age:18,
-        nationality:"Morocco",
-        position:"CAM",
-        club:"Marseille Blue",
-
-        ovr:60,
-        form:84,
-        fitness:88,
-        morale:92,
-
-        money:13144,
-        marketValue:13144,
-
-        followers:24800,
-
-        goals:0,
-        assists:0,
-        appearances:1,
-
-        attributes:{
-            pace:63,
-            shooting:48,
-            passing:69,
-            dribbling:67,
-            defending:34,
-            physical:52,
-            vision:72,
-            technique:70
-        }
-    },
-
-    season:{
-        year:"2026/27",
-        week:2
-    },
-
-    match:{
-        home:"Marseille Blue",
-        away:"Lyon City",
-        homeScore:0,
-        awayScore:0,
-        minute:0
-    },
-
-    notifications:[
-        "Coach is impressed by your recent training.",
-        "Two clubs are monitoring your performances.",
-        "Your social media audience is growing."
-    ]
-
-};
-
-
-/* =========================================
-   SAVE / LOAD
-========================================= */
-
-function saveGame(){
-
-    localStorage.setItem(
-        "footballLifeSave",
-        JSON.stringify(GAME)
-    );
-
-}
-
-function loadGame(){
-
-    const saved =
-        localStorage.getItem("footballLifeSave");
-
-    if(!saved) return;
-
-    try{
-
-        const data = JSON.parse(saved);
-
-        Object.assign(GAME.player,data.player || {});
-        Object.assign(GAME.season,data.season || {});
-        Object.assign(GAME.match,data.match || {});
-
-    }catch(e){
-
-        console.log("Save error");
-
-    }
-
-}
-
-loadGame();
-
-
-/* =========================================
-   NAVIGATION
-========================================= */
-
-function go(page,button){
-
-    document
-        .querySelectorAll(".page")
-        .forEach(p=>p.classList.remove("active"));
-
-    document
-        .getElementById(page)
-        .classList.add("active");
-
-    document
-        .querySelectorAll(".navItem")
-        .forEach(b=>b.classList.remove("active"));
-
-    if(button){
-        button.classList.add("active");
-    }
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-/* =========================================
-   UPDATE UI
-========================================= */
-
-function updateUI(){
-
-    document.getElementById("heroOVR")
-        .textContent = GAME.player.ovr;
-
-    document.getElementById("formValue")
-        .textContent = GAME.player.form;
-
-    document.getElementById("fitnessValue")
-        .textContent = GAME.player.fitness;
-
-    document.getElementById("topMoney")
-        .textContent =
-        "€" + formatMoney(GAME.player.money);
-
-    document.getElementById("lifeMoney")
-        .textContent =
-        "€" + formatMoney(GAME.player.money);
-
-}
-
-function formatMoney(value){
-
-    return Number(value).toLocaleString(
-        "en-US"
-    );
-
-}
-
-updateUI();
-
-
-/* =========================================
-   MODAL SYSTEM
-========================================= */
-
-function openModal(html){
-
-    document.getElementById("modalContent")
-        .innerHTML = html;
-
-    document.getElementById("modal")
-        .classList.add("show");
-
-}
-
-function closeModal(){
-
-    document.getElementById("modal")
-        .classList.remove("show");
-
-}
-
-function closeModalOutside(e){
-
-    if(e.target.id==="modal"){
-        closeModal();
-    }
-
-}
-
-
-/* =========================================
-   ATTRIBUTES
-========================================= */
-
-function openAttributes(){
-
-    const a = GAME.player.attributes;
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Player Attributes
-        </div>
-
-        <div class="attributes">
-
-            ${attribute("PACE",a.pace)}
-            ${attribute("SHOOTING",a.shooting)}
-            ${attribute("PASSING",a.passing)}
-            ${attribute("DRIBBLING",a.dribbling)}
-            ${attribute("VISION",a.vision)}
-            ${attribute("TECHNIQUE",a.technique)}
-            ${attribute("PHYSICAL",a.physical)}
-            ${attribute("DEFENDING",a.defending)}
-
-        </div>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-function attribute(name,value){
-
-    return `
-
-        <div class="attribute">
-
-            <div class="attrName">
-                ${name}
-            </div>
-
-            <div class="attrBar">
-                <div class="attrFill"
-                     style="width:${value}%">
-                </div>
-            </div>
-
-            <div class="attrValue">
-                ${value}
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================
-   TRAINING
-========================================= */
-
-function showTraining(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Training Center
-        </div>
-
-        <p style="color:#8490a3;font-size:11px;line-height:1.6">
-            Choose how you want to develop your player.
-            Training consumes fitness but can improve
-            attributes and form.
-        </p>
-
-        <div class="menuGrid">
-
-            <div class="menuCard"
-                 onclick="train('passing')">
-                <div class="menuIcon">◎</div>
-                <div class="menuCardTitle">
-                    PASSING
-                </div>
-                <div class="menuCardSub">
-                    Improve vision & passing
-                </div>
-            </div>
-
-            <div class="menuCard"
-                 onclick="train('dribbling')">
-                <div class="menuIcon">⚡</div>
-                <div class="menuCardTitle">
-                    DRIBBLING
-                </div>
-                <div class="menuCardSub">
-                    Improve technique
-                </div>
-            </div>
-
-            <div class="menuCard"
-                 onclick="train('physical')">
-                <div class="menuIcon">◆</div>
-                <div class="menuCardTitle">
-                    PHYSICAL
-                </div>
-                <div class="menuCardSub">
-                    Improve fitness
-                </div>
-            </div>
-
-            <div class="menuCard"
-                 onclick="train('shooting')">
-                <div class="menuIcon">●</div>
-                <div class="menuCardTitle">
-                    FINISHING
-                </div>
-                <div class="menuCardSub">
-                    Improve shooting
-                </div>
-            </div>
-
-        </div>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CANCEL
-        </button>
-
-    `);
-
-}
-
-function train(type){
-
-    if(GAME.player.fitness < 15){
-
-        showToast("Not enough fitness.");
-
-        return;
-
-    }
-
-    GAME.player.fitness -= 8;
-    GAME.player.form += 2;
-
-    if(type==="passing"){
-
-        GAME.player.attributes.passing += 1;
-        GAME.player.attributes.vision += 1;
-
-    }
-
-    if(type==="dribbling"){
-
-        GAME.player.attributes.dribbling += 1;
-        GAME.player.attributes.technique += 1;
-
-    }
-
-    if(type==="physical"){
-
-        GAME.player.attributes.physical += 2;
-
-    }
-
-    if(type==="shooting"){
-
-        GAME.player.attributes.shooting += 1;
-
-    }
-
-    calculateOVR();
-
-    saveGame();
-    updateUI();
-
-    closeModal();
-
-    showToast(
-        "Training completed. Your player improved."
-    );
-
-}
-
-
-/* =========================================
-   OVR CALCULATION
-========================================= */
-
-function calculateOVR(){
-
-    const a = GAME.player.attributes;
-
-    const value =
-        a.pace*.10 +
-        a.shooting*.12 +
-        a.passing*.18 +
-        a.dribbling*.18 +
-        a.defending*.04 +
-        a.physical*.10 +
-        a.vision*.14 +
-        a.technique*.14;
-
-    GAME.player.ovr =
-        Math.round(value);
-
-}
-
-
-/* =========================================
-   TRANSFERS
-========================================= */
-
-function openTransfers(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Transfer Market
-        </div>
-
-        <p style="color:#8490a3;font-size:11px">
-            Clubs are watching your progress.
-        </p>
-
-        ${offer(
-            "Paris North",
-            "France • Division 1",
-            "€4,200 / week",
-            "🟦"
-        )}
-
-        ${offer(
-            "Madrid Athletic",
-            "Spain • Division 2",
-            "€3,600 / week",
-            "🟥"
-        )}
-
-        ${offer(
-            "London United",
-            "England • Division 2",
-            "€4,800 / week",
-            "⬜"
-        )}
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            KEEP CURRENT CLUB
-        </button>
-
-    `);
-
-}
-
-function offer(name,league,salary,logo){
-
-    return `
-
-        <div class="offer">
-
-            <div class="offerTop">
-
-                <div class="offerLogo">
-                    ${logo}
-                </div>
-
-                <div>
-                    <div class="offerName">
-                        ${name}
-                    </div>
-
-                    <div class="offerLeague">
-                        ${league}
-                    </div>
-                </div>
-
-                <div class="offerSalary">
-                    <strong>${salary}</strong>
-                    <small>PROPOSED</small>
-                </div>
-
-            </div>
-
-            <div class="offerActions">
-
-                <button class="smallBtn"
-                        onclick="rejectOffer('${name}')">
-                    REJECT
-                </button>
-
-                <button class="smallBtn accept"
-                        onclick="acceptOffer('${name}')">
-                    ACCEPT
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-function acceptOffer(club){
-
-    GAME.player.club = club;
-    GAME.player.money += 2500;
-
-    saveGame();
-    updateUI();
-
-    closeModal();
-
-    showToast(
-        "Transfer completed. Welcome to " + club + "!"
-    );
-
-}
-
-function rejectOffer(club){
-
-    closeModal();
-
-    showToast(
-        "You rejected the offer from " + club
-    );
-
-}
-
-
-/* =========================================
-   CONTRACT
-========================================= */
-
-function showContract(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Contract
-        </div>
-
-        <div class="lifeHero">
-
-            <div class="lifeMoney">
-                €1,850
-            </div>
-
-            <div class="lifeLabel">
-                WEEKLY SALARY
-            </div>
-
-        </div>
-
-        <div class="offer" style="margin-top:12px">
-
-            <div class="offerName">
-                MARSEILLE BLUE
-            </div>
-
-            <div class="offerLeague">
-                Contract until June 2029
-            </div>
-
-            <div class="offerLeague">
-                Squad role: ROTATION
-            </div>
-
-        </div>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-
-/* =========================================
-   MATCH ENGINE
-========================================= */
-
-function openMatch(){
-
-    GAME.match.homeScore = 0;
-    GAME.match.awayScore = 0;
-    GAME.match.minute = 0;
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Matchday
-        </div>
-
-        <div class="matchEngine">
-
-            <div class="stadium">
-
-                <div class="score"
-                     id="score">
-                    0 - 0
-                </div>
-
-            </div>
-
-            <div class="commentary"
-                 id="commentary">
-
-                <div class="event">
-                    <strong>0'</strong>
-                    The referee starts the match.
-                </div>
-
-            </div>
-
-            <div class="matchChoices">
-
-                <button class="choice"
-                        onclick="matchAction('pass')">
-                    PASS
-                </button>
-
-                <button class="choice"
-                        onclick="matchAction('dribble')">
-                    DRIBBLE
-                </button>
-
-                <button class="choice"
-                        onclick="matchAction('shoot')">
-                    SHOOT
-                </button>
-
-                <button class="choice"
-                        onclick="matchAction('create')">
-                    CREATE
-                </button>
-
-            </div>
-
-        </div>
-
-    `);
-
-}
-
-function matchAction(action){
-
-    if(GAME.match.minute >= 90){
-
-        showToast("Full time.");
-
-        return;
-
-    }
-
-    GAME.match.minute +=
-        Math.floor(Math.random()*9)+4;
-
-    if(GAME.match.minute>90){
-        GAME.match.minute=90;
-    }
-
-    const a = GAME.player.attributes;
-
-    let chance = Math.random();
-
-    let text = "";
-
-    if(action==="pass"){
-
-        chance += a.passing/200;
-
-        text =
-            "Anas receives the ball and looks for space.";
-
-    }
-
-    if(action==="dribble"){
-
-        chance += a.dribbling/220;
-
-        text =
-            "Anas takes on his defender.";
-
-    }
-
-    if(action==="shoot"){
-
-        chance += a.shooting/250;
-
-        if(chance>.95){
-
-            GAME.match.homeScore++;
-
-            GAME.player.goals++;
-
-            text =
-                "GOAL! ANAS JR FINISHES BEAUTIFULLY!";
-
-        }else{
-
-            text =
-                "Anas shoots... saved by the goalkeeper.";
-
-        }
-
-    }
-
-    if(action==="create"){
-
-        chance += a.vision/220;
-
-        if(chance>.98){
-
-            GAME.player.assists++;
-
-            text =
-                "Brilliant pass from Anas. ASSIST!";
-
-        }else{
-
-            text =
-                "Anas tries to create an opportunity.";
-
-        }
-
-    }
-
-    addEvent(
-        GAME.match.minute + "'",
-        text
-    );
-
-    document.getElementById("score")
-        .textContent =
-        GAME.match.homeScore +
-        " - " +
-        GAME.match.awayScore;
-
-    GAME.player.fitness -= 1;
-
-    if(GAME.player.fitness<0){
-        GAME.player.fitness=0;
-    }
-
-    saveGame();
-    updateUI();
-
-}
-
-
-/* =========================================
-   COMMENTARY
-========================================= */
-
-function addEvent(time,text){
-
-    const box =
-        document.getElementById("commentary");
-
-    if(!box) return;
-
-    const div =
-        document.createElement("div");
-
-    div.className="event";
-
-    div.innerHTML =
-        `<strong>${time}</strong>${text}`;
-
-    box.prepend(div);
-
-}
-
-
-/* =========================================
-   COMPETITIONS
-========================================= */
-
-function showCompetition(type){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            ${type}
-        </div>
-
-        <div class="offer">
-
-            <div class="offerName">
-                CURRENT SEASON
-            </div>
-
-            <div class="offerLeague">
-                2026 / 27
-            </div>
-
-            <div class="offerLeague">
-                Promotion • Relegation • Fixtures
-            </div>
-
-        </div>
-
-        <div class="offer">
-
-            <div class="offerName">
-                MARSEILLE BLUE
-            </div>
-
-            <div class="offerLeague">
-                Position: 7th
-            </div>
-
-            <div class="offerLeague">
-                Points: 3
-            </div>
-
-        </div>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-
-/* =========================================
-   LIFE
-========================================= */
-
-function showLife(type){
-
-    let title = "";
-    let content = "";
-
-    if(type==="home"){
-
-        title="Your Home";
-
-        content=`
-            <div class="lifeHero">
-                <div class="lifeMoney">Apartment</div>
-                <div class="lifeLabel">
-                    LEVEL 1 • CITY CENTER
-                </div>
-            </div>
-
-            <button class="playBtn"
-                    style="margin-top:12px"
-                    onclick="buyUpgrade('home')">
-                UPGRADE • €5,000
-            </button>
-        `;
-
-    }
-
-    if(type==="car"){
-
-        title="Garage";
-
-        content=`
-            <div class="lifeHero">
-                <div class="lifeMoney">Empty</div>
-                <div class="lifeLabel">
-                    YOU DON'T OWN A CAR
-                </div>
-            </div>
-
-            <button class="playBtn"
-                    style="margin-top:12px"
-                    onclick="buyCar()">
-                BUY CAR • €9,500
-            </button>
-        `;
-
-    }
-
-    if(type==="relationship"){
-
-        title="Relationships";
-
-        content=`
-            <div class="lifeHero">
-                <div class="lifeMoney">Personal Life</div>
-                <div class="lifeLabel">
-                    Your choices affect your career.
-                </div>
-            </div>
-
-            <button class="playBtn"
-                    style="margin-top:12px"
-                    onclick="relationshipEvent()">
-                CHECK MESSAGES
-            </button>
-        `;
-
-    }
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            ${title}
-        </div>
-
-        ${content}
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-function buyUpgrade(type){
-
-    if(GAME.player.money<5000){
-
-        showToast("Not enough money.");
-
-        return;
-
-    }
-
-    GAME.player.money-=5000;
-
-    saveGame();
-    updateUI();
-
-    closeModal();
-
-    showToast("Your home was upgraded.");
-
-}
-
-function buyCar(){
-
-    if(GAME.player.money<9500){
-
-        showToast("Not enough money.");
-
-        return;
-
-    }
-
-    GAME.player.money-=9500;
-
-    saveGame();
-    updateUI();
-
-    closeModal();
-
-    showToast("You bought your first car!");
-
-}
-
-function relationshipEvent(){
-
-    closeModal();
-
-    showToast(
-        "You received a new personal message."
-    );
-
-}
-
-
-/* =========================================
-   SOCIAL
-========================================= */
-
-function showSocial(){
-
-    closeModal();
-
-    go(
-        "social",
-        document.querySelectorAll(".navItem")[4]
-    );
-
-}
-
-
-/* =========================================
-   SPONSORS
-========================================= */
-
-function showSponsors(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Sponsors
-        </div>
-
-        <div class="offer">
-
-            <div class="offerName">
-                SPORT NOVA
-            </div>
-
-            <div class="offerLeague">
-                Sportswear partnership
-            </div>
-
-            <div class="offerLeague">
-                €750 / week
-            </div>
-
-        </div>
-
-        <button class="playBtn"
-                onclick="acceptSponsor()">
-            SIGN PARTNERSHIP
-        </button>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-function acceptSponsor(){
-
-    GAME.player.money+=750;
-
-    saveGame();
-    updateUI();
-
-    closeModal();
-
-    showToast(
-        "Sponsor deal signed! +€750"
-    );
-
-}
-
-
-/* =========================================
-   AGENT
-========================================= */
-
-function showAgent(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Your Agent
-        </div>
-
-        <div class="careerProfile">
-
-            <div class="avatar">
-                ♙
-            </div>
-
-            <div>
-                <div class="profileName">
-                    Daniel Moretti
-                </div>
-
-                <div class="profileMeta">
-                    FIFA Licensed Agent
-                </div>
-            </div>
-
-        </div>
-
-        <div class="offer"
-             style="margin-top:12px">
-
-            <div class="offerName">
-                CURRENT STRATEGY
-            </div>
-
-            <div class="offerLeague">
-                Build your reputation before making
-                a major transfer.
-            </div>
-
-        </div>
-
-        <button class="playBtn"
-                onclick="agentAction()">
-            ASK AGENT TO FIND CLUBS
-        </button>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-function agentAction(){
-
-    closeModal();
-
-    showToast(
-        "Your agent will contact clubs this week."
-    );
-
-}
-
-
-/* =========================================
-   NOTIFICATIONS
-========================================= */
-
-function showNotifications(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Notifications
-        </div>
-
-        ${GAME.notifications.map(
-            n=>`
-                <div class="offer">
-                    <div class="offerName">
-                        ${n}
-                    </div>
-                </div>
-            `
-        ).join("")}
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-
-/* =========================================
-   SETTINGS
-========================================= */
-
-function showSettings(){
-
-    openModal(`
-
-        <div class="modalHandle"></div>
-
-        <div class="modalTitle">
-            Settings
-        </div>
-
-        <div class="offer">
-
-            <div class="offerName">
-                AUTO SAVE
-            </div>
-
-            <div class="offerLeague">
-                Your career is automatically saved
-                on this device.
-            </div>
-
-        </div>
-
-        <button class="playBtn"
-                onclick="resetGame()">
-            RESET CAREER
-        </button>
-
-        <button class="closeBtn"
-                onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-function resetGame(){
-
-    if(confirm(
-        "Reset your career?"
-    )){
-
-        localStorage.removeItem(
-            "footballLifeSave"
-        );
-
-        location.reload();
-
-    }
-
-}
-
-
-/* =========================================
-   TOAST
-========================================= */
-
-let toastTimer;
-
-function showToast(message){
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent=message;
-
-    toast.classList.add("show");
-
-    clearTimeout(toastTimer);
-
-    toastTimer=setTimeout(()=>{
-
-        toast.classList.remove("show");
-
-    },3000);
-
-}
-
-
-/* =========================================
-   WEEK SIMULATION
-========================================= */
-
-function advanceWeek(){
-
-    GAME.season.week++;
-
-    GAME.player.fitness += 12;
-
-    if(GAME.player.fitness>100)
-        GAME.player.fitness=100;
-
-    if(Math.random()>.65){
-
-        GAME.player.form += 1;
-
-        if(GAME.player.form>100)
-            GAME.player.form=100;
-
-    }
-
-    saveGame();
-    updateUI();
-
-}
-
-
-/* =========================================
-   RANDOM EVENTS
-========================================= */
-
-function randomEvent(){
-
-    const events=[
-
-        "A scout watched your training session.",
-
-        "Fans are talking about your potential.",
-
-        "Your coach praised your attitude.",
-
-        "A journalist asked about your future.",
-
-        "Your agent received a call from another club."
-
-    ];
-
-    const event =
-        events[
-            Math.floor(
-                Math.random()*events.length
-            )
+    <script>
+        /* ==========================================================================
+           GLOBAL GAME STATE & DATA ARCHITECTURE
+           ========================================================================== */
+        const gameState = {
+            player: {
+                name: "Anas Jr",
+                position: "CAM",
+                number: 10,
+                overall: 78,
+                stamina: 100,
+                rating: 6.0,
+                goals: 5,
+                assists: 3,
+                apps: 12,
+                balance: 840200,
+                followers: 142500,
+                currentHome: "Modern City Apartment",
+                currentCar: "Sports Coupe",
+                userIntent: "BALANCED"
+            },
+            match: {
+                active: false,
+                simSpeed: 1, // 0 = Paused, 1 = 1x, 2 = 2x, 4 = 4x
+                time: 0, // seconds (90 mins = 5400 frames/ticks)
+                homeScore: 0,
+                awayScore: 0,
+                homeTeam: "Real Madrid (Fictional)",
+                awayTeam: "FC Barcelona (Fictional)",
+                ball: { x: 400, y: 260, vx: 0, vy: 0, targetX: 400, targetY: 260 },
+                players: []
+            }
+        };
+
+        const socialFeed = [
+            { author: "MadridFan99", text: "Anas Jr has been incredible in midfield lately! 🔥", likes: 1240 },
+            { author: "FootyAnalytica", text: "Stats show Anas Jr completes 88% of passes in key attacking zones.", likes: 3410 }
         ];
 
-    GAME.notifications.unshift(event);
+        /* ==========================================================================
+           TAB NAVIGATION SYSTEM
+           ========================================================================== */
+        function switchTab(tabId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
 
-    GAME.notifications =
-        GAME.notifications.slice(0,8);
+            if (tabId === 'match' && !gameState.match.active) {
+                initMatch();
+            }
+        }
 
-    saveGame();
+        /* ==========================================================================
+           2D CANVAS MATCH ENGINE SYSTEM
+           ========================================================================== */
+        const canvas = document.getElementById('pitch');
+        const ctx = canvas.getContext('2d');
+        let matchInterval = null;
 
-}
+        class PitchPlayer {
+            constructor(name, team, x, y, isUser = false, role = 'CM') {
+                this.name = name;
+                this.team = team; // 'home' or 'away'
+                this.x = x;
+                this.y = y;
+                this.baseX = x;
+                this.baseY = y;
+                this.vx = 0;
+                this.vy = 0;
+                this.speed = isUser ? 2.2 : 2.0;
+                this.isUser = isUser;
+                this.role = role;
+                this.radius = 10;
+            }
 
+            update(ball, intent) {
+                let targetX = this.baseX;
+                let targetY = this.baseY;
 
-/* =========================================
-   AUTO WORLD TICK
-========================================= */
+                // Simple AI positioning towards ball depending on team and role
+                const distToBall = Math.hypot(ball.x - this.x, ball.y - this.y);
 
-setInterval(()=>{
+                if (this.isUser) {
+                    // Reactive user player intent controls
+                    if (intent === 'ATTACK') targetX = ball.x + 40;
+                    else if (intent === 'DEFEND') targetX = ball.x - 60;
+                    else if (intent === 'CALL_BALL' || distToBall < 120) {
+                        targetX = ball.x;
+                        targetY = ball.y;
+                    }
+                } else {
+                    // Standard AI behavior
+                    if (distToBall < 100) {
+                        targetX = ball.x;
+                        targetY = ball.y;
+                    } else {
+                        // Shift relative to ball
+                        targetX = this.baseX + (ball.x - 400) * 0.3;
+                        targetY = this.baseY + (ball.y - 260) * 0.3;
+                    }
+                }
 
-    randomEvent();
+                // Smooth linear movement interpolation
+                const angle = Math.atan2(targetY - this.y, targetX - this.x);
+                if (distToBall > 5 || !this.isUser) {
+                    this.x += Math.cos(angle) * this.speed;
+                    this.y += Math.sin(angle) * this.speed;
+                }
 
-},45000);
+                // Interaction with Ball (Pass / Kick)
+                if (distToBall < 12) {
+                    if (Math.random() < 0.05) {
+                        // Action choice: Shoot or Pass
+                        if ((this.team === 'home' && this.x > 650) || (this.team === 'away' && this.x < 150)) {
+                            // Shoot Towards Goal
+                            const targetGoalY = 260 + (Math.random() * 60 - 30);
+                            const targetGoalX = this.team === 'home' ? 780 : 20;
+                            ball.vx = (targetGoalX - this.x) * 0.1;
+                            ball.vy = (targetGoalY - this.y) * 0.1;
+                            logEvent(`${this.name} takes a shot on goal!`);
+                        } else {
+                            // Pass to open space/teammate
+                            ball.vx = (Math.random() - 0.5) * 8;
+                            ball.vy = (Math.random() - 0.5) * 8;
+                        }
 
+                        if (this.isUser) {
+                            gameState.player.rating = Math.min(10, gameState.player.rating + 0.2);
+                            document.getElementById('live-rating').innerText = gameState.player.rating.toFixed(1);
+                        }
+                    }
+                }
+            }
 
-/* =========================================
-   KEYBOARD / PREVENT ZOOM
-========================================= */
+            draw() {
+                // Draw User Marker
+                if (this.isUser) {
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.font = '16px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('★', this.x, this.y - 18);
+                }
 
-document.addEventListener(
-    "gesturestart",
-    function(e){
-        e.preventDefault();
-    }
-);
+                // Draw Player Circle
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.team === 'home' ? '#ef4444' : '#3b82f6';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
 
+                // Draw Name Text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.name, this.x, this.y + 20);
+            }
+        }
 
-/* =========================================
-   START
-========================================= */
+        function initMatch() {
+            gameState.match.active = true;
+            gameState.match.time = 0;
+            gameState.match.homeScore = 0;
+            gameState.match.awayScore = 0;
+            gameState.match.players = [];
 
-updateUI();
+            // Spawn Home Team (Red) 4-3-3 simplified positions
+            const homePositions = [
+                { name: "GK", x: 40, y: 260 },
+                { name: "CB", x: 180, y: 160 }, { name: "CB", x: 180, y: 360 },
+                { name: "CM", x: 350, y: 180 }, { name: gameState.player.name, x: 420, y: 260, isUser: true }, { name: "CM", x: 350, y: 340 },
+                { name: "ST", x: 550, y: 260 }
+            ];
 
-</script>
+            // Spawn Away Team (Blue)
+            const awayPositions = [
+                { name: "GK Away", x: 760, y: 260 },
+                { name: "CB Away", x: 620, y: 160 }, { name: "CB Away", x: 620, y: 360 },
+                { name: "CM Away", x: 450, y: 180 }, { name: "CM Away", x: 450, y: 340 },
+                { name: "ST Away", x: 250, y: 260 }
+            ];
 
+            homePositions.forEach(p => {
+                gameState.match.players.push(new PitchPlayer(p.name, 'home', p.x, p.y, p.isUser || false));
+            });
+
+            awayPositions.forEach(p => {
+                gameState.match.players.push(new PitchPlayer(p.name, 'away', p.x, p.y));
+            });
+
+            if (matchInterval) clearInterval(matchInterval);
+            matchInterval = setInterval(gameLoop, 1000 / 30); // 30 FPS tick
+        }
+
+        function gameLoop() {
+            if (gameState.match.simSpeed === 0) return; // Paused
+
+            // Run iterations based on simulation speed
+            for (let speedStep = 0; speedStep < gameState.match.simSpeed; speedStep++) {
+                updateMatchPhysics();
+            }
+
+            renderPitch();
+        }
+
+        function updateMatchPhysics() {
+            const m = gameState.match;
+            m.time += 1;
+
+            // Format Match Time Display
+            const minutes = Math.floor(m.time / 60);
+            const seconds = Math.floor(m.time % 60);
+            document.getElementById('match-clock').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            if (minutes >= 90) {
+                setSpeed(0);
+                logEvent("FULL TIME! Match Ended.");
+                return;
+            }
+
+            // Ball Physics
+            m.ball.x += m.ball.vx;
+            m.ball.y += m.ball.vy;
+            m.ball.vx *= 0.93; // Friction
+            m.ball.vy *= 0.93;
+
+            // Pitch Constraints & Goal Check
+            if (m.ball.x < 15 || m.ball.x > 785) {
+                if (m.ball.y > 200 && m.ball.y < 320) {
+                    if (m.ball.x > 785) {
+                        m.homeScore++;
+                        logEvent(`GOAL! ${m.homeTeam} Scores!`);
+                    } else {
+                        m.awayScore++;
+                        logEvent(`GOAL! ${m.awayTeam} Scores!`);
+                    }
+                    document.getElementById('match-score').innerText = `${m.homeScore} - ${m.awayScore}`;
+                    // Reset Ball to Center
+                    m.ball.x = 400; m.ball.y = 260; m.ball.vx = 0; m.ball.vy = 0;
+                } else {
+                    m.ball.vx *= -1; // Bounce off touchlines
+                }
+            }
+            if (m.ball.y < 15 || m.ball.y > 505) m.ball.vy *= -1;
+
+            // Update Player Positions
+            m.players.forEach(p => p.update(m.ball, gameState.player.userIntent));
+        }
+
+        function renderPitch() {
+            // Draw Grass Surface
+            ctx.fillStyle = '#2e7d32';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.lineWidth = 2;
+
+            // Outer Boundary
+            ctx.strokeRect(15, 15, 770, 490);
+
+            // Halfway Line & Center Circle
+            ctx.beginPath();
+            ctx.moveTo(400, 15);
+            ctx.lineTo(400, 505);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(400, 260, 60, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Goal Areas
+            ctx.strokeRect(15, 170, 100, 180);
+            ctx.strokeRect(685, 170, 100, 180);
+
+            // Draw Ball
+            ctx.beginPath();
+            ctx.arc(gameState.match.ball.x, gameState.match.ball.y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+            // Draw Players
+            gameState.match.players.forEach(p => p.draw());
+        }
+
+        /* ==========================================================================
+           MATCH CONTROLS & EVENT LOGGING
+           ========================================================================== */
+        function setSpeed(speed) {
+            gameState.match.simSpeed = speed;
+            document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function setUserIntent(intent) {
+            gameState.player.userIntent = intent;
+            logEvent(`Tactical focus changed: ${intent}`);
+        }
+
+        function logEvent(msg) {
+            const container = document.getElementById('events-log');
+            const minutes = Math.floor(gameState.match.time / 60).toString().padStart(2, '0');
+            const div = document.createElement('div');
+            div.className = 'event-item';
+            div.innerText = `${minutes}' - ${msg}`;
+            container.prepend(div);
+        }
+
+        /* ==========================================================================
+           SOCIAL MEDIA & LIFESTYLE LOGIC
+           ========================================================================== */
+        function renderSocialFeed() {
+            const container = document.getElementById('social-feed');
+            container.innerHTML = '';
+            socialFeed.forEach(post => {
+                const item = document.createElement('div');
+                item.className = 'feed-item';
+                item.innerHTML = `
+                    <div class="feed-author">@${post.author}</div>
+                    <div>${post.text}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">❤️ ${post.likes} Likes</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function submitPost() {
+            const input = document.getElementById('post-input');
+            if (!input.value.trim()) return;
+            
+            socialFeed.unshift({
+                author: gameState.player.name.replace(/\s+/g, ''),
+                text: input.value,
+                likes: Math.floor(Math.random() * 500) + 50
+            });
+            input.value = '';
+            renderSocialFeed();
+        }
+
+        function upgradeHome() {
+            if (gameState.player.balance >= 250000) {
+                gameState.player.balance -= 250000;
+                gameState.player.currentHome = "Luxury Penthouse Suite";
+                document.getElementById('home-name').innerText = gameState.player.currentHome;
+                document.getElementById('bank-balance').innerText = `€${gameState.player.balance.toLocaleString()}`;
+                alert('Property Upgraded to Luxury Penthouse Suite!');
+            } else {
+                alert('Insufficient funds!');
+            }
+        }
+
+        function buyCar() {
+            if (gameState.player.balance >= 180000) {
+                gameState.player.balance -= 180000;
+                gameState.player.currentCar = "V12 Supercar";
+                document.getElementById('car-name').innerText = gameState.player.currentCar;
+                document.getElementById('bank-balance').innerText = `€${gameState.player.balance.toLocaleString()}`;
+                alert('Purchased new V12 Supercar!');
+            } else {
+                alert('Insufficient funds!');
+            }
+        }
+
+        function interactNPC(name) {
+            alert(`Sent text message to ${name}: "Hope you have a great day!"`);
+        }
+
+        // Initialize Feed on load
+        renderSocialFeed();
+    </script>
 </body>
-    </html>
+</html>
+
