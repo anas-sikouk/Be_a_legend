@@ -1,830 +1,2109 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footballer Life Engine 2026</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>⚽ Football Life Simulator</title>
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.85);
-            --accent: #10b981;
-            --accent-glow: rgba(16, 185, 129, 0.4);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* ── RESET & BASE ── */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Sidebar Navigation */
-        #sidebar {
-            width: 240px;
-            background: rgba(15, 23, 42, 0.95);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .brand {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--accent);
-            color: #ffffff;
-            box-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        /* Main Workspace */
-        #main-content {
-            flex: 1;
-            position: relative;
-            overflow-y: auto;
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen {
-            display: none;
-            padding: 24px;
-            height: 100%;
             box-sizing: border-box;
         }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        .screen.active {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        :root {
+            --bg: #0a0e14;
+            --surface: rgba(255, 255, 255, 0.06);
+            --surface2: rgba(255, 255, 255, 0.10);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f0f4fa;
+            --text2: rgba(255, 255, 255, 0.7);
+            --text3: rgba(255, 255, 255, 0.4);
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.3);
+            --green: #22c55e;
+            --red: #ef4444;
+            --gold: #fbbf24;
+            --radius: 16px;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        /* Dashboard Overview */
-        .grid-dashboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            border: 2px solid var(--accent);
-        }
-
-        /* Match Screen Layout */
-        #match-screen {
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .match-container {
-            display: flex;
-            flex: 1;
-            gap: 15px;
-            height: calc(100vh - 120px);
-        }
-
-        .pitch-container {
-            flex: 2;
-            position: relative;
-            background: #000;
-            border-radius: 12px;
+        html,
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100%;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        canvas#pitch {
-            background: #2e7d32;
-            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
         }
 
-        .match-sidebar {
-            flex: 1;
+        /* ── APP SHELL ── */
+        #app {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 380px;
-        }
-
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-
-        .score-display {
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            color: var(--accent);
-        }
-
-        .controls-bar {
-            display: flex;
-            gap: 5px;
-            background: var(--panel-bg);
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 8px;
+            gap: 8px;
+            background: radial-gradient(ellipse at 50% 0%, #141e2a, #0a0e14 70%);
+        }
+
+        /* ── TOP BAR ── */
+        #topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            flex-shrink: 0;
+            height: 52px;
+        }
+        #topbar .brand {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #topbar .brand span {
+            color: var(--primary);
+        }
+        #topbar .match-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        #topbar .match-info .score {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 16px;
             border-radius: 8px;
         }
+        #topbar .match-info .clock {
+            font-variant-numeric: tabular-nums;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            min-width: 56px;
+            text-align: center;
+        }
+        #topbar .match-info .status {
+            color: var(--text2);
+            font-size: 12px;
+        }
 
-        .ctrl-btn {
+        /* ── MAIN LAYOUT ── */
+        #main {
+            display: flex;
             flex: 1;
-            background: #334155;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        /* ── PITCH CONTAINER ── */
+        #pitch-wrap {
+            flex: 1;
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+        }
+        #pitch-wrap canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: #1a3a1a;
+            cursor: default;
+        }
+
+        /* ── PITCH OVERLAY CONTROLS ── */
+        #pitch-overlay {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            pointer-events: none;
+        }
+        #pitch-overlay>* {
+            pointer-events: auto;
+        }
+
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 4px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .ctrl-group button {
+            background: transparent;
             border: none;
-            color: #fff;
-            padding: 6px;
-            border-radius: 4px;
+            color: var(--text);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+        .ctrl-group button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .ctrl-group button.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .ctrl-group button.speed {
+            font-size: 11px;
+            padding: 2px 8px;
+        }
+        .ctrl-group button.speed.active {
+            background: var(--primary);
+        }
+        .ctrl-group .sep {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .ctrl-btn.active, .ctrl-btn:hover {
-            background: var(--accent);
+        /* ── TACTICAL QUICK BUTTONS ── */
+        #tactical-buttons {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        #tactical-buttons button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text2);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        #tactical-buttons button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        #tactical-buttons button.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
         }
 
-        .events-log {
-            flex: 1;
-            overflow-y: auto;
+        /* ── SIDE PANEL ── */
+        #sidepanel {
+            width: 280px;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            padding-right: 5px;
+            overflow: hidden;
         }
 
-        .event-item {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            border-left: 3px solid var(--accent);
+        .panel {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .panel-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text3);
+            margin-bottom: 6px;
         }
 
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+        /* ── PLAYER CARD ── */
+        #player-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
         }
-
-        .action-btn {
-            background: #1e293b;
-            border: 1px solid #334155;
+        #player-card .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
             color: #fff;
-            padding: 10px 4px;
-            font-size: 0.75rem;
+            flex-shrink: 0;
+            position: relative;
+        }
+        #player-card .avatar .star {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            font-size: 14px;
+            color: var(--gold);
+        }
+        #player-card .info {
+            flex: 1;
+            min-width: 0;
+        }
+        #player-card .info .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        #player-card .info .detail {
+            font-size: 12px;
+            color: var(--text2);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        #player-card .info .detail span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        #player-card .rating {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--gold);
+            text-align: right;
+            min-width: 48px;
+        }
+
+        /* ── EVENTS TIMELINE ── */
+        #events-panel {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #events-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding-right: 4px;
+        }
+        .event-item {
+            font-size: 11px;
+            padding: 4px 8px;
             border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border-left: 2px solid transparent;
+            animation: fadeSlide 0.3s ease;
+        }
+        .event-item .time {
+            color: var(--text3);
+            font-weight: 600;
+            min-width: 32px;
+            font-size: 10px;
+        }
+        .event-item .text {
+            color: var(--text2);
+        }
+        .event-item.goal {
+            border-left-color: var(--gold);
+            background: rgba(251, 191, 36, 0.06);
+        }
+        .event-item.goal .text {
+            color: var(--gold);
             font-weight: 600;
         }
-
-        .action-btn:hover {
-            border-color: var(--accent);
-            background: #334155;
+        .event-item.sub {
+            border-left-color: var(--primary);
+        }
+        .event-item.card {
+            border-left-color: var(--red);
+        }
+        .event-item.card .text {
+            color: var(--red);
+        }
+        .event-item.shot {
+            border-left-color: var(--green);
         }
 
-        /* Controls */
-        .btn {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── STATS MINI ── */
+        #stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            font-size: 11px;
+        }
+        #stats-mini .stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 0;
             border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
+        }
+        #stats-mini .stat .val {
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+        }
+        #stats-mini .stat .lbl {
+            color: var(--text3);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        /* ── SOCIAL MINI ── */
+        #social-mini {
+            max-height: 60px;
+            overflow: hidden;
+        }
+        #social-mini .post {
+            font-size: 11px;
+            color: var(--text2);
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        #social-mini .post .icon {
+            font-size: 14px;
+        }
+        #social-mini .post .likes {
+            color: var(--text3);
+            font-size: 10px;
+            margin-left: auto;
         }
 
-        .feed-item {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+        /* ── RESPONSIVE ── */
+        @media (max-width: 860px) {
+            #sidepanel {
+                width: 200px;
+            }
+            #topbar .match-info .score {
+                font-size: 18px;
+                padding: 0 10px;
+            }
+            #tactical-buttons button {
+                font-size: 8px;
+                padding: 2px 6px;
+            }
+            #player-card .rating {
+                font-size: 20px;
+                min-width: 36px;
+            }
+        }
+        @media (max-width: 640px) {
+            #sidepanel {
+                display: none;
+            }
+            #topbar .match-info .status {
+                display: none;
+            }
+            #pitch-overlay {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+            }
+            .ctrl-group {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            #tactical-buttons {
+                justify-content: center;
+            }
+            #topbar .brand {
+                font-size: 14px;
+            }
+            #topbar .match-info .clock {
+                font-size: 12px;
+                min-width: 40px;
+            }
         }
 
-        .feed-author {
-            font-weight: bold;
-            color: var(--accent);
-            margin-bottom: 4px;
-            font-size: 0.9rem;
+        /* ── MOBILE BOTTOM SHEET (hidden by default, shown on small screens) ── */
+        #mobile-sheet {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            border-radius: 20px 20px 0 0;
+            padding: 12px 16px;
+            max-height: 50vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
         }
-
-        .stat-badge {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--accent);
-            padding: 4px 8px;
+        #mobile-sheet.open {
+            transform: translateY(0);
+        }
+        #mobile-sheet .handle {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            margin: 0 auto 10px;
+        }
+        @media (max-width: 640px) {
+            #mobile-sheet {
+                display: block;
+                transform: translateY(100%);
+            }
+            #mobile-sheet.open {
+                transform: translateY(0);
+            }
         }
 
-        input, select {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            width: 100%;
-            margin-bottom: 10px;
+        /* ── SUBSTITUTION NOTIFICATION ── */
+        #sub-notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 24px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 50;
+        }
+        #sub-notification.show {
+            opacity: 1;
+        }
+        #sub-notification h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        #sub-notification p {
+            color: var(--text2);
+            font-size: 14px;
+        }
+        #sub-notification .sub-detail {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        /* ── UTILITY ── */
+        .text-gold {
+            color: var(--gold);
+        }
+        .text-green {
+            color: var(--green);
+        }
+        .text-red {
+            color: var(--red);
+        }
+        .text-primary {
+            color: var(--primary);
+        }
+        .flex {
+            display: flex;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-1 {
+            gap: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <div class="brand">PRO SIM 2026</div>
-        <button class="nav-btn active" onclick="switchTab('dashboard')">Tableau de bord</button>
-        <button class="nav-btn" onclick="switchTab('match')">Moteur de Match</button>
-        <button class="nav-btn" onclick="switchTab('social')">Réseau Social</button>
-        <button class="nav-btn" onclick="switchTab('lifestyle')">Mode de Vie & Biens</button>
-        <button class="nav-btn" onclick="switchTab('finance')">Finances</button>
+    <div id="app">
+        <!-- TOP BAR -->
+        <header id="topbar">
+            <div class="brand">
+                ⚽ <span>LIFE</span> SIM
+            </div>
+            <div class="match-info">
+                <span class="status" id="match-status">● Live</span>
+                <span class="clock" id="match-clock">00:00</span>
+                <span class="score" id="match-score">0 – 0</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+                <button id="btn-save" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;">💾 Save</button>
+                <button id="btn-load" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;">📂 Load</button>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <div id="main">
+            <!-- PITCH -->
+            <div id="pitch-wrap">
+                <canvas id="pitch"></canvas>
+                <!-- Substitution notification -->
+                <div id="sub-notification">
+                    <h2 id="sub-title">Substitution</h2>
+                    <p id="sub-desc">You're coming on!</p>
+                    <div class="sub-detail" id="sub-detail"></div>
+                </div>
+                <!-- Overlay controls -->
+                <div id="pitch-overlay">
+                    <div class="ctrl-group">
+                        <button id="btn-play" class="active">▶</button>
+                        <button id="btn-pause">⏸</button>
+                        <span class="sep"></span>
+                        <button class="speed active" data-speed="1">1×</button>
+                        <button class="speed" data-speed="2">2×</button>
+                        <button class="speed" data-speed="4">4×</button>
+                        <button class="speed" data-speed="8">8×</button>
+                    </div>
+                    <div id="tactical-buttons">
+                        <button data-action="request">📢 Request</button>
+                        <button data-action="attack">⚡ Attack</button>
+                        <button data-action="defend">🛡 Defend</button>
+                        <button data-action="press">🔥 Press</button>
+                        <button data-action="stay">📍 Stay</button>
+                        <button data-action="run">🏃 Run</button>
+                        <button data-action="conserve">💤 Conserve</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDE PANEL -->
+            <div id="sidepanel">
+                <!-- Player Card -->
+                <div class="panel" id="player-panel">
+                    <div class="panel-title">👤 My Player</div>
+                    <div id="player-card">
+                        <div class="avatar" id="player-avatar">
+                            A
+                            <span class="star">★</span>
+                        </div>
+                        <div class="info">
+                            <div class="name" id="player-name">Anas Jr</div>
+                            <div class="detail">
+                                <span>⚽ <span id="player-pos">ST</span></span>
+                                <span>🏃 <span id="player-energy">100%</span></span>
+                            </div>
+                        </div>
+                        <div class="rating" id="player-rating">7.4</div>
+                    </div>
+                </div>
+
+                <!-- Stats Mini -->
+                <div class="panel">
+                    <div class="panel-title">📊 Match Stats</div>
+                    <div id="stats-mini">
+                        <div class="stat"><div class="val" id="stat-possession">52%</div><div class="lbl">Possession</div></div>
+                        <div class="stat"><div class="val" id="stat-shots">8</div><div class="lbl">Shots</div></div>
+                        <div class="stat"><div class="val" id="stat-pass">86%</div><div class="lbl">Pass Acc</div></div>
+                    </div>
+                </div>
+
+                <!-- Events -->
+                <div class="panel" id="events-panel">
+                    <div class="panel-title">📋 Match Events</div>
+                    <div id="events-list">
+                        <div class="event-item"><span class="time">00:00</span><span class="text">Match started</span></div>
+                    </div>
+                </div>
+
+                <!-- Social Mini -->
+                <div class="panel" id="social-mini">
+                    <div class="panel-title">📱 Social Feed</div>
+                    <div id="social-feed">
+                        <div class="post"><span class="icon">👍</span> Great atmosphere tonight! <span class="likes">❤️ 12</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="main-content">
-
-        <!-- DASHBOARD -->
-        <div id="tab-dashboard" class="screen active">
-            <div class="glass-card profile-header">
-                <div class="avatar">★</div>
-                <div>
-                    <h2 id="dash-name">Anas Jr</h2>
-                    <p style="color: var(--text-muted);" id="dash-details">MOC | Real Madrid (Fictif) | 19 ans</p>
-                    <div style="margin-top: 8px;">
-                        <span class="stat-badge" id="dash-rating">GEN: 78</span>
-                        <span class="stat-badge" id="dash-value">Valeur: 24,5M €</span>
-                        <span class="stat-badge" id="dash-wage">Salaire: 15k €/semaine</span>
-                    </div>
-                </div>
+    <!-- Mobile Sheet -->
+    <div id="mobile-sheet">
+        <div class="handle"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-weight:700;">👤 <span id="m-name">Anas Jr</span></span>
+                <span style="color:var(--gold);font-weight:900;" id="m-rating">7.4</span>
             </div>
-
-            <div class="grid-dashboard">
-                <div class="glass-card">
-                    <h3>Performances de la Saison</h3>
-                    <br>
-                    <p>Matchs joués: <strong id="stat-apps">12</strong></p>
-                    <p>Buts marqués: <strong id="stat-goals">5</strong></p>
-                    <p>Passes décisives: <strong id="stat-assists">3</strong></p>
-                    <p>Note moyenne: <strong id="stat-avgrat">7.35</strong></p>
-                </div>
-                <div class="glass-card">
-                    <h3>Confiance de l'Entraîneur</h3>
-                    <br>
-                    <p>Statut: <strong style="color: var(--accent);" id="mgr-status">Titulaire</strong></p>
-                    <p>Confiance: <strong id="mgr-trust">84%</strong></p>
-                    <p>Forme physique: <strong id="mgr-fitness">95%</strong></p>
-                    <p>Moral: <strong id="mgr-morale">Élevé</strong></p>
-                </div>
-                <div class="glass-card">
-                    <h3>Prochain Match</h3>
-                    <br>
-                    <p style="font-size: 1.1rem; font-weight: bold;" id="next-fixture">vs FC Barcelona (D)</p>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Journée 14 de Ligue</p>
-                    <button class="btn" onclick="switchTab('match')">Lancer le Match</button>
-                </div>
+            <div style="display:flex;gap:8px;font-size:12px;color:var(--text2);">
+                <span>⚽ <span id="m-pos">ST</span></span>
+                <span>🏃 <span id="m-energy">100%</span></span>
             </div>
+            <div id="m-events" style="font-size:11px;color:var(--text3);max-height:80px;overflow-y:auto;"></div>
         </div>
-
-        <!-- MATCH (CANVAS 2D) -->
-        <div id="tab-match" class="screen">
-            <div class="match-header">
-                <div>
-                    <span id="home-team-name">DOMICILE</span>
-                    <span class="score-display" id="match-score">0 - 0</span>
-                    <span id="away-team-name">EXTÉRIEUR</span>
-                </div>
-                <div id="match-clock" style="font-size: 1.2rem; font-family: monospace;">00:00</div>
-            </div>
-
-            <div class="match-container">
-                <div class="pitch-container">
-                    <canvas id="pitch" width="800" height="520"></canvas>
-                </div>
-
-                <div class="match-sidebar">
-                    <div class="glass-card controls-bar">
-                        <button class="ctrl-btn" onclick="setSpeed(0)">Ⅱ</button>
-                        <button class="ctrl-btn active" onclick="setSpeed(1)">1x</button>
-                        <button class="ctrl-btn" onclick="setSpeed(2)">2x</button>
-                        <button class="ctrl-btn" onclick="setSpeed(4)">4x</button>
-                    </div>
-
-                    <div class="glass-card" style="padding: 10px;">
-                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 0.85rem;">
-                            <span>Note: <span id="live-rating" style="color: var(--accent);">6.0</span></span>
-                            <span>Endurance: <span id="live-stamina" style="color: var(--warning);">100%</span></span>
-                        </div>
-                    </div>
-
-                    <div class="glass-card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                        <h4 style="margin-bottom: 8px;">Événements du Match</h4>
-                        <div class="events-log" id="events-log">
-                            <div class="event-item">00:00 - Coup d'envoi !</div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card">
-                        <h4 style="margin-bottom: 8px;">Consignes Tactiques</h4>
-                        <div class="action-grid">
-                            <button class="action-btn" onclick="setUserIntent('CALL_BALL')">DEMANDER BALLE</button>
-                            <button class="action-btn" onclick="setUserIntent('ATTACK')">ATTAQUER</button>
-                            <button class="action-btn" onclick="setUserIntent('DEFEND')">DÉFENDRE</button>
-                            <button class="action-btn" onclick="setUserIntent('PRESS')">PRESSER</button>
-                            <button class="action-btn" onclick="setUserIntent('HOLD')">GARDER POS</button>
-                            <button class="action-btn" onclick="setUserIntent('RISK')">PRENDRE RISQUE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SOCIAL NETWORK -->
-        <div id="tab-social" class="screen">
-            <div class="glass-card">
-                <h3>Footgram - Réseau Social</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Abonnés: <strong id="social-followers" style="color: var(--accent);">142 500</strong></p>
-                <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <input type="text" id="post-input" placeholder="Partagez un message..." style="margin-bottom: 0;">
-                    <button class="btn" onclick="submitPost()">Publier</button>
-                </div>
-            </div>
-
-            <div class="glass-card" style="flex: 1; overflow-y: auto;" id="social-feed">
-            </div>
-        </div>
-
-        <!-- LIFESTYLE -->
-        <div id="tab-lifestyle" class="screen">
-            <div class="glass-card">
-                <h3>Propriétés & Véhicules</h3>
-                <br>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                    <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
-                        <h4>Résidence Actuelle</h4>
-                        <p style="color: var(--text-muted);" id="home-name">Appartement Moderne en Ville</p>
-                        <p>Niveau de confort: 75%</p>
-                        <br>
-                        <button class="btn" onclick="upgradeHome()">Améliorer (250 000 €)</button>
-                    </div>
-                    <div style="border: 1px solid #334155; padding: 15px; border-radius: 8px;">
-                        <h4>Garage</h4>
-                        <p style="color: var(--text-muted);" id="car-name">Coupé Sport</p>
-                        <p>Prestige: Élevé</p>
-                        <br>
-                        <button class="btn" onclick="buyCar()">Acheter Supercar (180 000 €)</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card">
-                <h3>Relations Personnelles</h3>
-                <br>
-                <div id="relationship-list">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px;">
-                        <div>
-                            <strong>Elena Rostova</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Architecte | 24 ans</p>
-                        </div>
-                        <div>
-                            <span class="stat-badge">Statut: En couple</span>
-                            <button class="btn" style="padding: 4px 8px; font-size: 0.8rem;" onclick="interactNPC('Elena')">Envoyer un message</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FINANCES -->
-        <div id="tab-finance" class="screen">
-            <div class="glass-card">
-                <h3>Aperçu Financier</h3>
-                <br>
-                <h2>Solde Bancaire: <span id="bank-balance" style="color: var(--accent);">840 200 €</span></h2>
-                <br>
-                <div style="display: flex; gap: 20px;">
-                    <div>
-                        <p style="color: var(--text-muted);">Salaire hebdomadaire</p>
-                        <h4>15 000 €</h4>
-                    </div>
-                    <div>
-                        <p style="color: var(--text-muted);">Sponsors</p>
-                        <h4>4 200 € / sem</h4>
-                    </div>
-                    <div>
-                        <p style="color: var(--text-muted);">Dépenses</p>
-                        <h4 style="color: var(--danger);">-2 100 € / sem</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        const gameState = {
-            player: {
-                name: "Anas Jr",
-                position: "MOC",
-                number: 10,
-                overall: 78,
-                stamina: 100,
-                rating: 6.0,
-                goals: 5,
-                assists: 3,
-                apps: 12,
-                balance: 840200,
-                followers: 142500,
-                currentHome: "Appartement Moderne en Ville",
-                currentCar: "Coupé Sport",
-                userIntent: "BALANCED"
-            },
-            match: {
-                active: false,
-                simSpeed: 1,
-                time: 0,
+        // ═══════════════════════════════════════════════════════════════════
+        //  FOOTBALL LIFE SIMULATOR — FULL GAME ENGINE
+        // ═══════════════════════════════════════════════════════════════════
+
+        (function() {
+            'use strict';
+
+            // ─── DOM REFS ──────────────────────────────────────────────
+            const canvas = document.getElementById('pitch');
+            const ctx = canvas.getContext('2d');
+
+            const $ = id => document.getElementById(id);
+            const clockEl = $('match-clock');
+            const scoreEl = $('match-score');
+            const statusEl = $('match-status');
+            const eventsList = $('events-list');
+            const playerName = $('player-name');
+            const playerPos = $('player-pos');
+            const playerEnergy = $('player-energy');
+            const playerRating = $('player-rating');
+            const playerAvatar = $('player-avatar');
+            const statPossession = $('stat-possession');
+            const statShots = $('stat-shots');
+            const statPass = $('stat-pass');
+            const socialFeed = $('social-feed');
+            const subNotif = $('sub-notification');
+            const subTitle = $('sub-title');
+            const subDesc = $('sub-desc');
+            const subDetail = $('sub-detail');
+
+            // Mobile refs
+            const mName = $('m-name');
+            const mRating = $('m-rating');
+            const mPos = $('m-pos');
+            const mEnergy = $('m-energy');
+            const mEvents = $('m-events');
+
+            // ─── STATE ──────────────────────────────────────────────────
+            const G = {
+                // Match state
+                time: 0, // seconds
+                speed: 1,
+                paused: false,
+                matchEnded: false,
+                halfTime: false,
+
+                // Score
                 homeScore: 0,
                 awayScore: 0,
-                homeTeam: "Real Madrid (Fictif)",
-                awayTeam: "FC Barcelona (Fictif)",
-                ball: { x: 400, y: 260, vx: 0, vy: 0, targetX: 400, targetY: 260 },
-                players: []
+
+                // Teams
+                homeTeam: 'FC United',
+                awayTeam: 'City FC',
+                homeColor: '#1a6bc4',
+                awayColor: '#e11d48',
+
+                // Players
+                players: [],
+                ball: { x: 400, y: 300, vx: 0, vy: 0, radius: 6, friction: 0.985 },
+                userIndex: 0,
+
+                // Stats
+                possession: 50,
+                shots: 0,
+                passAcc: 0,
+                passCount: 0,
+                passComplete: 0,
+
+                // Events
+                events: [],
+                eventCount: 0,
+
+                // Substitution state
+                subActive: false,
+                subTimer: 0,
+                userOnPitch: true,
+                userWarming: false,
+                userOnBench: false,
+
+                // Tactical
+                tacticalMode: 'balanced', // balanced, attack, defend, press, conserve
+
+                // Formations
+                formation: '4-3-3',
+
+                // Player rating
+                userRating: 7.4,
+                ratingHistory: [],
+
+                // Career
+                career: {
+                    club: 'FC United',
+                    league: 'Premier Division',
+                    position: 'ST',
+                    overall: 78,
+                    age: 22,
+                    goals: 0,
+                    assists: 0,
+                    apps: 0,
+                    morale: 75,
+                    fitness: 92,
+                    reputation: 60,
+                    followers: 1240,
+                    money: 125000,
+                    contractYears: 3,
+                },
+
+                // Social
+                socialPosts: [],
+                socialLikes: 0,
+
+                // Finance
+                finance: {
+                    salary: 45000,
+                    bonuses: 0,
+                    sponsors: 0,
+                    expenses: 18000,
+                    balance: 125000,
+                },
+
+                // Match events log
+                matchEvents: [],
+
+                // Simulation frame
+                frame: 0,
+
+                // Dimentions
+                w: 800,
+                h: 600,
+            };
+
+            // ─── PITCH DIMENSIONS ──────────────────────────────────────
+            const PITCH = {
+                x: 40,
+                y: 30,
+                w: 720,
+                h: 540,
+            };
+
+            // ─── PLAYER FACTORY ────────────────────────────────────────
+            function createPlayer(id, name, team, position, x, y, color, isUser) {
+                const base = {
+                    id,
+                    name,
+                    team, // 'home' or 'away'
+                    position,
+                    x,
+                    y,
+                    targetX: x,
+                    targetY: y,
+                    color: color || '#ffffff',
+                    radius: 14,
+                    speed: 1.2 + Math.random() * 0.6,
+                    stamina: 85 + Math.random() * 15,
+                    maxStamina: 100,
+                    isUser: !!isUser,
+                    hasBall: false,
+                    passTarget: null,
+                    passTimer: 0,
+                    shootTimer: 0,
+                    marking: null,
+                    state: 'idle', // idle, running, sprinting, walking, pressing
+                    direction: Math.random() * Math.PI * 2,
+                    rating: 6.0 + Math.random() * 2.0,
+                    goals: 0,
+                    assists: 0,
+                    passes: 0,
+                    tackles: 0,
+                    interceptions: 0,
+                    dribbles: 0,
+                    // AI
+                    decisionTimer: 0,
+                    action: 'idle',
+                    homeX: x,
+                    homeY: y,
+                    // Movement
+                    vx: 0,
+                    vy: 0,
+                };
+                return base;
             }
-        };
 
-        const socialFeed = [
-            { author: "MadridFan99", text: "Anas Jr est incroyable au milieu de terrain ! 🔥", likes: 1240 },
-            { author: "FootyAnalytica", text: "Les stats montrent qu'Anas Jr réussit 88% de ses passes clés.", likes: 3410 }
-        ];
+            // ─── INIT TEAMS ─────────────────────────────────────────────
+            function initTeams() {
+                const players = [];
+                const homePositions = getFormationPositions('home', G.formation);
+                const awayPositions = getFormationPositions('away', G.formation);
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+                // Home team
+                const homeNames = ['Anas Jr', 'Mbappé', 'Salah', 'De Bruyne', 'Rodri', 'Van Dijk', 'Davies', 'Walker', 'Alisson',
+                    'Bellingham', 'Haaland'
+                ];
+                const homePos = ['ST', 'LW', 'RW', 'CAM', 'CDM', 'CB', 'LB', 'RB', 'GK', 'CM', 'ST'];
+                homePositions.forEach((p, i) => {
+                    const isUser = i === 0;
+                    const name = homeNames[i % homeNames.length] || `Player ${i+1}`;
+                    const pos = homePos[i % homePos.length] || 'MID';
+                    const col = isUser ? '#fbbf24' : G.homeColor;
+                    const pl = createPlayer(i, name, 'home', pos, p.x, p.y, col, isUser);
+                    pl.homeX = p.x;
+                    pl.homeY = p.y;
+                    pl.targetX = p.x;
+                    pl.targetY = p.y;
+                    // Better attributes for key players
+                    if (i < 3) pl.speed = 1.8 + Math.random() * 0.4;
+                    if (i > 6) pl.speed = 1.2 + Math.random() * 0.3;
+                    players.push(pl);
+                });
 
-            if (tabId === 'match' && !gameState.match.active) {
-                initMatch();
+                // Away team
+                const awayNames = ['Martínez', 'Dias', 'Gvardiol', 'Kimmich', 'Musiala', 'Wirtz', 'Saka', 'Odegaard', 'Rice',
+                    'Kane', 'Vinicius'
+                ];
+                const awayPos = ['ST', 'LW', 'RW', 'CAM', 'CDM', 'CB', 'LB', 'RB', 'GK', 'CM', 'ST'];
+                awayPositions.forEach((p, i) => {
+                    const name = awayNames[i % awayNames.length] || `Away ${i+1}`;
+                    const pos = awayPos[i % awayPos.length] || 'MID';
+                    const pl = createPlayer(i + 20, name, 'away', pos, p.x, p.y, G.awayColor, false);
+                    pl.homeX = p.x;
+                    pl.homeY = p.y;
+                    pl.targetX = p.x;
+                    pl.targetY = p.y;
+                    if (i < 3) pl.speed = 1.7 + Math.random() * 0.5;
+                    if (i > 6) pl.speed = 1.1 + Math.random() * 0.4;
+                    players.push(pl);
+                });
+
+                G.players = players;
+                G.userIndex = 0; // first player is user
+
+                // Update user card
+                const user = G.players[G.userIndex];
+                if (user) {
+                    playerName.textContent = user.name;
+                    playerPos.textContent = user.position;
+                    playerAvatar.textContent = user.name.charAt(0);
+                    mName.textContent = user.name;
+                    mPos.textContent = user.position;
+                }
             }
-        }
 
-        const canvas = document.getElementById('pitch');
-        const ctx = canvas.getContext('2d');
-        let matchInterval = null;
+            // ─── FORMATION POSITIONS ──────────────────────────────────
+            function getFormationPositions(team, formation) {
+                const w = PITCH.w;
+                const h = PITCH.h;
+                const ox = PITCH.x;
+                const oy = PITCH.y;
+                const isHome = team === 'home';
 
-        class PitchPlayer {
-            constructor(name, team, x, y, isUser = false, role = 'MC') {
-                this.name = name;
-                this.team = team;
-                this.x = x;
-                this.y = y;
-                this.baseX = x;
-                this.baseY = y;
-                this.vx = 0;
-                this.vy = 0;
-                this.speed = isUser ? 2.2 : 2.0;
-                this.isUser = isUser;
-                this.role = role;
-                this.radius = 10;
+                const positions = [];
+                const def = (ratio) => {
+                    const x = isHome ? ox + w * ratio : ox + w * (1 - ratio);
+                    return x;
+                };
+                const yPos = (ratio) => oy + h * ratio;
+
+                // Default 4-3-3
+                let defs = [
+                    [0.08, 0.5],
+                    [0.20, 0.15],
+                    [0.20, 0.35],
+                    [0.20, 0.65],
+                    [0.20, 0.85],
+                    [0.40, 0.25],
+                    [0.40, 0.50],
+                    [0.40, 0.75],
+                    [0.55, 0.10],
+                    [0.55, 0.50],
+                    [0.55, 0.90]
+                ];
+
+                if (formation === '4-4-2') {
+                    defs = [
+                        [0.08, 0.5],
+                        [0.20, 0.15],
+                        [0.20, 0.40],
+                        [0.20, 0.60],
+                        [0.20, 0.85],
+                        [0.40, 0.20],
+                        [0.40, 0.45],
+                        [0.40, 0.55],
+                        [0.40, 0.80],
+                        [0.55, 0.30],
+                        [0.55, 0.70]
+                    ];
+                } else if (formation === '4-2-3-1') {
+                    defs = [
+                        [0.08, 0.5],
+                        [0.20, 0.15],
+                        [0.20, 0.35],
+                        [0.20, 0.65],
+                        [0.20, 0.85],
+                        [0.35, 0.30],
+                        [0.35, 0.70],
+                        [0.48, 0.20],
+                        [0.48, 0.50],
+                        [0.48, 0.80],
+                        [0.60, 0.50]
+                    ];
+                }
+
+                // Flip for away
+                if (!isHome) {
+                    defs = defs.map(([xr, yr]) => [1 - xr, yr]);
+                }
+
+                defs.forEach(([xr, yr]) => {
+                    positions.push({
+                        x: ox + w * xr,
+                        y: oy + h * yr
+                    });
+                });
+
+                return positions;
             }
 
-            update(ball, intent) {
-                let targetX = this.baseX;
-                let targetY = this.baseY;
+            // ─── BALL PHYSICS ──────────────────────────────────────────
+            function updateBall() {
+                const b = G.ball;
+                b.x += b.vx;
+                b.y += b.vy;
+                b.vx *= b.friction;
+                b.vy *= b.friction;
 
-                const distToBall = Math.hypot(ball.x - this.x, ball.y - this.y);
+                // Boundaries
+                const margin = 20;
+                if (b.x < PITCH.x + margin) { b.x = PITCH.x + margin;
+                    b.vx = -b.vx * 0.5; }
+                if (b.x > PITCH.x + PITCH.w - margin) { b.x = PITCH.x + PITCH.w - margin;
+                    b.vx = -b.vx * 0.5; }
+                if (b.y < PITCH.y + margin) { b.y = PITCH.y + margin;
+                    b.vy = -b.vy * 0.5; }
+                if (b.y > PITCH.y + PITCH.h - margin) { b.y = PITCH.y + PITCH.h - margin;
+                    b.vy = -b.vy * 0.5; }
 
-                if (this.isUser) {
-                    if (intent === 'ATTACK') targetX = ball.x + 40;
-                    else if (intent === 'DEFEND') targetX = ball.x - 60;
-                    else if (intent === 'CALL_BALL' || distToBall < 120) {
-                        targetX = ball.x;
-                        targetY = ball.y;
+                // Goal detection
+                const gkY1 = PITCH.y + PITCH.h * 0.4;
+                const gkY2 = PITCH.y + PITCH.h * 0.6;
+                // Home goal (left)
+                if (b.x < PITCH.x + 10 && b.y > gkY1 && b.y < gkY2) {
+                    // Away scores
+                    if (b.vx < 0) {
+                        G.awayScore++;
+                        addEvent('⚽ GOAL! ' + G.awayTeam + ' scores!', 'goal');
+                        b.x = PITCH.x + PITCH.w / 2;
+                        b.y = PITCH.y + PITCH.h / 2;
+                        b.vx = 0;
+                        b.vy = 0;
+                        resetPositions();
+                        updateScore();
                     }
-                } else {
-                    if (distToBall < 100) {
-                        targetX = ball.x;
-                        targetY = ball.y;
-                    } else {
-                        targetX = this.baseX + (ball.x - 400) * 0.3;
-                        targetY = this.baseY + (ball.y - 260) * 0.3;
+                }
+                // Away goal (right)
+                if (b.x > PITCH.x + PITCH.w - 10 && b.y > gkY1 && b.y < gkY2) {
+                    if (b.vx > 0) {
+                        G.homeScore++;
+                        addEvent('⚽ GOAL! ' + G.homeTeam + ' scores!', 'goal');
+                        b.x = PITCH.x + PITCH.w / 2;
+                        b.y = PITCH.y + PITCH.h / 2;
+                        b.vx = 0;
+                        b.vy = 0;
+                        resetPositions();
+                        updateScore();
                     }
                 }
 
-                const angle = Math.atan2(targetY - this.y, targetX - this.x);
-                if (distToBall > 5 || !this.isUser) {
-                    this.x += Math.cos(angle) * this.speed;
-                    this.y += Math.sin(angle) * this.speed;
-                }
+                // Ball collision with players
+                G.players.forEach(p => {
+                    const dx = p.x - b.x;
+                    const dy = p.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const minDist = p.radius + b.radius + 4;
+                    if (dist < minDist && dist > 0.1) {
+                        const angle = Math.atan2(dy, dx);
+                        const overlap = minDist - dist;
+                        b.x -= Math.cos(angle) * overlap * 0.5;
+                        b.y -= Math.sin(angle) * overlap * 0.5;
+                        // Bounce
+                        const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+                        if (speed > 0.5) {
+                            b.vx = Math.cos(angle) * speed * 0.4 + (Math.random() - 0.5) * 0.5;
+                            b.vy = Math.sin(angle) * speed * 0.4 + (Math.random() - 0.5) * 0.5;
+                        }
+                        if (p.isUser && !p.hasBall) {
+                            // User can intercept
+                            p.interceptions++;
+                        }
+                        if (!p.isUser && p.team === 'home' && !p.hasBall) {
+                            p.tackles++;
+                        }
+                    }
+                });
 
-                if (distToBall < 12) {
-                    if (Math.random() < 0.05) {
-                        if ((this.team === 'home' && this.x > 650) || (this.team === 'away' && this.x < 150)) {
-                            const targetGoalY = 260 + (Math.random() * 60 - 30);
-                            const targetGoalX = this.team === 'home' ? 780 : 20;
-                            ball.vx = (targetGoalX - this.x) * 0.1;
-                            ball.vy = (targetGoalY - this.y) * 0.1;
-                            logEvent(`${this.name} tente une frappe !`);
+                // Slow down if near touchline
+                if (b.x < PITCH.x + 30 || b.x > PITCH.x + PITCH.w - 30 ||
+                    b.y < PITCH.y + 30 || b.y > PITCH.y + PITCH.h - 30) {
+                    b.vx *= 0.96;
+                    b.vy *= 0.96;
+                }
+            }
+
+            // ─── PLAYER AI ─────────────────────────────────────────────
+            function updatePlayers() {
+                const user = G.players[G.userIndex];
+                const ball = G.ball;
+
+                G.players.forEach((p, idx) => {
+                    if (!p) return;
+
+                    // Stamina recovery / drain
+                    if (p.stamina < 100) p.stamina += 0.02;
+                    if (p.state === 'sprinting') p.stamina -= 0.08;
+                    else if (p.state === 'running') p.stamina -= 0.03;
+                    else p.stamina -= 0.005;
+                    p.stamina = Math.max(20, Math.min(100, p.stamina));
+
+                    // Energy display for user
+                    if (p.isUser) {
+                        playerEnergy.textContent = Math.round(p.stamina) + '%';
+                        mEnergy.textContent = Math.round(p.stamina) + '%';
+                    }
+
+                    // Decision timer
+                    p.decisionTimer -= 1 / 60;
+                    if (p.decisionTimer <= 0) {
+                        p.decisionTimer = 0.5 + Math.random() * 1.0;
+                        makeDecision(p);
+                    }
+
+                    // Move toward target
+                    const dx = p.targetX - p.x;
+                    const dy = p.targetY - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    let spd = p.speed * 0.6;
+                    if (p.state === 'sprinting') spd = p.speed * 1.2;
+                    else if (p.state === 'running') spd = p.speed * 0.9;
+                    else if (p.state === 'walking') spd = p.speed * 0.4;
+
+                    // Stamina affects speed
+                    const staminaFactor = 0.5 + (p.stamina / 100) * 0.5;
+                    spd *= staminaFactor;
+
+                    if (dist > 2) {
+                        const angle = Math.atan2(dy, dx);
+                        const move = Math.min(dist, spd);
+                        p.x += Math.cos(angle) * move;
+                        p.y += Math.sin(angle) * move;
+                        p.direction = angle;
+                        // Slight overshoot correction
+                        if (dist < 5) {
+                            p.x = p.targetX;
+                            p.y = p.targetY;
+                        }
+                    }
+
+                    // Avoid crowding
+                    G.players.forEach(other => {
+                        if (other === p) return;
+                        const ddx = other.x - p.x;
+                        const ddy = other.y - p.y;
+                        const ddist = Math.sqrt(ddx * ddx + ddy * ddy);
+                        if (ddist < p.radius + other.radius + 8 && ddist > 0.1) {
+                            const push = (p.radius + other.radius + 8 - ddist) * 0.15;
+                            const ang = Math.atan2(ddy, ddx);
+                            p.x -= Math.cos(ang) * push;
+                            p.y -= Math.sin(ang) * push;
+                        }
+                    });
+
+                    // Ball possession
+                    if (p.hasBall) {
+                        // Move ball with player
+                        ball.x = p.x + Math.cos(p.direction) * 20;
+                        ball.y = p.y + Math.sin(p.direction) * 20;
+                        ball.vx = 0;
+                        ball.vy = 0;
+                    }
+
+                    // Pass logic
+                    if (p.hasBall && p.passTimer > 0) {
+                        p.passTimer -= 1 / 60;
+                        if (p.passTimer <= 0 && p.passTarget) {
+                            // Execute pass
+                            const target = p.passTarget;
+                            const dx2 = target.x - p.x;
+                            const dy2 = target.y - p.y;
+                            const d2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                            if (d2 > 10) {
+                                const power = Math.min(8, d2 / 60);
+                                ball.vx = (dx2 / d2) * power + (Math.random() - 0.5) * 0.3;
+                                ball.vy = (dy2 / d2) * power + (Math.random() - 0.5) * 0.3;
+                                G.passCount++;
+                                if (Math.random() < 0.85) G.passComplete++;
+                                // Check if pass is to user
+                                if (target.isUser) {
+                                    addEvent('🎯 Pass to ' + target.name, 'shot');
+                                }
+                                // Interception chance
+                                const interceptChance = 0.05 + Math.random() * 0.08;
+                                if (Math.random() < interceptChance) {
+                                    // Intercepted
+                                    const interceptor = G.players.find(pl =>
+                                        pl.team !== p.team &&
+                                        Math.abs(pl.x - (p.x + dx2 * 0.5)) < 40 &&
+                                        Math.abs(pl.y - (p.y + dy2 * 0.5)) < 40
+                                    );
+                                    if (interceptor) {
+                                        ball.vx *= 0.3;
+                                        ball.vy *= 0.3;
+                                        interceptor.hasBall = true;
+                                        addEvent('🔄 Intercepted by ' + interceptor.name, 'shot');
+                                    }
+                                }
+                            }
+                            p.hasBall = false;
+                            p.passTarget = null;
+                            p.passTimer = 0;
+                        }
+                    }
+
+                    // Shoot logic
+                    if (p.hasBall && p.shootTimer > 0) {
+                        p.shootTimer -= 1 / 60;
+                        if (p.shootTimer <= 0) {
+                            // Shoot toward goal
+                            const isHome = p.team === 'home';
+                            const goalX = isHome ? PITCH.x + PITCH.w - 10 : PITCH.x + 10;
+                            const goalY = PITCH.y + PITCH.h / 2 + (Math.random() - 0.5) * 60;
+                            const dx2 = goalX - p.x;
+                            const dy2 = goalY - p.y;
+                            const d2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                            if (d2 > 20) {
+                                const power = 6 + Math.random() * 4;
+                                ball.vx = (dx2 / d2) * power + (Math.random() - 0.5) * 1.5;
+                                ball.vy = (dy2 / d2) * power + (Math.random() - 0.5) * 1.5;
+                                G.shots++;
+                                addEvent('💥 Shot by ' + p.name, 'shot');
+                                if (p.isUser) {
+                                    // User shot
+                                    G.userRating += 0.1;
+                                    if (Math.random() < 0.15) {
+                                        addEvent('🎯 On target!', 'shot');
+                                    }
+                                }
+                            }
+                            p.hasBall = false;
+                            p.shootTimer = 0;
+                        }
+                    }
+
+                    // Ball pickup
+                    if (!p.hasBall && !ball.vx && !ball.vy) {
+                        const dxb = ball.x - p.x;
+                        const dyb = ball.y - p.y;
+                        const db = Math.sqrt(dxb * dxb + dyb * dyb);
+                        if (db < p.radius + ball.radius + 6) {
+                            p.hasBall = true;
+                            if (p.isUser) {
+                                addEvent('⚡ ' + p.name + ' takes possession', 'shot');
+                            }
+                        }
+                    }
+
+                    // User special: tactical influence
+                    if (p.isUser) {
+                        const mode = G.tacticalMode;
+                        if (mode === 'attack') {
+                            p.targetX = Math.min(PITCH.x + PITCH.w * 0.75, p.targetX + 2);
+                            p.state = 'sprinting';
+                        } else if (mode === 'defend') {
+                            p.targetX = Math.max(PITCH.x + PITCH.w * 0.25, p.targetX - 2);
+                            p.state = 'running';
+                        } else if (mode === 'press') {
+                            // Press toward ball
+                            p.targetX += (ball.x - p.x) * 0.02;
+                            p.targetY += (ball.y - p.y) * 0.02;
+                            p.state = 'sprinting';
+                        } else if (mode === 'conserve') {
+                            p.state = 'walking';
+                            p.speed = p.speed * 0.7;
+                        } else if (mode === 'stay') {
+                            p.targetX = p.homeX;
+                            p.targetY = p.homeY;
+                            p.state = 'walking';
                         } else {
-                            ball.vx = (Math.random() - 0.5) * 8;
-                            ball.vy = (Math.random() - 0.5) * 8;
+                            // balanced - return to home
+                            p.targetX += (p.homeX - p.x) * 0.01;
+                            p.targetY += (p.homeY - p.y) * 0.01;
+                            if (Math.random() < 0.01) p.state = 'running';
                         }
 
-                        if (this.isUser) {
-                            gameState.player.rating = Math.min(10, gameState.player.rating + 0.2);
-                            document.getElementById('live-rating').innerText = gameState.player.rating.toFixed(1);
+                        // User rating update
+                        if (G.frame % 60 === 0) {
+                            const base = 6.5;
+                            const perf = (p.passes / 10) * 0.3 + (p.tackles / 5) * 0.2 + (p.interceptions / 5) * 0.2 +
+                                (p.goals) * 0.5 + (p.assists) * 0.3;
+                            const staminaBonus = p.stamina / 100 * 0.2;
+                            G.userRating = Math.min(10, Math.max(4, base + perf + staminaBonus));
+                            playerRating.textContent = G.userRating.toFixed(1);
+                            mRating.textContent = G.userRating.toFixed(1);
                         }
+                    }
+
+                    // Mark opponents
+                    if (!p.isUser && p.team === 'home' && p.position === 'CB') {
+                        // Mark closest forward
+                        const opps = G.players.filter(pl => pl.team === 'away' && (pl.position === 'ST' || pl.position ===
+                            'LW' || pl.position === 'RW'));
+                        let closest = null;
+                        let closestDist = Infinity;
+                        opps.forEach(o => {
+                            const d = Math.sqrt((o.x - p.x) ** 2 + (o.y - p.y) ** 2);
+                            if (d < closestDist) { closestDist = d;
+                                closest = o; }
+                        });
+                        if (closest && closestDist < 150) {
+                            p.targetX = closest.x + (Math.random() - 0.5) * 30;
+                            p.targetY = closest.y + (Math.random() - 0.5) * 30;
+                            p.state = 'running';
+                        }
+                    }
+                });
+
+                // Update ball if no one has it
+                let hasPossessor = false;
+                G.players.forEach(p => { if (p.hasBall) hasPossessor = true; });
+                if (!hasPossessor) {
+                    updateBall();
+                } else {
+                    // Ball moves with possessor
+                    const possessor = G.players.find(p => p.hasBall);
+                    if (possessor) {
+                        ball.x = possessor.x + Math.cos(possessor.direction) * 20;
+                        ball.y = possessor.y + Math.sin(possessor.direction) * 20;
+                        ball.vx = 0;
+                        ball.vy = 0;
                     }
                 }
             }
 
-            draw() {
-                if (this.isUser) {
-                    ctx.fillStyle = '#f59e0b';
-                    ctx.font = '16px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('★', this.x, this.y - 18);
+            // ─── AI DECISION MAKING ────────────────────────────────────
+            function makeDecision(p) {
+                if (p.hasBall) {
+                    // Decide to pass or shoot
+                    const rand = Math.random();
+                    // Find teammates
+                    const teammates = G.players.filter(pl => pl.team === p.team && pl !== p);
+                    const target = teammates.length > 0 ? teammates[Math.floor(Math.random() * teammates.length)] : null;
+
+                    // Shooting chance
+                    const isHome = p.team === 'home';
+                    const goalX = isHome ? PITCH.x + PITCH.w : PITCH.x;
+                    const distToGoal = Math.abs(p.x - goalX);
+
+                    if (distToGoal < 120 && rand < 0.3 && p.position !== 'GK' && p.position !== 'CB') {
+                        // Shoot
+                        p.shootTimer = 0.3 + Math.random() * 0.3;
+                        p.passTimer = 0;
+                        return;
+                    }
+
+                    if (target && rand < 0.55) {
+                        // Pass
+                        p.passTarget = target;
+                        p.passTimer = 0.4 + Math.random() * 0.4;
+                        p.passes++;
+                        return;
+                    }
+
+                    // Dribble forward
+                    const forward = isHome ? 1 : -1;
+                    p.targetX += forward * (20 + Math.random() * 40);
+                    p.targetY += (Math.random() - 0.5) * 40;
+                    p.state = 'running';
+                    if (Math.random() < 0.2) p.dribbles++;
+                    return;
                 }
 
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.team === 'home' ? '#ef4444' : '#3b82f6';
-                ctx.fill();
+                // No ball - positioning
+                const isHome = p.team === 'home';
+                const ball = G.ball;
+
+                // Move toward ball if nearby
+                const dxb = ball.x - p.x;
+                const dyb = ball.y - p.y;
+                const db = Math.sqrt(dxb * dxb + dyb * dyb);
+
+                if (db < 200 && Math.random() < 0.3) {
+                    // Press ball
+                    p.targetX = ball.x + (Math.random() - 0.5) * 40;
+                    p.targetY = ball.y + (Math.random() - 0.5) * 40;
+                    p.state = 'running';
+                } else {
+                    // Return to home position with some randomness
+                    p.targetX = p.homeX + (Math.random() - 0.5) * 40;
+                    p.targetY = p.homeY + (Math.random() - 0.5) * 40;
+                    p.state = 'walking';
+                }
+
+                // Defensive line adjustment
+                if (p.position === 'CB' || p.position === 'LB' || p.position === 'RB') {
+                    const defLine = isHome ? PITCH.x + PITCH.w * 0.3 : PITCH.x + PITCH.w * 0.7;
+                    p.targetX += (defLine - p.targetX) * 0.03;
+                }
+
+                // Striker stays forward
+                if (p.position === 'ST' || p.position === 'LW' || p.position === 'RW') {
+                    const attLine = isHome ? PITCH.x + PITCH.w * 0.7 : PITCH.x + PITCH.w * 0.3;
+                    p.targetX += (attLine - p.targetX) * 0.02;
+                }
+            }
+
+            // ─── RESET POSITIONS ────────────────────────────────────────
+            function resetPositions() {
+                const homePos = getFormationPositions('home', G.formation);
+                const awayPos = getFormationPositions('away', G.formation);
+                let hi = 0,
+                    ai = 0;
+                G.players.forEach(p => {
+                    if (p.team === 'home' && hi < homePos.length) {
+                        p.x = homePos[hi].x;
+                        p.y = homePos[hi].y;
+                        p.homeX = homePos[hi].x;
+                        p.homeY = homePos[hi].y;
+                        p.targetX = homePos[hi].x;
+                        p.targetY = homePos[hi].y;
+                        hi++;
+                    } else if (p.team === 'away' && ai < awayPos.length) {
+                        p.x = awayPos[ai].x;
+                        p.y = awayPos[ai].y;
+                        p.homeX = awayPos[ai].x;
+                        p.homeY = awayPos[ai].y;
+                        p.targetX = awayPos[ai].x;
+                        p.targetY = awayPos[ai].y;
+                        ai++;
+                    }
+                    p.hasBall = false;
+                });
+                G.ball.x = PITCH.x + PITCH.w / 2;
+                G.ball.y = PITCH.y + PITCH.h / 2;
+                G.ball.vx = 0;
+                G.ball.vy = 0;
+            }
+
+            // ─── EVENTS ──────────────────────────────────────────────────
+            function addEvent(text, type = 'default') {
+                const time = formatTime(G.time);
+                const entry = { time, text, type };
+                G.events.push(entry);
+                G.matchEvents.push(entry);
+
+                // Keep last 50
+                if (G.events.length > 50) G.events.shift();
+
+                // Render events
+                renderEvents();
+
+                // Update mobile
+                if (mEvents) {
+                    const el = document.createElement('div');
+                    el.textContent = time + ' ' + text;
+                    el.style.padding = '2px 0';
+                    el.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                    mEvents.prepend(el);
+                    if (mEvents.children.length > 20) mEvents.removeChild(mEvents.lastChild);
+                }
+
+                // Social media trigger
+                if (type === 'goal') {
+                    const post = '⚽ GOAL! ' + text.replace('⚽ GOAL! ', '') + ' 🔥';
+                    addSocialPost(post, 20 + Math.floor(Math.random() * 30));
+                    G.socialLikes += 15 + Math.floor(Math.random() * 20);
+                } else if (type === 'shot') {
+                    if (Math.random() < 0.2) {
+                        addSocialPost('💥 ' + text, 5 + Math.floor(Math.random() * 10));
+                    }
+                }
+            }
+
+            function renderEvents() {
+                eventsList.innerHTML = '';
+                // Show latest first
+                const show = G.events.slice().reverse().slice(0, 20);
+                show.forEach(e => {
+                    const div = document.createElement('div');
+                    div.className = 'event-item' + (e.type ? ' ' + e.type : '');
+                    div.innerHTML = `<span class="time">${e.time}</span><span class="text">${e.text}</span>`;
+                    eventsList.appendChild(div);
+                });
+                if (G.events.length === 0) {
+                    const div = document.createElement('div');
+                    div.className = 'event-item';
+                    div.innerHTML = `<span class="time">00:00</span><span class="text">Match started</span>`;
+                    eventsList.appendChild(div);
+                }
+                eventsList.scrollTop = 0;
+            }
+
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60);
+                const s = Math.floor(sec % 60);
+                return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            }
+
+            // ─── SOCIAL MEDIA ──────────────────────────────────────────
+            function addSocialPost(text, likes = 0) {
+                const post = { text, likes: likes || 5 + Math.floor(Math.random() * 20), time: G.time };
+                G.socialPosts.unshift(post);
+                if (G.socialPosts.length > 10) G.socialPosts.pop();
+                renderSocial();
+            }
+
+            function renderSocial() {
+                socialFeed.innerHTML = '';
+                G.socialPosts.slice(0, 5).forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'post';
+                    div.innerHTML = `<span class="icon">📱</span> ${p.text} <span class="likes">❤️ ${p.likes}</span>`;
+                    socialFeed.appendChild(div);
+                });
+                if (G.socialPosts.length === 0) {
+                    const div = document.createElement('div');
+                    div.className = 'post';
+                    div.innerHTML = `<span class="icon">📱</span> Welcome to the game! <span class="likes">❤️ 0</span>`;
+                    socialFeed.appendChild(div);
+                }
+            }
+
+            // ─── SCORE UPDATE ──────────────────────────────────────────
+            function updateScore() {
+                scoreEl.textContent = G.homeScore + ' – ' + G.awayScore;
+                // Update stats
+                statPossession.textContent = (50 + (G.homeScore - G.awayScore) * 2 + (Math.random() - 0.5) * 4).toFixed(0) + '%';
+                statShots.textContent = G.shots;
+                const acc = G.passCount > 0 ? (G.passComplete / G.passCount * 100) : 86;
+                statPass.textContent = acc.toFixed(0) + '%';
+            }
+
+            // ─── MATCH CLOCK ────────────────────────────────────────────
+            function updateClock() {
+                if (G.paused || G.matchEnded) return;
+                G.time += 1 / 60 * G.speed;
+                if (G.time > 5400) { // 90 minutes
+                    G.time = 5400;
+                    G.matchEnded = true;
+                    statusEl.textContent = '● Full Time';
+                    addEvent('🏁 Full Time! ' + G.homeScore + ' - ' + G.awayScore, 'goal');
+                    return;
+                }
+                if (G.time > 2700 && G.time < 2705 && !G.halfTime) {
+                    G.halfTime = true;
+                    statusEl.textContent = '⏸ Half Time';
+                    addEvent('⏸ Half Time', 'default');
+                }
+                if (G.time > 2730 && G.halfTime) {
+                    G.halfTime = false;
+                    statusEl.textContent = '● Second Half';
+                    addEvent('▶ Second Half started', 'default');
+                }
+                clockEl.textContent = formatTime(G.time);
+                if (!G.halfTime && !G.matchEnded) {
+                    statusEl.textContent = '● Live';
+                }
+            }
+
+            // ─── RENDER PITCH ───────────────────────────────────────────
+            function renderPitch() {
+                const w = canvas.width;
+                const h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                // Grass
+                const grad = ctx.createRadialGradient(w / 2, h / 2, 50, w / 2, h / 2, w * 0.7);
+                grad.addColorStop(0, '#2d6a2d');
+                grad.addColorStop(1, '#1a4a1a');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+
+                // Pitch markings
+                const px = PITCH.x,
+                    py = PITCH.y,
+                    pw = PITCH.w,
+                    ph = PITCH.h;
+                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
                 ctx.lineWidth = 2;
-                ctx.strokeStyle = '#ffffff';
+
+                // Outline
+                ctx.strokeRect(px, py, pw, ph);
+
+                // Center line
+                ctx.beginPath();
+                ctx.moveTo(px + pw / 2, py);
+                ctx.lineTo(px + pw / 2, py + ph);
                 ctx.stroke();
 
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '10px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(this.name, this.x, this.y + 20);
-            }
-        }
+                // Center circle
+                ctx.beginPath();
+                ctx.arc(px + pw / 2, py + ph / 2, 50, 0, Math.PI * 2);
+                ctx.stroke();
 
-        function initMatch() {
-            gameState.match.active = true;
-            gameState.match.time = 0;
-            gameState.match.homeScore = 0;
-            gameState.match.awayScore = 0;
-            gameState.match.players = [];
+                // Center dot
+                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                ctx.beginPath();
+                ctx.arc(px + pw / 2, py + ph / 2, 4, 0, Math.PI * 2);
+                ctx.fill();
 
-            const homePositions = [
-                { name: "G", x: 40, y: 260 },
-                { name: "DC", x: 180, y: 160 }, { name: "DC", x: 180, y: 360 },
-                { name: "MC", x: 350, y: 180 }, { name: gameState.player.name, x: 420, y: 260, isUser: true }, { name: "MC", x: 350, y: 340 },
-                { name: "BU", x: 550, y: 260 }
-            ];
+                // Penalty areas
+                ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                ctx.lineWidth = 2;
+                // Home (left)
+                ctx.strokeRect(px, py + ph * 0.25, 80, ph * 0.5);
+                // Away (right)
+                ctx.strokeRect(px + pw - 80, py + ph * 0.25, 80, ph * 0.5);
 
-            const awayPositions = [
-                { name: "G Ext", x: 760, y: 260 },
-                { name: "DC Ext", x: 620, y: 160 }, { name: "DC Ext", x: 620, y: 360 },
-                { name: "MC Ext", x: 450, y: 180 }, { name: "MC Ext", x: 450, y: 340 },
-                { name: "BU Ext", x: 250, y: 260 }
-            ];
+                // Goal areas
+                ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                ctx.strokeRect(px, py + ph * 0.38, 30, ph * 0.24);
+                ctx.strokeRect(px + pw - 30, py + ph * 0.38, 30, ph * 0.24);
 
-            homePositions.forEach(p => {
-                gameState.match.players.push(new PitchPlayer(p.name, 'home', p.x, p.y, p.isUser || false));
-            });
+                // Goals
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(px - 4, py + ph * 0.40, 8, ph * 0.20);
+                ctx.strokeRect(px + pw - 4, py + ph * 0.40, 8, ph * 0.20);
 
-            awayPositions.forEach(p => {
-                gameState.match.players.push(new PitchPlayer(p.name, 'away', p.x, p.y));
-            });
+                // Corner arcs
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 2;
+                const corners = [
+                    [px, py, 1],
+                    [px + pw, py, 2],
+                    [px, py + ph, 3],
+                    [px + pw, py + ph, 4]
+                ];
+                corners.forEach(([cx, cy, q]) => {
+                    ctx.beginPath();
+                    const start = (q - 1) * Math.PI / 2;
+                    const end = start + Math.PI / 2;
+                    ctx.arc(cx, cy, 16, start, end);
+                    ctx.stroke();
+                });
 
-            if (matchInterval) clearInterval(matchInterval);
-            matchInterval = setInterval(gameLoop, 1000 / 30);
-        }
+                // Stadium atmosphere - stands
+                ctx.fillStyle = 'rgba(0,0,0,0.15)';
+                ctx.fillRect(0, 0, px, h);
+                ctx.fillRect(px + pw, 0, w - px - pw, h);
+                ctx.fillRect(0, 0, w, py);
+                ctx.fillRect(0, py + ph, w, h - py - ph);
 
-        function gameLoop() {
-            if (gameState.match.simSpeed === 0) return;
-
-            for (let speedStep = 0; speedStep < gameState.match.simSpeed; speedStep++) {
-                updateMatchPhysics();
-            }
-
-            renderPitch();
-        }
-
-        function updateMatchPhysics() {
-            const m = gameState.match;
-            m.time += 1;
-
-            const minutes = Math.floor(m.time / 60);
-            const seconds = Math.floor(m.time % 60);
-            document.getElementById('match-clock').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            if (minutes >= 90) {
-                setSpeed(0);
-                logEvent("FIN DU MATCH !");
-                return;
-            }
-
-            m.ball.x += m.ball.vx;
-            m.ball.y += m.ball.vy;
-            m.ball.vx *= 0.93;
-            m.ball.vy *= 0.93;
-
-            if (m.ball.x < 15 || m.ball.x > 785) {
-                if (m.ball.y > 200 && m.ball.y < 320) {
-                    if (m.ball.x > 785) {
-                        m.homeScore++;
-                        logEvent(`BUT ! ${m.homeTeam} marque !`);
-                    } else {
-                        m.awayScore++;
-                        logEvent(`BUT ! ${m.awayTeam} marque !`);
+                // Crowd dots (simple)
+                for (let i = 0; i < 60; i++) {
+                    const cx = Math.random() * w;
+                    const cy = Math.random() * h;
+                    if (cx < px || cx > px + pw || cy < py || cy > py + ph) {
+                        ctx.fillStyle = `rgba(255,255,255,${0.05 + Math.random() * 0.1})`;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, 1 + Math.random() * 2, 0, Math.PI * 2);
+                        ctx.fill();
                     }
-                    document.getElementById('match-score').innerText = `${m.homeScore} - ${m.awayScore}`;
-                    m.ball.x = 400; m.ball.y = 260; m.ball.vx = 0; m.ball.vy = 0;
-                } else {
-                    m.ball.vx *= -1;
+                }
+
+                // ─── PLAYERS ────────────────────────────────────────────
+                G.players.forEach(p => {
+                    if (!p) return;
+                    const isUser = p.isUser;
+                    const r = p.radius;
+
+                    // Shadow
+                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowOffsetY = 2;
+
+                    // Body
+                    const grad2 = ctx.createRadialGradient(p.x - 3, p.y - 3, 2, p.x, p.y, r + 2);
+                    grad2.addColorStop(0, isUser ? '#fbbf24' : p.color);
+                    grad2.addColorStop(0.7, isUser ? '#eab308' : p.color);
+                    grad2.addColorStop(1, isUser ? '#a16207' : '#333');
+                    ctx.fillStyle = grad2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Border
+                    ctx.shadowBlur = 0;
+                    ctx.strokeStyle = isUser ? '#fbbf24' : 'rgba(255,255,255,0.2)';
+                    ctx.lineWidth = isUser ? 2.5 : 1.5;
+                    ctx.stroke();
+
+                    // Glow for user
+                    if (isUser) {
+                        ctx.shadowColor = 'rgba(251,191,36,0.4)';
+                        ctx.shadowBlur = 20;
+                        ctx.strokeStyle = 'rgba(251,191,36,0.3)';
+                        ctx.lineWidth = 3;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                    }
+
+                    // Name
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = isUser ? '#fbbf24' : '#fff';
+                    ctx.font = isUser ? 'bold 11px Inter, sans-serif' : '9px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    const label = p.name.length > 10 ? p.name.slice(0, 9) + '…' : p.name;
+                    ctx.fillText(label, p.x, p.y - r - 4);
+
+                    // Position badge
+                    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                    ctx.font = '7px Inter, sans-serif';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(p.position || 'MID', p.x, p.y + r + 2);
+
+                    // Star for user
+                    if (isUser) {
+                        ctx.fillStyle = '#fbbf24';
+                        ctx.font = '16px Inter, sans-serif';
+                        ctx.textBaseline = 'bottom';
+                        ctx.shadowColor = 'rgba(251,191,36,0.5)';
+                        ctx.shadowBlur = 12;
+                        ctx.fillText('★', p.x, p.y - r - 20);
+                        ctx.shadowBlur = 0;
+                    }
+
+                    // Ball indicator
+                    if (p.hasBall) {
+                        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, r + 6, 0, Math.PI * 2);
+                        ctx.fill();
+                        // Small ball icon
+                        ctx.fillStyle = '#fff';
+                        ctx.beginPath();
+                        ctx.arc(p.x + r + 4, p.y - 2, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Stamina bar
+                    const barW = 20;
+                    const barH = 3;
+                    const barX = p.x - barW / 2;
+                    const barY = p.y + r + 12;
+                    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                    ctx.fillRect(barX, barY, barW, barH);
+                    const staminaPct = p.stamina / 100;
+                    ctx.fillStyle = staminaPct > 0.6 ? '#22c55e' : staminaPct > 0.3 ? '#eab308' : '#ef4444';
+                    ctx.fillRect(barX, barY, barW * staminaPct, barH);
+                });
+
+                // ─── BALL ──────────────────────────────────────────────
+                const b = G.ball;
+                ctx.shadowBlur = 16;
+                ctx.shadowColor = 'rgba(255,255,255,0.15)';
+                // Ball glow
+                const grad3 = ctx.createRadialGradient(b.x - 2, b.y - 2, 2, b.x, b.y, b.radius + 4);
+                grad3.addColorStop(0, '#ffffff');
+                grad3.addColorStop(0.6, '#e0e0e0');
+                grad3.addColorStop(1, '#888');
+                ctx.fillStyle = grad3;
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                // Ball pattern
+                ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.radius * 0.6, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(b.x - b.radius * 0.7, b.y);
+                ctx.lineTo(b.x + b.radius * 0.7, b.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y - b.radius * 0.7);
+                ctx.lineTo(b.x, b.y + b.radius * 0.7);
+                ctx.stroke();
+
+                // ─── SCOREBOARD ON PITCH ──────────────────────────────
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.roundRect ? ctx.roundRect(px + pw / 2 - 70, py + 8, 140, 28, 8) : 0;
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 16px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(G.homeTeam.slice(0, 8) + ' ' + G.homeScore + ' - ' + G.awayScore + ' ' + G.awayTeam.slice(0, 8),
+                    px + pw / 2, py + 22);
+
+                // Time on pitch
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(px + pw / 2 - 30, py + ph - 30, 60, 20);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(formatTime(G.time), px + pw / 2, py + ph - 20);
+            }
+
+            // ─── GAME LOOP ──────────────────────────────────────────────
+            function gameLoop() {
+                G.frame++;
+
+                if (!G.paused && !G.matchEnded) {
+                    updateClock();
+                    updatePlayers();
+                    updateScore();
+
+                    // Random events
+                    if (G.frame % 300 === 0 && !G.paused) {
+                        const events = ['Shot on target', 'Corner kick', 'Free kick', 'Good tackle', 'Counter attack'];
+                        const evt = events[Math.floor(Math.random() * events.length)];
+                        if (Math.random() < 0.3) addEvent('⚡ ' + evt, 'shot');
+                    }
+
+                    // Substitution check
+                    if (G.frame % 600 === 0 && G.time > 120 && !G.matchEnded) {
+                        // Random substitution
+                        if (Math.random() < 0.08 && G.userOnPitch) {
+                            // User might be subbed
+                            const user = G.players[G.userIndex];
+                            if (user && user.stamina < 40 && Math.random() < 0.5) {
+                                showSubstitution('Manager has decided to substitute you.', 'You\'re coming off.', '😔');
+                                G.userOnPitch = false;
+                                // Remove user from pitch (hide)
+                                user.x = -100;
+                                user.y = -100;
+                                addEvent('🔄 Substitution: ' + user.name + ' OUT', 'sub');
+                            } else if (Math.random() < 0.03) {
+                                // Random sub for others
+                                const bench = G.players.find(p => !p.isUser && p.team === 'home' && p.stamina < 50);
+                                if (bench) {
+                                    addEvent('🔄 Substitution: ' + bench.name + ' OUT', 'sub');
+                                    bench.x = -100;
+                                    bench.y = -100;
+                                }
+                            }
+                        }
+                    }
+
+                    // Bring user back on after some time
+                    if (!G.userOnPitch && G.frame % 120 === 0 && G.time > 100) {
+                        if (Math.random() < 0.01) {
+                            G.userOnPitch = true;
+                            const user = G.players[G.userIndex];
+                            if (user) {
+                                user.x = PITCH.x + PITCH.w / 2 + (Math.random() - 0.5) * 100;
+                                user.y = PITCH.y + PITCH.h / 2 + (Math.random() - 0.5) * 100;
+                                user.homeX = user.x;
+                                user.homeY = user.y;
+                                user.targetX = user.x;
+                                user.targetY = user.y;
+                                user.stamina = 70 + Math.random() * 20;
+                                showSubstitution('You\'re coming on!', 'Substitution: ' + user.name + ' IN', '💪');
+                                addEvent('🔄 Substitution: ' + user.name + ' IN', 'sub');
+                            }
+                        }
+                    }
+
+                    // Auto social posts
+                    if (G.frame % 1200 === 0 && !G.paused) {
+                        const msgs = ['Training hard 💪', 'Big game tonight! 🔥', 'Love the fans! ❤️', 'Focus on the pitch ⚽',
+                            'Ready for the challenge!'
+                        ];
+                        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+                        addSocialPost(msg, 10 + Math.floor(Math.random() * 15));
+                    }
+                }
+
+                // Render
+                renderPitch();
+                updateScore();
+
+                // Update mobile
+                if (mEvents && G.events.length > 0) {
+                    const last = G.events[G.events.length - 1];
+                    if (last) {
+                        // Just keep the feed updated via the event system
+                    }
+                }
+
+                requestAnimationFrame(gameLoop);
+            }
+
+            // ─── SUBSTITUTION NOTIFICATION ─────────────────────────────
+            function showSubstitution(title, desc, detail = '') {
+                subTitle.textContent = title;
+                subDesc.textContent = desc;
+                subDetail.textContent = detail || '';
+                subNotif.classList.add('show');
+                clearTimeout(subNotif._timer);
+                subNotif._timer = setTimeout(() => {
+                    subNotif.classList.remove('show');
+                }, 4000);
+            }
+
+            // ─── CANVAS RESIZE ──────────────────────────────────────────
+            function resizeCanvas() {
+                const wrap = document.getElementById('pitch-wrap');
+                const rect = wrap.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                // Scale context
+                ctx.scale(dpr, dpr);
+                // Update pitch dimensions in canvas coords
+                const w = rect.width;
+                const h = rect.height;
+                PITCH.x = w * 0.04;
+                PITCH.y = h * 0.04;
+                PITCH.w = w * 0.92;
+                PITCH.h = h * 0.92;
+                G.w = w;
+                G.h = h;
+            }
+
+            // ─── CONTROLS ──────────────────────────────────────────────
+            function initControls() {
+                // Play/Pause
+                document.getElementById('btn-play').addEventListener('click', () => {
+                    G.paused = false;
+                    statusEl.textContent = '● Live';
+                });
+                document.getElementById('btn-pause').addEventListener('click', () => {
+                    G.paused = !G.paused;
+                    statusEl.textContent = G.paused ? '⏸ Paused' : '● Live';
+                });
+
+                // Speed
+                document.querySelectorAll('.speed').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.speed').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        G.speed = parseFloat(btn.dataset.speed);
+                    });
+                });
+
+                // Tactical buttons
+                document.querySelectorAll('#tactical-buttons button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const action = btn.dataset.action;
+                        document.querySelectorAll('#tactical-buttons button').forEach(b => b.classList.remove(
+                        'active'));
+                        btn.classList.add('active');
+                        G.tacticalMode = action;
+                        const user = G.players[G.userIndex];
+                        if (user) {
+                            addEvent('📋 Tactical: ' + action.toUpperCase(), 'default');
+                            if (action === 'request') {
+                                // Request ball from teammate
+                                const teammates = G.players.filter(p => p.team === 'home' && p.hasBall && !p.isUser);
+                                if (teammates.length > 0) {
+                                    const passer = teammates[Math.floor(Math.random() * teammates.length)];
+                                    if (passer) {
+                                        passer.passTarget = user;
+                                        passer.passTimer = 0.3;
+                                        addEvent('📢 ' + user.name + ' requests the ball!', 'shot');
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+
+                // Save/Load
+                document.getElementById('btn-save').addEventListener('click', saveGame);
+                document.getElementById('btn-load').addEventListener('click', loadGame);
+
+                // Resize
+                window.addEventListener('resize', () => {
+                    resizeCanvas();
+                });
+                // Initial resize after a tick
+                setTimeout(resizeCanvas, 50);
+            }
+
+            // ─── SAVE / LOAD ────────────────────────────────────────────
+            function saveGame() {
+                try {
+                    const data = {
+                        time: G.time,
+                        homeScore: G.homeScore,
+                        awayScore: G.awayScore,
+                        userRating: G.userRating,
+                        players: G.players.map(p => ({
+                            id: p.id,
+                            name: p.name,
+                            team: p.team,
+                            position: p.position,
+                            x: p.x,
+                            y: p.y,
+                            homeX: p.homeX,
+                            homeY: p.homeY,
+                            stamina: p.stamina,
+                            goals: p.goals,
+                            assists: p.assists,
+                            passes: p.passes,
+                            tackles: p.tackles,
+                            interceptions: p.interceptions,
+                            isUser: p.isUser,
+                            hasBall: p.hasBall,
+                        })),
+                        ball: G.ball,
+                        events: G.events,
+                        socialPosts: G.socialPosts,
+                        career: G.career,
+                        finance: G.finance,
+                        matchEnded: G.matchEnded,
+                    };
+                    localStorage.setItem('footballLifeSave', JSON.stringify(data));
+                    addEvent('💾 Game saved!', 'default');
+                } catch (e) {
+                    console.error('Save failed', e);
                 }
             }
-            if (m.ball.y < 15 || m.ball.y > 505) m.ball.vy *= -1;
 
-            m.players.forEach(p => p.update(m.ball, gameState.player.userIntent));
-        }
-
-        function renderPitch() {
-            ctx.fillStyle = '#2e7d32';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-            ctx.lineWidth = 2;
-
-            ctx.strokeRect(15, 15, 770, 490);
-
-            ctx.beginPath();
-            ctx.moveTo(400, 15);
-            ctx.lineTo(400, 505);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(400, 260, 60, 0, Math.PI * 2);
-            ctx.stroke();
-
-            ctx.strokeRect(15, 170, 100, 180);
-            ctx.strokeRect(685, 170, 100, 180);
-
-            ctx.beginPath();
-            ctx.arc(gameState.match.ball.x, gameState.match.ball.y, 5, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffffff';
-            ctx.fill();
-            ctx.strokeStyle = '#000000';
-            ctx.stroke();
-
-            gameState.match.players.forEach(p => p.draw());
-        }
-
-        function setSpeed(speed) {
-            gameState.match.simSpeed = speed;
-            document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        function setUserIntent(intent) {
-            gameState.player.userIntent = intent;
-            logEvent(`Consigne changée : ${intent}`);
-        }
-
-        function logEvent(msg) {
-            const container = document.getElementById('events-log');
-            const minutes = Math.floor(gameState.match.time / 60).toString().padStart(2, '0');
-            const div = document.createElement('div');
-            div.className = 'event-item';
-            div.innerText = `${minutes}' - ${msg}`;
-            container.prepend(div);
-        }
-
-        function renderSocialFeed() {
-            const container = document.getElementById('social-feed');
-            container.innerHTML = '';
-            socialFeed.forEach(post => {
-                const item = document.createElement('div');
-                item.className = 'feed-item';
-                item.innerHTML = `
-                    <div class="feed-author">@${post.author}</div>
-                    <div>${post.text}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">❤️ ${post.likes} J'aime</div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        function submitPost() {
-            const input = document.getElementById('post-input');
-            if (!input.value.trim()) return;
-            
-            socialFeed.unshift({
-                author: gameState.player.name.replace(/\s+/g, ''),
-                text: input.value,
-                likes: Math.floor(Math.random() * 500) + 50
-            });
-            input.value = '';
-            renderSocialFeed();
-        }
-
-        function upgradeHome() {
-            if (gameState.player.balance >= 250000) {
-                gameState.player.balance -= 250000;
-                gameState.player.currentHome = "Penthouse de Luxe";
-                document.getElementById('home-name').innerText = gameState.player.currentHome;
-                document.getElementById('bank-balance').innerText = `${gameState.player.balance.toLocaleString()} €`;
-                alert('Propriété améliorée en Penthouse de Luxe !');
-            } else {
-                alert('Fonds insuffisants !');
+            function loadGame() {
+                try {
+                    const raw = localStorage.getItem('footballLifeSave');
+                    if (!raw) { addEvent('❌ No save found', 'default'); return; }
+                    const data = JSON.parse(raw);
+                    G.time = data.time || 0;
+                    G.homeScore = data.homeScore || 0;
+                    G.awayScore = data.awayScore || 0;
+                    G.userRating = data.userRating || 7.0;
+                    G.matchEnded = data.matchEnded || false;
+                    if (data.ball) G.ball = data.ball;
+                    if (data.events) { G.events = data.events;
+                        renderEvents(); }
+                    if (data.socialPosts) { G.socialPosts = data.socialPosts;
+                        renderSocial(); }
+                    if (data.career) G.career = data.career;
+                    if (data.finance) G.finance = data.finance;
+                    if (data.players) {
+                        data.players.forEach((sp, i) => {
+                            if (G.players[i]) {
+                                G.players[i].x = sp.x;
+                                G.players[i].y = sp.y;
+                                G.players[i].homeX = sp.homeX || sp.x;
+                                G.players[i].homeY = sp.homeY || sp.y;
+                                G.players[i].stamina = sp.stamina || 80;
+                                G.players[i].goals = sp.goals || 0;
+                                G.players[i].assists = sp.assists || 0;
+                                G.players[i].passes = sp.passes || 0;
+                                G.players[i].tackles = sp.tackles || 0;
+                                G.players[i].interceptions = sp.interceptions || 0;
+                                G.players[i].hasBall = sp.hasBall || false;
+                                if (sp.isUser) G.userIndex = i;
+                            }
+                        });
+                    }
+                    updateScore();
+                    clockEl.textContent = formatTime(G.time);
+                    playerRating.textContent = G.userRating.toFixed(1);
+                    mRating.textContent = G.userRating.toFixed(1);
+                    addEvent('📂 Game loaded!', 'default');
+                } catch (e) {
+                    console.error('Load failed', e);
+                    addEvent('❌ Load failed', 'default');
+                }
             }
-        }
 
-        function buyCar() {
-            if (gameState.player.balance >= 180000) {
-                gameState.player.balance -= 180000;
-                gameState.player.currentCar = "Supercar V12";
-                document.getElementById('car-name').innerText = gameState.player.currentCar;
-                document.getElementById('bank-balance').innerText = `${gameState.player.balance.toLocaleString()} €`;
-                alert('Achat de la Supercar V12 effectué !');
-            } else {
-                alert('Fonds insuffisants !');
+            // ─── INIT ────────────────────────────────────────────────────
+            function init() {
+                initTeams();
+                resetPositions();
+                addEvent('⚽ Match started!', 'default');
+                addSocialPost('🎮 Starting my career! Let\'s go! 🔥', 42);
+                // Set initial user rating
+                playerRating.textContent = G.userRating.toFixed(1);
+                mRating.textContent = G.userRating.toFixed(1);
+                updateScore();
+                initControls();
+
+                // Start loop
+                gameLoop();
+
+                // Auto save every 30 seconds
+                setInterval(() => {
+                    if (!G.paused && !G.matchEnded) {
+                        saveGame();
+                    }
+                }, 30000);
+
+                console.log('⚽ Football Life Simulator started!');
+                console.log('👤 Player:', G.players[G.userIndex]?.name);
+                console.log('🏟️ ' + G.homeTeam + ' vs ' + G.awayTeam);
             }
-        }
 
-        function interactNPC(name) {
-            alert(`Message envoyé à ${name} : "Passe une excellente journée !"`);
-        }
+            // ─── START ──────────────────────────────────────────────────
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
 
-        renderSocialFeed();
+        })();
     </script>
 </body>
-</html>
-
-
+    </html>
